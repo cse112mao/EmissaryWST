@@ -1,9 +1,10 @@
 var gulp = require('gulp');
 
-/* This will create the dist folder
- * That is ready to serve by our backend
+/* this will create the dist folder
+ * that is ready to serve by our backend
  */
 gulp.task('dist', [
+// comment once fixed
 // 'lint:server',
 // 'lint:client',
   'bower',
