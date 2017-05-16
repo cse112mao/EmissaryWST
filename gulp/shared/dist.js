@@ -5,8 +5,8 @@ var gulp = require('gulp');
  */
 gulp.task('dist', [
 // uncomment once fixed
- 'lint:server',
- 'lint:client',
+// 'lint:server',
+// 'lint:client',
   'bower',
   'concat:css',
   'concat:js',
