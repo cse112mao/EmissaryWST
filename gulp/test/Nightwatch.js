@@ -7,5 +7,6 @@ var gulp = require('gulp'),
     .once('error', function() {
       process.exit(1)
     });	
+    process.exit();
 });
 
