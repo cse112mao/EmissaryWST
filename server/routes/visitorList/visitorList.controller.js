@@ -9,6 +9,83 @@ var VisitorList = require('../../models/VisitorList');
 var Employee = require('../../models/Employee');
 var Appointment = require('../../models/Appointment');
 
+/**
+ *  @api {get} /api/visitorLists/company/:id
+ *  @apiName GetVisitorList
+ *  @apiGroup VisitorList
+ *  
+ *  @apiDescription Gives visitor's appointment of that current day in appointments
+ *
+ *  @apiParam {String} id id of the company to search for
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} company_id id of company
+ *  @apiSuccess {Object} a list of all visitors and their information
+ *
+ *  @apiError error Getting Visitor List
+ *
+ *  @apiErrorExample Response (success):
+ *      {
+ *            _id: "123124124",
+ *           company_id: "12312355",
+ *           visitors:
+ *           [
+ *               {
+ *                   _id: "12314125",
+ *                   company_id: "12314125",
+ *                   first_name : "test",
+ *                   last_name : "test",
+ *                   phone_number: "21324125",
+ *                   checkin_time: "2016-04-23T18:25:43.511Z",
+ *                   appointments:
+ *                   [
+ *                       {
+ *                       _id : "12314125",
+ *                       name : "test1",
+ *                       phone_number : "0123456789",
+ *                       date : "2016-04-23T18:25:43.511Z",
+ *                       company_id : "12314125",
+ *                       provider_name : "test test"
+ *                       }
+ *                   ]
+ *                   additional_info:
+ *                       {
+ *                       allergies: "peanuts",
+ *                       sex: "male"
+ *                       }
+ *               },
+ *               {
+ *                   _id: "12314125",
+ *                   company_id: "12314125",
+ *                   first_name : "test",
+ *                   last_name : "test",
+ *                   phone_number: "21324125",
+ *                   checkin_time: "2016-04-23T18:25:43.511Z",
+ *                   appointments:
+ *                   [
+ *                       {
+ *                          _id : "12314125",
+ *                          name : "test1",
+ *                          phone_number : "0123456789",
+ *                          date : "2016-04-23T18:25:43.511Z",
+ *                          company_id : "12314125",
+ *                          provider_name : "test test"
+ *                       }
+ *                   ]
+ *                   additional_info:
+ *                       {
+ *                          allergies: "peanuts",
+ *                          sex: "male"
+ *                       }
+ *           ]
+ *       }
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Getting Visitor List"
+ *      }
+ */
+
 /* handles route for getting the Company's visitor list */
 exports.getCompanyVisitorListReq = function(req, res){
     var company_id=req.params.id;
@@ -46,6 +123,60 @@ exports.getCompanyVisitorList = function(company_id, callback){
     });
 }
 
+
+/**
+ *  @api {delete} /api/visitorLists/company/:company_id/visitor/:visitor_id
+ *  @apiName DeleteVisitor
+ *  @apiGroup VisitorList
+ *  
+ *  @apiDescription Delete visitor from company list
+ *
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} company_id id of company
+ *  @apiSuccess {Object} visitor's information
+ *
+ *  @apiError error Getting Visitor List
+ *
+ *  @apiErrorExample Response (success):
+ *      {
+ *            _id: "123124124",
+ *           company_id: "12312355",
+ *           visitors:
+ *           [
+ *               {
+ *                   _id: "12314125",
+ *                   company_id: "12314125",
+ *                   first_name : "test",
+ *                   last_name : "test",
+ *                   phone_number: "21324125",
+ *                   checkin_time: "2016-04-23T18:25:43.511Z",
+ *                   appointments:
+ *                   [
+ *                       {
+ *                       _id : "12314125",
+ *                       name : "test1",
+ *                       phone_number : "0123456789",
+ *                       date : "2016-04-23T18:25:43.511Z",
+ *                       company_id : "12314125",
+ *                       provider_name : "test test"
+ *                       }
+ *                   ]
+ *                   additional_info:
+ *                       {
+ *                       allergies: "peanuts",
+ *                       sex: "male"
+ *                       }
+ *               }
+ *          ] 
+ *      }   
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Getting Visitor List"
+ *      }
+ */
+
 /* handles route to delete visitor in the list*/
 exports.deleteVisitorReq = function(req, res){
     var visitor_id=req.params.visitor_id;
@@ -71,6 +202,33 @@ exports.deleteVisitor = function(company_id, visitor_id, callback){
         });
 }
 
+/**
+ *  @api {delete} /api/visitorLists/:id
+ *  @apiName ClearVisitorList
+ *  @apiGroup VisitorList
+ *  
+ *  @apiDescription Clear visitor list
+ *
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} _id unique id of entry
+ *
+ *
+ *  @apiError error Could Not Find 
+ *
+ *  @apiErrorExample Response (success):
+ *        {
+ *           _id: "123124124",
+ *           company_id: "12312355",
+ *           visitors: []
+ *        }
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Could Not Find"
+ *      }
+ */
+
 /* clear the list */
 exports.deleteReq = function(req, res){
     var list_id=req.params.id;
@@ -92,6 +250,89 @@ exports.delete = function(list_id, callback){
         });
     });
 }
+
+/**
+ *  @api {post} /api/visitorLists
+ *  @apiName PostVisitorList
+ *  @apiGroup VisitorList
+ *  
+ *  @apiDescription Add a visitor to the list, gives the visitor current day's appointments
+ *
+ *  @apiParam {String} company_id id of the company
+ *  @apiParam {String} first_name first name of visitor
+ *  @apiParam {String} last_name last name of visitor
+ *  @apiParam {String} phone_number phone number of visitor
+ *  @apiParam {String} checkin_time time visitor checked in
+ *  @apiParam {String} [additional_info] additional information of visitor
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} company_id id of company
+ *  @apiSuccess {Object} a list of all visitors and their information
+ *
+ *  @apiError error Getting Visitor List
+ *
+ *  @apiErrorExample Response (success):
+*      {
+ *            _id: "123124124",
+ *           company_id: "12312355",
+ *           visitors:
+ *           [
+ *               {
+ *                   _id: "12314125",
+ *                   company_id: "12314125",
+ *                   first_name : "test",
+ *                   last_name : "test",
+ *                   phone_number: "21324125",
+ *                   checkin_time: "2016-04-23T18:25:43.511Z",
+ *                   appointments:
+ *                   [
+ *                       {
+ *                       _id : "12314125",
+ *                       name : "test1",
+ *                       phone_number : "0123456789",
+ *                       date : "2016-04-23T18:25:43.511Z",
+ *                       company_id : "12314125",
+ *                       provider_name : "test test"
+ *                       }
+ *                   ]
+ *                   additional_info:
+ *                       {
+ *                       allergies: "peanuts",
+ *                       sex: "male"
+ *                       }
+ *               },
+ *               {
+ *                   _id: "12314125",
+ *                   company_id: "12314125",
+ *                   first_name : "test",
+ *                   last_name : "test",
+ *                   phone_number: "21324125",
+ *                   checkin_time: "2016-04-23T18:25:43.511Z",
+ *                   appointments:
+ *                   [
+ *                       {
+ *                          _id : "12314125",
+ *                          name : "test1",
+ *                          phone_number : "0123456789",
+ *                          date : "2016-04-23T18:25:43.511Z",
+ *                          company_id : "12314125",
+ *                          provider_name : "test test"
+ *                       }
+ *                   ]
+ *                   additional_info:
+ *                       {
+ *                          allergies: "peanuts",
+ *                          sex: "male"
+ *                       }
+ *           ]
+ *       }
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Getting Visitor List"
+ *      }
+ */
+
 // This route will be called when a visitor checks in
 exports.createReq = function(req, res) {
     exports.create(req.body, function(err_msg, result){
