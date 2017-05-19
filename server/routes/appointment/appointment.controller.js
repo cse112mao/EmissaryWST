@@ -22,6 +22,47 @@ var Appointment = require('../../models/Appointment');
 /****** Company TEMPLATE ROUTES ******/
 module.exports.template = {};
 
+/**
+ *  @api {post} /api/appointments
+ *  @apiName PostAppointment
+ *  @apiGroup Appointment
+ *  
+ *  @apiDescription Create new company for the website with provided mandatory information
+ *
+ *  @apiParam {String} first_name first name of visitor
+ *  @apiParam {String} last_name last name of visitor
+ *  @apiParam {String} phone_number phone number of visitor
+ *  @apiParam {String} date date of appointment
+ *  @apiParam {String} company_id id of company
+ *  @apiParam {String} provider_name provider who the appoinment is with
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} first_name first name of visitor
+ *  @apiSuccess {String} last_name last name of visitor
+ *  @apiSuccess {String} phone_number phone number of visitor
+ *  @apiSuccess {String} date date of appointment
+ *	@apiSuccess {String} company_id id of company
+ *	@apiSuccess {String} provider_name provider who the appoinment is with
+ *
+ *  @apiError error Already Created
+ *
+ *  @apiErrorExample Response (success):
+ *      {
+ *  		_id : "12314125",
+ *  		first_name : "test",
+ *  		last_name : "test",
+ *   		phone_number : "0123456789",
+ *   		date : "2016-04-23T18:25:43.511Z",
+ *   		company_id : "12314125",
+ *   		provider_name : "test test"
+ *		}
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Already Created"
+ *      }
+ */
+
 module.exports.template.create = function(req, res) {
     var appointment = new Appointment();
     var param = req.body;
@@ -52,6 +93,53 @@ module.exports.template.create = function(req, res) {
         });
 };
 
+/**
+ *  @api {get} /api/appointments/admin/:id
+ *  @apiName GetAllAppointment
+ *  @apiGroup Appointment
+ *  
+ *  @apiDescription Retrieve all appointments for a company
+ *
+ *  @apiParam {String} company_id id of company
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} first_name first name of visitor
+ *  @apiSuccess {String} last_name last name of visitor
+ *  @apiSuccess {String} phone_number phone number of visitor
+ *  @apiSuccess {String} date date of appointment
+ *	@apiSuccess {String} company_id id of company
+ *	@apiSuccess {String} provider_name provider who the appoinment is with
+ *
+ *  @apiError error Incorrect credentials
+ *
+ *  @apiErrorExample Response (success):
+ *      {
+ *			{
+ *				_id : "12314125",
+ *				first_name : "test",
+ *				last_name : "test",
+ *				phone_number : "0123456789",
+ *				date : "2016-04-23T18:25:43.511Z",
+ *				company_id : "12314125",
+ *				provider_name : "test test"
+ *			},
+ *			{
+ *				_id : "1231af3424fae",
+ *				first_name : "test",
+ *				last_name : "test",
+ *				phone_number : "0123456789",
+ *				date : "2016-05-23T18:25:43.511Z",
+ *				company_id : "12314125",
+ *				provider_name : "test test"
+ *			}
+ *		}
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Incorrect credentials"
+ *      }
+ */
+
 module.exports.template.getAll = function(req, res) {
     Appointment.find({company_id: req.params.id}, function(err, result){
             if(err){
@@ -61,6 +149,42 @@ module.exports.template.getAll = function(req, res) {
         });
 };
 
+/**
+ *  @api {get} /api/appointments/:id
+ *  @apiName GetAppointment
+ *  @apiGroup Appointment
+ *  
+ *  @apiDescription Retrieve information about an appointment
+ *
+ *  @apiParam {String} id id of the appointment to search for
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} first_name first name of visitor
+ *  @apiSuccess {String} last_name last name of visitor
+ *  @apiSuccess {String} phone_number phone number of visitor
+ *  @apiSuccess {String} date date of appointment
+ *	@apiSuccess {String} company_id id of company
+ *	@apiSuccess {String} provider_name provider who the appoinment is with
+ *
+ *  @apiError error Can't Find
+ *
+ *  @apiErrorExample Response (success):
+ *      {
+ *  		_id : "12314125",
+ *  		first_name : "test",
+ *  		last_name : "test",
+ *   		phone_number : "0123456789",
+ *   		date : "2016-04-23T18:25:43.511Z",
+ *   		company_id : "12314125",
+ *   		provider_name : "test test"
+ *		}
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Can't Find"
+ *      }
+ */
+
 module.exports.template.get = function(req, res) {
     Appointment.findOne({_id: req.params.id}, function(err, a) {
         if(err || !a)
@@ -68,6 +192,45 @@ module.exports.template.get = function(req, res) {
         return res.status(200).json(a);
     });
 };
+
+/**
+ *  @api {put} /api/appointments/:id
+ *  @apiName PutAppointment
+ *  @apiGroup Appointment
+ *  
+ *  @apiDescription Update a appointment's information
+ *
+ *  @apiParam {String} id id of the appointment to update
+ *  @apiParam {String} [name] name of the visitor
+ *  @apiParam {String} [phone_number] phone number of visitor
+ *  @apiParam {String} [date] date of appointment
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} first_name first name of visitor
+ *  @apiSuccess {String} last_name last name of visitor
+ *  @apiSuccess {String} phone_number phone number of visitor
+ *  @apiSuccess {String} date date of appointment
+ *	@apiSuccess {String} company_id id of company
+ *	@apiSuccess {String} provider_name provider who the appoinment is with
+ *
+ *  @apiError error Already Created
+ *
+ *  @apiErrorExample Response (success):
+ *      {
+ *  		_id : "12314125",
+ *  		first_name : "test",
+ *  		last_name : "test",
+ *   		phone_number : "0123456789",
+ *   		date : "2016-04-23T18:25:43.511Z",
+ *   		company_id : "12314125",
+ *   		provider_name : "test test"
+ *		}
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Already Created"
+ *      }
+ */
 
 module.exports.template.update = function(req, res){
     Appointment.findOne({_id: req.params.id}, function (err, a) {
@@ -96,6 +259,44 @@ module.exports.template.update = function(req, res){
         });
     });
 };
+
+/**
+ *  @api {delete} /api/appointments/:id
+ *  @apiName DeleteAppointment
+ *  @apiGroup Appointment
+ *  
+ *  @apiDescription Delete an appointment
+ *
+ *  @apiParam {String} id id of the appointment to delete
+ *
+ *  @apiSuccess {String} _id unique id of entry
+ *  @apiSuccess {String} first_name first name of visitor
+ *  @apiSuccess {String} last_name last name of visitor
+ *  @apiSuccess {String} phone_number phone number of visitor
+ *  @apiSuccess {String} old_date old date of appointment
+ *  @apiSuccess {String} new_date new date of appointment
+ *	@apiSuccess {String} company_id id of company
+ *	@apiSuccess {String} provider_name provider who the appoinment is with
+ *
+ *  @apiError error Could Not Find 
+ *
+ *  @apiErrorExample Response (success):
+ *     {
+ *			_id : "12314125",
+ *			first_name : "test",
+ *			last_name : "test",
+ *			phone_number : "0123456789",
+ *			old_date : "2016-04-23T18:25:43.511Z",
+ *			new_date : "2016-04-23T18:25:43.511Z",
+ *			company_id : "12314125",
+ *			provider_name : "test test"
+ *		}
+ *
+ *  @apiErrorExample Response (error):
+ *      {
+ *          error: "Could Not Find"
+ *      }
+ */
 
 module.exports.template.delete = function(req, res){
     Appointment.findById(req.params.id, function(err, a) {

@@ -43,20 +43,20 @@ module.exports.template = {};
  *  @apiSuccess {String} phone_number phone number of the company
  *  @apiSuccess {String} paid_time when the payment was made
  *
- *  @apiError error email was taken
+ *  @apiError error Could Not Save
  *
  *  @apiErrorExample Response (success):
  *      {
  *          _id : "12314125"
  *          name : "test",
- *          email : "test",
+ *          email : "test@yahoo.com",
  *          phone_number : "0123456789",
  *          paid_time: "2016-04-23T18:25:43.511Z",
  *      }
  *
  *  @apiErrorExample Response (error):
  *      {
- *          error: "email taken"
+ *          error: "Could Not Save"
  *      }
  */
 
@@ -104,14 +104,14 @@ module.exports.template.create = function(req, res) {
  *          {
  *              _id : "12314125"
  *              name : "test",
- *              email : "test",
+ *              email : "test@yahoo.com",
  *              phone_number : "0123456789",
  *              paid_time: "2016-04-23T18:25:43.511Z",
  *          },
  *          {
  *              _id : "12314125"
  *              name : "test",
- *              email : "test",
+ *              email : "test@yahoo.com",
  *              phone_number : "0123456789",
  *              paid_time: "2016-04-23T18:25:43.511Z",
  *          }
@@ -153,20 +153,20 @@ module.exports.template.getAll = function(req, res) {
  *  @apiSuccess {String} phone_number phone number of the company
  *  @apiSuccess {String} paid_time when the payment was made
  *
- *  @apiError error Incorrect credentials
+ *  @apiError error Could Not Save
  *
  *  @apiErrorExample Response (success):
  *      {
  *          _id : "12314125"
  *          name : "test",
- *          email : "test",
+ *          email : "test@yahoo.com",
  *          phone_number : "0123456789",
  *          paid_time: "2016-04-23T18:25:43.511Z",
  *      }
  *
  *  @apiErrorExample Response (error):
  *      {
- *          error: "Incorrect credentials"
+ *          error: "Could Not Save"
  *      }
  */
 
@@ -199,20 +199,21 @@ module.exports.template.get = function(req, res) {
  *  @apiSuccess {String} phone_number phone number of the company
  *  @apiSuccess {String} paid_time when the payment was made
  *
- *  @apiError error Incorrect parameters
+ *  @apiError error Could Not Find
+ *  @apiError error Could Not Save
  *
  *  @apiErrorExample Response (success):
  *      {
  *          _id : "12314125"
  *          name : "test",
- *          email : "test",
+ *          email : "test@yahoo.com",
  *          phone_number : "0123456789",
  *          paid_time: "2016-04-23T18:25:43.511Z",
  *      }
  *
  *  @apiErrorExample Response (error):
  *      {
- *          error: "Incorrect parameters"
+ *          error: "Could Not Find"
  *      }
  */
 
@@ -258,20 +259,21 @@ module.exports.template.update = function(req, res){
  *  @apiSuccess {String} phone_number phone number of the company
  *  @apiSuccess {String} paid_time when the payment was made
  *
- *  @apiError error Incorrect parameters
+ *  @apiError error Could Not Find 
+ *  @apiError error Could Not Save
  *
  *  @apiErrorExample Response (success):
  *      {
  *          _id : "12314125"
  *          name : "test",
- *          email : "test",
+ *          email : "test@yahoo.com",
  *          phone_number : "0123456789",
  *          paid_time: "2016-04-23T18:25:43.511Z",
  *      }
  *
  *  @apiErrorExample Response (error):
  *      {
- *          error: "Incorrect parameters"
+ *          error: "Could Not Find"
  *      }
  */
 
