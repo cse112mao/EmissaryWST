@@ -4,6 +4,7 @@ CodeMirror.defineMode("r", function(config) {
     for (var i = 0; i < words.length; ++i) res[words[i]] = true;
     return res;
   }
+
   var atoms = wordObj("NULL NA Inf NaN NA_integer_ NA_real_ NA_complex_ NA_character_");
   var builtins = wordObj("list quote bquote eval return call parse deparse");
   var keywords = wordObj("if else repeat while function for in next break");
@@ -39,7 +40,7 @@ CodeMirror.defineMode("r", function(config) {
         // Block keywords start new blocks, except 'else if', which only starts
         // one new block for the 'if', no block for the 'else'.
         if (blockkeywords.propertyIsEnumerable(word) &&
-            !stream.match(/\s*if(\s+|$)/, false))
+          !stream.match(/\s*if(\s+|$)/, false))
           curPunc = "block";
         return "keyword";
       }
@@ -78,8 +79,14 @@ CodeMirror.defineMode("r", function(config) {
       } else {
         var next;
         while ((next = stream.next()) != null) {
-          if (next == quote) { state.tokenize = tokenBase; break; }
-          if (next == "\\") { stream.backUp(1); break; }
+          if (next == quote) {
+            state.tokenize = tokenBase;
+            break;
+          }
+          if (next == "\\") {
+            stream.backUp(1);
+            break;
+          }
         }
         return "string";
       }
@@ -87,12 +94,15 @@ CodeMirror.defineMode("r", function(config) {
   }
 
   function push(state, type, stream) {
-    state.ctx = {type: type,
-                 indent: state.indent,
-                 align: null,
-                 column: stream.column(),
-                 prev: state.ctx};
+    state.ctx = {
+      type: type,
+      indent: state.indent,
+      align: null,
+      column: stream.column(),
+      prev: state.ctx
+    };
   }
+
   function pop(state) {
     state.indent = state.ctx.indent;
     state.ctx = state.ctx.prev;
@@ -100,12 +110,16 @@ CodeMirror.defineMode("r", function(config) {
 
   return {
     startState: function() {
-      return {tokenize: tokenBase,
-              ctx: {type: "top",
-                    indent: -config.indentUnit,
-                    align: false},
-              indent: 0,
-              afterIdent: false};
+      return {
+        tokenize: tokenBase,
+        ctx: {
+          type: "top",
+          indent: -config.indentUnit,
+          align: false
+        },
+        indent: 0,
+        afterIdent: false
+      };
     },
 
     token: function(stream, state) {
@@ -134,7 +148,7 @@ CodeMirror.defineMode("r", function(config) {
     indent: function(state, textAfter) {
       if (state.tokenize != tokenBase) return 0;
       var firstChar = textAfter && textAfter.charAt(0), ctx = state.ctx,
-          closing = firstChar == ctx.type;
+        closing = firstChar == ctx.type;
       if (ctx.type == "block") return ctx.indent + (firstChar == "{" ? 0 : config.indentUnit);
       else if (ctx.align) return ctx.column + (closing ? 0 : 1);
       else return ctx.indent + (closing ? 0 : config.indentUnit);

@@ -1,14 +1,14 @@
 var gulp = require('gulp');
-    wiredep = require('wiredep').stream,
-    bower_files = require('main-bower-files'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    minifyCSS = require('gulp-minify-css');
+wiredep = require('wiredep').stream,
+  bower_files = require('main-bower-files'),
+  concat = require('gulp-concat'),
+  uglify = require('gulp-uglify'),
+  minifyCSS = require('gulp-minify-css');
 
 /* This will add our bower dependencies to our index.html
  * so that we don't have to manually do it.
  */
-gulp.task('bower', function () {
+gulp.task('bower', function() {
   // Concatenate and distribute JS
   gulp.src(bower_files({filter: "**/*.js"}))
     .pipe(concat('vendor.js'))
@@ -38,8 +38,8 @@ gulp.task('bower', function () {
     .pipe(gulp.dest('./dist/fonts'));
 
   return gulp.src('./client/index.html')
-    /*.pipe(wiredep({
-      directory: './client/bower_components'
-    }))*/
+  /*.pipe(wiredep({
+   directory: './client/bower_components'
+   }))*/
     .pipe(gulp.dest('./dist/'));
 });

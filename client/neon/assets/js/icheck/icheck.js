@@ -16,8 +16,8 @@
     _radio = 'radio',
     _checked = 'checked',
     _unchecked = 'un' + _checked,
-    _disabled = 'disabled',a
-    _determinate = 'determinate',
+    _disabled = 'disabled', a;
+  _determinate = 'determinate',
     _indeterminate = 'in' + _determinate,
     _update = 'update',
     _type = 'type',
@@ -72,7 +72,7 @@
         }
       });
 
-    // Customization
+      // Customization
     } else if (typeof options == 'object' || !options) {
 
       // Check if any options were passed
@@ -151,7 +151,7 @@
           aria = !!settings.aria,
 
           // Set ARIA placeholder
-          ariaID = _iCheck + '-' + Math.random().toString(36).substr(2,6),
+          ariaID = _iCheck + '-' + Math.random().toString(36).substr(2, 6),
 
           // Parent & helper
           parent = '<div class="' + className + '" ' + (aria ? 'role="' + node[_type] + '" ' : ''),
@@ -202,7 +202,7 @@
                 }
                 operate(self, false, true);
 
-              // Hover state
+                // Hover state
               } else if (labelHover) {
 
                 // mouseout|touchend
@@ -233,7 +233,7 @@
           if (type == _click) {
             return false;
 
-          // Keydown
+            // Keydown
           } else if (type == 'keydown' && key == 32) {
             if (!(node[_type] == _radio && node[_checked])) {
               if (node[_checked]) {
@@ -245,11 +245,11 @@
 
             return false;
 
-          // Keyup
+            // Keyup
           } else if (type == 'keyup' && node[_type] == _radio) {
             !node[_checked] && on(self, _checked);
 
-          // Focus/blur
+            // Focus/blur
           } else if (/us|ur/.test(type)) {
             parent[type == 'blur' ? _remove : _add](focusClass);
           }
@@ -269,7 +269,7 @@
             if (type == _click) {
               operate(self, false, true);
 
-            // Active and hover states
+              // Active and hover states
             } else {
 
               // State is on
@@ -278,7 +278,7 @@
                 // mousedown|mouseover|touchbegin
                 parent[_add](toggle);
 
-              // State is off
+                // State is off
               } else {
                 parent[_remove](toggle + ' ' + activeClass);
               }
@@ -318,11 +318,11 @@
     if (/^(ch|di|in)/.test(method) && !active) {
       on(input, state);
 
-    // Uncheck, enable or determinate
+      // Uncheck, enable or determinate
     } else if (/^(un|en|de)/.test(method) && active) {
       off(input, state);
 
-    // Update
+      // Update
     } else if (method == _update) {
 
       // Handle states
@@ -391,7 +391,7 @@
           off(input, _checked, 'force');
         }
 
-      // Checked or disabled state
+        // Checked or disabled state
       } else {
 
         // Add checked or disabled state

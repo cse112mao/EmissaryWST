@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
-    path = require('path');
-    karma = require('karma').server;
+  path = require('path');
+karma = require('karma').server;
 
 
 /*
@@ -8,7 +8,7 @@ var gulp = require('gulp'),
  * @precon This requires that we build our bundle.js
  * first
  */
-gulp.task('test:client', ['build:dev'], function(done){
+gulp.task('test:client', ['build:dev'], function(done) {
   karma.start({
     configFile: path.join(process.cwd(), 'karma.conf.js'),
     singleRun: true

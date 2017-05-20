@@ -47,18 +47,18 @@
 //         }
 //         document.getElementById('table-2').innerHTML += newRow + '</tr>';
 //     }
-    
+
 //     return false;
 // };
 
 
-$("#table-2").on('click', '.btnSuspend', function () {
-    if($(this).closest('td').children('p').length == 0) {
-        $(this).closest('td').append("<p><b>Suspended.</b></p>");
-        $(this).closest('td').children('a').text("Unsuspend");
-    }
-    else {
-        $(this).closest('td').children('p').remove();
-        $(this).closest('td').children('a').text("Suspend");
-    }
+$("#table-2").on('click', '.btnSuspend', function() {
+  if ($(this).closest('td').children('p').length == 0) {
+    $(this).closest('td').append("<p><b>Suspended.</b></p>");
+    $(this).closest('td').children('a').text("Unsuspend");
+  }
+  else {
+    $(this).closest('td').children('p').remove();
+    $(this).closest('td').children('a').text("Suspend");
+  }
 });

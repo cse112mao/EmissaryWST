@@ -1,76 +1,69 @@
+// Enable Module
+// =============
 
-    // Enable Module
-    // =============
+// Enable
+// ------
+//      Enables the new dropdown list
 
-    // Enable
-    // ------
-    //      Enables the new dropdown list
+selectBoxIt.enable = function(callback) {
 
-    selectBoxIt.enable = function(callback) {
+  var self = this;
 
-        var self = this;
+  if (self.options["disabled"]) {
 
-        if(self.options["disabled"]) {
+    // Triggers a `enable` custom event on the original select box
+    self.triggerEvent("enable");
 
-            // Triggers a `enable` custom event on the original select box
-            self.triggerEvent("enable");
+    // Removes the `disabled` attribute from the original dropdown list
+    self.selectBox.removeAttr("disabled");
 
-            // Removes the `disabled` attribute from the original dropdown list
-            self.selectBox.removeAttr("disabled");
+    // Make the dropdown list focusable
+    self.dropdown.attr("tabindex", 0).// Disable styling for disabled state
+    removeClass(self.theme["disabled"]).// Enables styling for enabled state
+    addClass(self.theme["enabled"]);
 
-            // Make the dropdown list focusable
-            self.dropdown.attr("tabindex", 0).
+    self.setOption("disabled", false);
 
-            // Disable styling for disabled state
-            removeClass(self.theme["disabled"]).
+    // Provide callback function support
+    self._callbackSupport(callback);
 
-            // Enables styling for enabled state
-            addClass(self.theme["enabled"]);
+  }
 
-            self.setOption("disabled", false);
+  // Maintains chainability
+  return self;
 
-            // Provide callback function support
-            self._callbackSupport(callback);
+};
 
-        }
+// Enable Option
+// -------------
+//      Disables a single drop down option
 
-        // Maintains chainability
-        return self;
+selectBoxIt.enableOption = function(index, callback) {
 
-    };
+  var self = this, currentSelectBoxOption, currentIndex = 0, hasNextEnabled, hasPreviousEnabled, type = $.type(index);
 
-    // Enable Option
-    // -------------
-    //      Disables a single drop down option
+  // If an index is passed to target an indropdownidual drop down option
+  if (type === "number") {
 
-    selectBoxIt.enableOption = function(index, callback) {
+    // The select box option being targeted
+    currentSelectBoxOption = self.selectBox.find("option").eq(index);
 
-        var self = this, currentSelectBoxOption, currentIndex = 0, hasNextEnabled, hasPreviousEnabled, type = $.type(index);
+    // Triggers a `enable-option` custom event on the original select box and passes the enabled option
+    self.triggerEvent("enable-option");
 
-        // If an index is passed to target an indropdownidual drop down option
-        if(type === "number") {
+    // Disables the targeted select box option
+    currentSelectBoxOption.removeAttr("disabled");
 
-            // The select box option being targeted
-            currentSelectBoxOption = self.selectBox.find("option").eq(index);
+    // Disables the drop down option
+    self.listItems.eq(index).attr("data-disabled", "false").// Applies disabled styling for the drop down option
+    removeClass(self.theme["disabled"]);
 
-            // Triggers a `enable-option` custom event on the original select box and passes the enabled option
-            self.triggerEvent("enable-option");
+  }
 
-            // Disables the targeted select box option
-            currentSelectBoxOption.removeAttr("disabled");
+  // Provides callback function support
+  self._callbackSupport(callback);
 
-            // Disables the drop down option
-            self.listItems.eq(index).attr("data-disabled", "false").
+  // Maintains chainability
+  return self;
 
-            // Applies disabled styling for the drop down option
-            removeClass(self.theme["disabled"]);
-
-        }
-
-        // Provides callback function support
-        self._callbackSupport(callback);
-
-        // Maintains chainability
-        return self;
-
-    };
+};

@@ -2,14 +2,14 @@
   'use strict';
 
   var listRE = /^(\s*)([*+-]|(\d+)\.)(\s*)/,
-      unorderedBullets = '*+-';
+    unorderedBullets = '*+-';
 
   CodeMirror.commands.newlineAndIndentContinueMarkdownList = function(cm) {
     if (cm.getOption("disableInput")) return CodeMirror.Pass;
 
     var pos = cm.getCursor(),
-        inList = cm.getStateAfter(pos.line).list !== false,
-        match;
+      inList = cm.getStateAfter(pos.line).list !== false,
+      match;
 
     if (!inList || !(match = cm.getLine(pos.line).match(listRE))) {
       cm.execCommand('newlineAndIndent');

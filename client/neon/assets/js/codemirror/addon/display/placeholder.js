@@ -22,6 +22,7 @@
       cm.state.placeholder = null;
     }
   }
+
   function setPlaceholder(cm) {
     clearPlaceholder(cm);
     var elt = cm.state.placeholder = document.createElement("pre");
@@ -34,6 +35,7 @@
   function onBlur(cm) {
     if (isEmpty(cm)) setPlaceholder(cm);
   }
+
   function onChange(cm) {
     var wrapper = cm.getWrapperElement(), empty = isEmpty(cm);
     wrapper.className = wrapper.className.replace(" CodeMirror-empty", "") + (empty ? " CodeMirror-empty" : "");

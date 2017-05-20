@@ -1,6 +1,6 @@
-CodeMirror.defineMode("toml", function () {
+CodeMirror.defineMode("toml", function() {
   return {
-    startState: function () {
+    startState: function() {
       return {
         inString: false,
         stringType: "",
@@ -8,7 +8,7 @@ CodeMirror.defineMode("toml", function () {
         inArray: 0
       };
     },
-    token: function (stream, state) {
+    token: function(stream, state) {
       //check for state changes
       if (!state.inString && ((stream.peek() == '"') || (stream.peek() == "'"))) {
         state.stringType = stream.peek();
@@ -44,7 +44,9 @@ CodeMirror.defineMode("toml", function () {
         return "comment";
       } else if (stream.eatSpace()) {
         return null;
-      } else if (state.lhs && stream.eatWhile(function (c) { return c != '=' && c != ' '; })) {
+      } else if (state.lhs && stream.eatWhile(function(c) {
+          return c != '=' && c != ' ';
+        })) {
         return "property";
       } else if (state.lhs && stream.peek() === "=") {
         stream.next();

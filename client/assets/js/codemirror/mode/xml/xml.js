@@ -4,24 +4,30 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
   var multilineTagIndentPastTag = parserConfig.multilineTagIndentPastTag || true;
 
   var Kludges = parserConfig.htmlMode ? {
-    autoSelfClosers: {'area': true, 'base': true, 'br': true, 'col': true, 'command': true,
-                      'embed': true, 'frame': true, 'hr': true, 'img': true, 'input': true,
-                      'keygen': true, 'link': true, 'meta': true, 'param': true, 'source': true,
-                      'track': true, 'wbr': true},
-    implicitlyClosed: {'dd': true, 'li': true, 'optgroup': true, 'option': true, 'p': true,
-                       'rp': true, 'rt': true, 'tbody': true, 'td': true, 'tfoot': true,
-                       'th': true, 'tr': true},
+    autoSelfClosers: {
+      'area': true, 'base': true, 'br': true, 'col': true, 'command': true,
+      'embed': true, 'frame': true, 'hr': true, 'img': true, 'input': true,
+      'keygen': true, 'link': true, 'meta': true, 'param': true, 'source': true,
+      'track': true, 'wbr': true
+    },
+    implicitlyClosed: {
+      'dd': true, 'li': true, 'optgroup': true, 'option': true, 'p': true,
+      'rp': true, 'rt': true, 'tbody': true, 'td': true, 'tfoot': true,
+      'th': true, 'tr': true
+    },
     contextGrabbers: {
       'dd': {'dd': true, 'dt': true},
       'dt': {'dd': true, 'dt': true},
       'li': {'li': true},
       'option': {'option': true, 'optgroup': true},
       'optgroup': {'optgroup': true},
-      'p': {'address': true, 'article': true, 'aside': true, 'blockquote': true, 'dir': true,
-            'div': true, 'dl': true, 'fieldset': true, 'footer': true, 'form': true,
-            'h1': true, 'h2': true, 'h3': true, 'h4': true, 'h5': true, 'h6': true,
-            'header': true, 'hgroup': true, 'hr': true, 'menu': true, 'nav': true, 'ol': true,
-            'p': true, 'pre': true, 'section': true, 'table': true, 'ul': true},
+      'p': {
+        'address': true, 'article': true, 'aside': true, 'blockquote': true, 'dir': true,
+        'div': true, 'dl': true, 'fieldset': true, 'footer': true, 'form': true,
+        'h1': true, 'h2': true, 'h3': true, 'h4': true, 'h5': true, 'h6': true,
+        'header': true, 'hgroup': true, 'hr': true, 'menu': true, 'nav': true, 'ol': true,
+        'p': true, 'pre': true, 'section': true, 'table': true, 'ul': true
+      },
       'rp': {'rp': true, 'rt': true},
       'rt': {'rp': true, 'rt': true},
       'tbody': {'tbody': true, 'tfoot': true},
@@ -150,6 +156,7 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
       return style;
     };
   }
+
   function doctype(depth) {
     return function(stream, state) {
       var ch;
@@ -179,9 +186,11 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
     if (Kludges.doNotIndent.hasOwnProperty(tagName) || (state.context && state.context.noIndent))
       this.noIndent = true;
   }
+
   function popContext(state) {
     if (state.context) state.context = state.context.prev;
   }
+
   function maybePopContext(state, nextTagName) {
     var parentTagName;
     while (true) {
@@ -190,7 +199,7 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
       }
       parentTagName = state.context.tagName.toLowerCase();
       if (!Kludges.contextGrabbers.hasOwnProperty(parentTagName) ||
-          !Kludges.contextGrabbers[parentTagName].hasOwnProperty(nextTagName)) {
+        !Kludges.contextGrabbers[parentTagName].hasOwnProperty(nextTagName)) {
         return;
       }
       popContext(state);
@@ -219,6 +228,7 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
       return baseState;
     }
   }
+
   function closeState(type, _stream, state) {
     if (type != "endTag") {
       setStyle = "error";
@@ -227,6 +237,7 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
     popContext(state);
     return baseState;
   }
+
   function closeStateErr(type, stream, state) {
     setStyle = "error";
     return closeState(type, stream, state);
@@ -240,7 +251,7 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
       var tagName = state.tagName, tagStart = state.tagStart;
       state.tagName = state.tagStart = null;
       if (type == "selfcloseTag" ||
-          Kludges.autoSelfClosers.hasOwnProperty(tagName.toLowerCase())) {
+        Kludges.autoSelfClosers.hasOwnProperty(tagName.toLowerCase())) {
         maybePopContext(state, tagName.toLowerCase());
       } else {
         maybePopContext(state, tagName.toLowerCase());
@@ -251,17 +262,23 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
     setStyle = "error";
     return attrState;
   }
+
   function attrEqState(type, stream, state) {
     if (type == "equals") return attrValueState;
     if (!Kludges.allowMissing) setStyle = "error";
     return attrState(type, stream, state);
   }
+
   function attrValueState(type, stream, state) {
     if (type == "string") return attrContinuedState;
-    if (type == "word" && Kludges.allowUnquoted) {setStyle = "string"; return attrState;}
+    if (type == "word" && Kludges.allowUnquoted) {
+      setStyle = "string";
+      return attrState;
+    }
     setStyle = "error";
     return attrState(type, stream, state);
   }
+
   function attrContinuedState(type, stream, state) {
     if (type == "string") return attrContinuedState;
     return attrState(type, stream, state);
@@ -269,11 +286,13 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
 
   return {
     startState: function() {
-      return {tokenize: inText,
-              state: baseState,
-              indented: 0,
-              tagName: null, tagStart: null,
-              context: null};
+      return {
+        tokenize: inText,
+        state: baseState,
+        indented: 0,
+        tagName: null, tagStart: null,
+        context: null
+      };
     },
 
     token: function(stream, state) {

@@ -15,13 +15,13 @@ CodeMirror.defineMode("properties", function() {
         }
       }
 
-      if (eol && ! state.nextMultiline) {
+      if (eol && !state.nextMultiline) {
         state.inMultiline = false;
         state.position = "def";
       }
 
       if (sol) {
-        while(stream.eatSpace());
+        while (stream.eatSpace());
       }
 
       var ch = stream.next();
@@ -32,7 +32,8 @@ CodeMirror.defineMode("properties", function() {
         return "comment";
       } else if (sol && ch === "[") {
         state.afterSection = true;
-        stream.skipTo("]"); stream.eat("]");
+        stream.skipTo("]");
+        stream.eat("]");
         return "header";
       } else if (ch === "=" || ch === ":") {
         state.position = "quote";
@@ -49,10 +50,10 @@ CodeMirror.defineMode("properties", function() {
 
     startState: function() {
       return {
-        position : "def",       // Current position, "def", "quote" or "comment"
-        nextMultiline : false,  // Is the next line multiline value
-        inMultiline : false,    // Is the current line a multiline value
-        afterSection : false    // Did we just open a section
+        position: "def",       // Current position, "def", "quote" or "comment"
+        nextMultiline: false,  // Is the next line multiline value
+        inMultiline: false,    // Is the current line a multiline value
+        afterSection: false    // Did we just open a section
       };
     }
 

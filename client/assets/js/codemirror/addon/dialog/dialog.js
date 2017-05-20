@@ -28,16 +28,20 @@
     closeNotification(this, null);
     var dialog = dialogDiv(this, template, options && options.bottom);
     var closed = false, me = this;
+
     function close() {
       if (closed) return;
       closed = true;
       dialog.parentNode.removeChild(dialog);
     }
+
     var inp = dialog.getElementsByTagName("input")[0], button;
     if (inp) {
       if (options && options.value) inp.value = options.value;
       CodeMirror.on(inp, "keydown", function(e) {
-        if (options && options.onKeyDown && options.onKeyDown(e, inp.value, close)) { return; }
+        if (options && options.onKeyDown && options.onKeyDown(e, inp.value, close)) {
+          return;
+        }
         if (e.keyCode == 13 || e.keyCode == 27) {
           CodeMirror.e_stop(e);
           close();
@@ -46,7 +50,9 @@
         }
       });
       if (options && options.onKeyUp) {
-        CodeMirror.on(inp, "keyup", function(e) {options.onKeyUp(e, inp.value, close);});
+        CodeMirror.on(inp, "keyup", function(e) {
+          options.onKeyUp(e, inp.value, close);
+        });
       }
       if (options && options.value) inp.value = options.value;
       inp.focus();
@@ -67,12 +73,14 @@
     var dialog = dialogDiv(this, template, options && options.bottom);
     var buttons = dialog.getElementsByTagName("button");
     var closed = false, me = this, blurring = 1;
+
     function close() {
       if (closed) return;
       closed = true;
       dialog.parentNode.removeChild(dialog);
       me.focus();
     }
+
     buttons[0].focus();
     for (var i = 0; i < buttons.length; ++i) {
       var b = buttons[i];
@@ -85,9 +93,13 @@
       })(callbacks[i]);
       CodeMirror.on(b, "blur", function() {
         --blurring;
-        setTimeout(function() { if (blurring <= 0) close(); }, 200);
+        setTimeout(function() {
+          if (blurring <= 0) close();
+        }, 200);
       });
-      CodeMirror.on(b, "focus", function() { ++blurring; });
+      CodeMirror.on(b, "focus", function() {
+        ++blurring;
+      });
     }
   });
 

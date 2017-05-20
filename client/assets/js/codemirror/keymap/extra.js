@@ -35,8 +35,12 @@
     });
   }
 
-  CodeMirror.commands.moveLinesUp = function(cm) { moveSelectedLines(cm, -1); };
-  CodeMirror.commands.moveLinesDown = function(cm) { moveSelectedLines(cm, 1); };
+  CodeMirror.commands.moveLinesUp = function(cm) {
+    moveSelectedLines(cm, -1);
+  };
+  CodeMirror.commands.moveLinesDown = function(cm) {
+    moveSelectedLines(cm, 1);
+  };
 
   CodeMirror.keyMap["default"]["Alt-Up"] = "moveLinesUp";
   CodeMirror.keyMap["default"]["Alt-Down"] = "moveLinesDown";

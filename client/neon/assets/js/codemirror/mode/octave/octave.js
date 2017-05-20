@@ -43,7 +43,7 @@ CodeMirror.defineMode("octave", function() {
     if (stream.match(/^.*%}/)) {
       state.tokenize = tokenBase;
       return 'comment';
-    };
+    }
     stream.skipToEnd();
     return 'comment';
   }
@@ -53,13 +53,13 @@ CodeMirror.defineMode("octave", function() {
     if (stream.eatSpace()) return null;
 
     // Handle one line Comments
-    if (stream.match('%{')){
+    if (stream.match('%{')) {
       state.tokenize = tokenComment;
       stream.skipToEnd();
       return 'comment';
     }
 
-    if (stream.match(/^(%)|(\.\.\.)/)){
+    if (stream.match(/^(%)|(\.\.\.)/)) {
       stream.skipToEnd();
       return 'comment';
     }
@@ -68,35 +68,49 @@ CodeMirror.defineMode("octave", function() {
     if (stream.match(/^[0-9\.+-]/, false)) {
       if (stream.match(/^[+-]?0x[0-9a-fA-F]+[ij]?/)) {
         stream.tokenize = tokenBase;
-        return 'number'; };
-      if (stream.match(/^[+-]?\d*\.\d+([EeDd][+-]?\d+)?[ij]?/)) { return 'number'; };
-      if (stream.match(/^[+-]?\d+([EeDd][+-]?\d+)?[ij]?/)) { return 'number'; };
+        return 'number';
+      }
+      if (stream.match(/^[+-]?\d*\.\d+([EeDd][+-]?\d+)?[ij]?/)) {
+        return 'number';
+      }
+      if (stream.match(/^[+-]?\d+([EeDd][+-]?\d+)?[ij]?/)) {
+        return 'number';
+      }
     }
-    if (stream.match(wordRegexp(['nan','NaN','inf','Inf']))) { return 'number'; };
-
+    if (stream.match(wordRegexp(['nan', 'NaN', 'inf', 'Inf']))) {
+      return 'number';
+    }
     // Handle Strings
-    if (stream.match(/^"([^"]|(""))*"/)) { return 'string'; } ;
-    if (stream.match(/^'([^']|(''))*'/)) { return 'string'; } ;
-
+    if (stream.match(/^"([^"]|(""))*"/)) {
+      return 'string';
+    }
+    if (stream.match(/^'([^']|(''))*'/)) {
+      return 'string';
+    }
     // Handle words
-    if (stream.match(keywords)) { return 'keyword'; } ;
-    if (stream.match(builtins)) { return 'builtin'; } ;
-    if (stream.match(identifiers)) { return 'variable'; } ;
-
-    if (stream.match(singleOperators) || stream.match(doubleOperators)) { return 'operator'; };
-    if (stream.match(singleDelimiters) || stream.match(doubleDelimiters) || stream.match(tripleDelimiters)) { return null; };
-
+    if (stream.match(keywords)) {
+      return 'keyword';
+    }
+    if (stream.match(builtins)) {
+      return 'builtin';
+    }
+    if (stream.match(identifiers)) {
+      return 'variable';
+    }
+    if (stream.match(singleOperators) || stream.match(doubleOperators)) {
+      return 'operator';
+    }
+    if (stream.match(singleDelimiters) || stream.match(doubleDelimiters) || stream.match(tripleDelimiters)) {
+      return null;
+    }
     if (stream.match(expressionEnd)) {
       state.tokenize = tokenTranspose;
       return null;
-    };
-
-
+    }
     // Handle non-detected items
     stream.next();
     return 'error';
-  };
-
+  }
 
   return {
     startState: function() {
@@ -107,7 +121,7 @@ CodeMirror.defineMode("octave", function() {
 
     token: function(stream, state) {
       var style = state.tokenize(stream, state);
-      if (style === 'number' || style === 'variable'){
+      if (style === 'number' || style === 'variable') {
         state.tokenize = tokenTranspose;
       }
       return style;

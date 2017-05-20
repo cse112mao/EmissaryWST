@@ -22,7 +22,7 @@
     var padding = "";
     if (cm.lineCount() > 1) {
       var totalH = cm.display.scroller.clientHeight - 30,
-          lastLineH = cm.getLineHandle(cm.lastLine()).height;
+        lastLineH = cm.getLineHandle(cm.lastLine()).height;
       padding = (totalH - lastLineH) + "px";
     }
     if (cm.state.scrollPastEndPadding != padding) {

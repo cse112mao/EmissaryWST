@@ -6,9 +6,9 @@
  */
 CodeMirror.defineMode("pig", function(_config, parserConfig) {
   var keywords = parserConfig.keywords,
-  builtins = parserConfig.builtins,
-  types = parserConfig.types,
-  multiLineStrings = parserConfig.multiLineStrings;
+    builtins = parserConfig.builtins,
+    types = parserConfig.types,
+    multiLineStrings = parserConfig.multiLineStrings;
 
   var isOperatorChar = /[*+\-%<>=&?:\/!|]/;
 
@@ -18,6 +18,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
   }
 
   var type;
+
   function ret(tp, style) {
     type = tp;
     return style;
@@ -26,8 +27,8 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
   function tokenComment(stream, state) {
     var isEnd = false;
     var ch;
-    while(ch = stream.next()) {
-      if(ch == "/" && isEnd) {
+    while (ch = stream.next()) {
+      if (ch == "/" && isEnd) {
         state.tokenize = tokenBase;
         break;
       }
@@ -39,9 +40,10 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
   function tokenString(quote) {
     return function(stream, state) {
       var escaped = false, next, end = false;
-      while((next = stream.next()) != null) {
+      while ((next = stream.next()) != null) {
         if (next == quote && !escaped) {
-          end = true; break;
+          end = true;
+          break;
         }
         escaped = !escaped && next == "\\";
       }
@@ -58,10 +60,10 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
     if (ch == '"' || ch == "'")
       return chain(stream, state, tokenString(ch));
     // is it one of the special chars
-    else if(/[\[\]{}\(\),;\.]/.test(ch))
+    else if (/[\[\]{}\(\),;\.]/.test(ch))
       return ret(ch);
     // is it a number?
-    else if(/\d/.test(ch)) {
+    else if (/\d/.test(ch)) {
       stream.eatWhile(/[\w\.]/);
       return ret("number", "number");
     }
@@ -76,8 +78,8 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
       }
     }
     // single line comment or operator
-    else if (ch=="-") {
-      if(stream.eat("-")){
+    else if (ch == "-") {
+      if (stream.eat("-")) {
         stream.skipToEnd();
         return ret("comment", "comment");
       }
@@ -104,8 +106,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
         }
       }
       // is it one of the builtin functions?
-      if (builtins && builtins.propertyIsEnumerable(stream.current().toUpperCase()))
-      {
+      if (builtins && builtins.propertyIsEnumerable(stream.current().toUpperCase())) {
         return ("keyword", "variable-2");
       }
       // is it one of the listed types?
@@ -126,7 +127,7 @@ CodeMirror.defineMode("pig", function(_config, parserConfig) {
     },
 
     token: function(stream, state) {
-      if(stream.eatSpace()) return null;
+      if (stream.eatSpace()) return null;
       var style = state.tokenize(stream, state);
       return style;
     }

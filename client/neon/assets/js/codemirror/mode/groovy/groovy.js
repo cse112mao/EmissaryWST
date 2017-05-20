@@ -4,6 +4,7 @@ CodeMirror.defineMode("groovy", function(config) {
     for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
     return obj;
   }
+
   var keywords = words(
     "abstract as assert boolean break byte case catch char class const continue def default " +
     "do double else enum extends final finally float for goto if implements import in " +
@@ -14,6 +15,7 @@ CodeMirror.defineMode("groovy", function(config) {
   var atoms = words("null true false this");
 
   var curPunc;
+
   function tokenBase(stream, state) {
     var ch = stream.next();
     if (ch == '"' || ch == "'") {
@@ -25,7 +27,10 @@ CodeMirror.defineMode("groovy", function(config) {
     }
     if (/\d/.test(ch)) {
       stream.eatWhile(/[\w\.]/);
-      if (stream.eat(/eE/)) { stream.eat(/\+\-/); stream.eatWhile(/\d/); }
+      if (stream.eat(/eE/)) {
+        stream.eat(/\+\-/);
+        stream.eatWhile(/\d/);
+      }
       return "number";
     }
     if (ch == "/") {
@@ -50,17 +55,26 @@ CodeMirror.defineMode("groovy", function(config) {
       return "operator";
     }
     stream.eatWhile(/[\w\$_]/);
-    if (ch == "@") { stream.eatWhile(/[\w\$_\.]/); return "meta"; }
+    if (ch == "@") {
+      stream.eatWhile(/[\w\$_\.]/);
+      return "meta";
+    }
     if (state.lastToken == ".") return "property";
-    if (stream.eat(":")) { curPunc = "proplabel"; return "property"; }
+    if (stream.eat(":")) {
+      curPunc = "proplabel";
+      return "property";
+    }
     var cur = stream.current();
-    if (atoms.propertyIsEnumerable(cur)) { return "atom"; }
+    if (atoms.propertyIsEnumerable(cur)) {
+      return "atom";
+    }
     if (keywords.propertyIsEnumerable(cur)) {
       if (blockKeywords.propertyIsEnumerable(cur)) curPunc = "newstatement";
       return "keyword";
     }
     return "variable";
   }
+
   tokenBase.isBase = true;
 
   function startString(quote, stream, state) {
@@ -73,8 +87,13 @@ CodeMirror.defineMode("groovy", function(config) {
       var escaped = false, next, end = !tripleQuoted;
       while ((next = stream.next()) != null) {
         if (next == quote && !escaped) {
-          if (!tripleQuoted) { break; }
-          if (stream.match(quote + quote)) { end = true; break; }
+          if (!tripleQuoted) {
+            break;
+          }
+          if (stream.match(quote + quote)) {
+            end = true;
+            break;
+          }
         }
         if (quote == '"' && next == "$" && !escaped && stream.eat("{")) {
           state.tokenize.push(tokenBaseUntilBrace());
@@ -85,24 +104,27 @@ CodeMirror.defineMode("groovy", function(config) {
       if (end) state.tokenize.pop();
       return "string";
     }
+
     state.tokenize.push(t);
     return t(stream, state);
   }
 
   function tokenBaseUntilBrace() {
     var depth = 1;
+
     function t(stream, state) {
       if (stream.peek() == "}") {
         depth--;
         if (depth == 0) {
           state.tokenize.pop();
-          return state.tokenize[state.tokenize.length-1](stream, state);
+          return state.tokenize[state.tokenize.length - 1](stream, state);
         }
       } else if (stream.peek() == "{") {
         depth++;
       }
       return tokenBase(stream, state);
     }
+
     t.isBase = true;
     return t;
   }
@@ -131,9 +153,11 @@ CodeMirror.defineMode("groovy", function(config) {
     this.align = align;
     this.prev = prev;
   }
+
   function pushContext(state, col, type) {
     return state.context = new Context(state.indented, col, type, null, state.context);
   }
+
   function popContext(state) {
     var t = state.context.type;
     if (t == ")" || t == "]" || t == "}")
@@ -162,12 +186,13 @@ CodeMirror.defineMode("groovy", function(config) {
         state.startOfLine = true;
         // Automatic semicolon insertion
         if (ctx.type == "statement" && !expectExpression(state.lastToken)) {
-          popContext(state); ctx = state.context;
+          popContext(state);
+          ctx = state.context;
         }
       }
       if (stream.eatSpace()) return null;
       curPunc = null;
-      var style = state.tokenize[state.tokenize.length-1](stream, state);
+      var style = state.tokenize[state.tokenize.length - 1](stream, state);
       if (style == "comment") return style;
       if (ctx.align == null) ctx.align = true;
 
@@ -194,7 +219,7 @@ CodeMirror.defineMode("groovy", function(config) {
     },
 
     indent: function(state, textAfter) {
-      if (!state.tokenize[state.tokenize.length-1].isBase) return 0;
+      if (!state.tokenize[state.tokenize.length - 1].isBase) return 0;
       var firstChar = textAfter && textAfter.charAt(0), ctx = state.context;
       if (ctx.type == "statement" && !expectExpression(state.lastToken)) ctx = ctx.prev;
       var closing = firstChar == ctx.type;

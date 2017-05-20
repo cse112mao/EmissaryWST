@@ -4,17 +4,17 @@
  * Copyright 2010, ZURB
  * Free to use under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
-*/
+ */
 
 
-(function ($) {
-  $('a[data-reveal-id]').live('click', function (event) {
+(function($) {
+  $('a[data-reveal-id]').live('click', function(event) {
     event.preventDefault();
     var modalLocation = $(this).attr('data-reveal-id');
     $('#' + modalLocation).reveal($(this).data());
   });
 
-  $.fn.reveal = function (options) {
+  $.fn.reveal = function(options) {
     var defaults = {
       animation: 'fadeAndPop',                // fade, fadeAndPop, none
       animationSpeed: 300,                    // how fast animtions are
@@ -23,12 +23,12 @@
     };
     var options = $.extend({}, defaults, options);
 
-    return this.each(function () {
-      var modal    = $(this),
+    return this.each(function() {
+      var modal = $(this),
         topMeasure = parseInt(modal.css('top')),
-        topOffset  = modal.height() + topMeasure,
-        locked     = false,
-        modalBg    = $('.reveal-modal-bg');
+        topOffset = modal.height() + topMeasure,
+        locked = false,
+        modalBg = $('.reveal-modal-bg');
 
       if (modalBg.length == 0) {
         modalBg = $('<div class="reveal-modal-bg" />').insertAfter(modal);
@@ -63,6 +63,7 @@
         }
         modal.unbind('reveal:open', openAnimation);
       }
+
       modal.bind('reveal:open', openAnimation);
 
       function closeAnimation() {
@@ -71,9 +72,9 @@
           if (options.animation == "fadeAndPop") {
             modalBg.delay(options.animationSpeed).fadeOut(options.animationSpeed);
             modal.animate({
-              "top":  $(document).scrollTop() - topOffset + 'px',
+              "top": $(document).scrollTop() - topOffset + 'px',
               "opacity": 0
-            }, options.animationSpeed / 2, function () {
+            }, options.animationSpeed / 2, function() {
               modal.css({'top': topMeasure, 'opacity': 1, 'visibility': 'hidden'});
               unlockModal();
             });
@@ -81,8 +82,8 @@
           if (options.animation == "fade") {
             modalBg.delay(options.animationSpeed).fadeOut(options.animationSpeed);
             modal.animate({
-              "opacity" : 0
-            }, options.animationSpeed, function () {
+              "opacity": 0
+            }, options.animationSpeed, function() {
               modal.css({'opacity': 1, 'visibility': 'hidden', 'top': topMeasure});
               unlockModal();
             });
@@ -94,21 +95,22 @@
         }
         modal.unbind('reveal:close', closeAnimation);
       }
+
       modal.bind('reveal:close', closeAnimation);
       modal.trigger('reveal:open');
 
-      var closeButton = $('.' + options.dismissModalClass).bind('click.modalEvent', function () {
+      var closeButton = $('.' + options.dismissModalClass).bind('click.modalEvent', function() {
         modal.trigger('reveal:close');
       });
 
       if (options.closeOnBackgroundClick) {
         modalBg.css({"cursor": "pointer"});
-        modalBg.bind('click.modalEvent', function () {
+        modalBg.bind('click.modalEvent', function() {
           modal.trigger('reveal:close');
         });
       }
 
-      $('body').keyup(function (event) {
+      $('body').keyup(function(event) {
         if (event.which === 27) { // 27 is the keycode for the Escape key
           modal.trigger('reveal:close');
         }

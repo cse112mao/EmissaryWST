@@ -29,7 +29,8 @@
   var options, input, inputLen, sourceFile;
 
   exports.parse = function(inpt, opts) {
-    input = String(inpt); inputLen = input.length;
+    input = String(inpt);
+    inputLen = input.length;
     options = opts || {};
     for (var opt in defaultOptions) if (!options.hasOwnProperty(opt))
       options[opt] = defaultOptions[opt];
@@ -94,7 +95,7 @@
   // into.
 
   var getLineInfo = exports.getLineInfo = function(input, offset) {
-    for (var line = 1, cur = 0;;) {
+    for (var line = 1, cur = 0; ;) {
       lineBreak.lastIndex = cur;
       var match = lineBreak.exec(input);
       if (match && match.index < offset) {
@@ -227,16 +228,18 @@
 
   // Map keyword names to token types.
 
-  var keywordTypes = {"break": _break, "case": _case, "catch": _catch,
-                      "continue": _continue, "debugger": _debugger, "default": _default,
-                      "do": _do, "else": _else, "finally": _finally, "for": _for,
-                      "function": _function, "if": _if, "return": _return, "switch": _switch,
-                      "throw": _throw, "try": _try, "var": _var, "while": _while, "with": _with,
-                      "null": _null, "true": _true, "false": _false, "new": _new, "in": _in,
-                      "instanceof": {keyword: "instanceof", binop: 7}, "this": _this,
-                      "typeof": {keyword: "typeof", prefix: true},
-                      "void": {keyword: "void", prefix: true},
-                      "delete": {keyword: "delete", prefix: true}};
+  var keywordTypes = {
+    "break": _break, "case": _case, "catch": _catch,
+    "continue": _continue, "debugger": _debugger, "default": _default,
+    "do": _do, "else": _else, "finally": _finally, "for": _for,
+    "function": _function, "if": _if, "return": _return, "switch": _switch,
+    "throw": _throw, "try": _try, "var": _var, "while": _while, "with": _with,
+    "null": _null, "true": _true, "false": _false, "new": _new, "in": _in,
+    "instanceof": {keyword: "instanceof", binop: 7}, "this": _this,
+    "typeof": {keyword: "typeof", prefix: true},
+    "void": {keyword: "void", prefix: true},
+    "delete": {keyword: "delete", prefix: true}
+  };
 
   // Punctuation token types. Again, the `type` property is purely for debugging.
 
@@ -301,7 +304,9 @@
     // switch first dispatches on the lengths, to save on comparisons.
 
     if (cats.length > 3) {
-      cats.sort(function(a, b) {return b.length - a.length;});
+      cats.sort(function(a, b) {
+        return b.length - a.length;
+      });
       f += "switch(str.length){";
       for (var i = 0; i < cats.length; ++i) {
         var cat = cats[i];
@@ -310,7 +315,7 @@
       }
       f += "}";
 
-    // Otherwise, simply generate a flat `switch` statement.
+      // Otherwise, simply generate a flat `switch` statement.
 
     } else {
       compareTo(words);
@@ -439,7 +444,7 @@
 
   function skipLineComment() {
     var start = tokPos;
-    var ch = input.charCodeAt(tokPos+=2);
+    var ch = input.charCodeAt(tokPos += 2);
     while (tokPos < inputLen && ch !== 10 && ch !== 13 && ch !== 8232 && ch !== 8329) {
       ++tokPos;
       ch = input.charCodeAt(tokPos);
@@ -456,7 +461,7 @@
     while (tokPos < inputLen) {
       var ch = input.charCodeAt(tokPos);
       if (ch === 47) { // '/'
-        var next = input.charCodeAt(tokPos+1);
+        var next = input.charCodeAt(tokPos + 1);
         if (next === 42) { // '*'
           skipBlockComment();
         } else if (next === 47) { // '/'
@@ -497,85 +502,122 @@
     // Identifier or keyword. '\uXXXX' sequences are allowed in
     // identifiers, so '\' also dispatches to that.
     if (isIdentifierStart(code) || code === 92 /* '\' */) return readWord();
-    var next = input.charCodeAt(tokPos+1);
+    var next = input.charCodeAt(tokPos + 1);
 
-    switch(code) {
+    switch (code) {
       // The interpretation of a dot depends on whether it is followed
       // by a digit.
-    case 46: // '.'
-      if (next >= 48 && next <= 57) return readNumber(String.fromCharCode(code));
-      ++tokPos;
-      return finishToken(_dot);
+      case 46: // '.'
+        if (next >= 48 && next <= 57) return readNumber(String.fromCharCode(code));
+        ++tokPos;
+        return finishToken(_dot);
 
       // Punctuation tokens.
-    case 40: ++tokPos; return finishToken(_parenL);
-    case 41: ++tokPos; return finishToken(_parenR);
-    case 59: ++tokPos; return finishToken(_semi);
-    case 44: ++tokPos; return finishToken(_comma);
-    case 91: ++tokPos; return finishToken(_bracketL);
-    case 93: ++tokPos; return finishToken(_bracketR);
-    case 123: ++tokPos; return finishToken(_braceL);
-    case 125: ++tokPos; return finishToken(_braceR);
-    case 58: ++tokPos; return finishToken(_colon);
-    case 63: ++tokPos; return finishToken(_question);
+      case 40:
+        ++tokPos;
+        return finishToken(_parenL);
+      case 41:
+        ++tokPos;
+        return finishToken(_parenR);
+      case 59:
+        ++tokPos;
+        return finishToken(_semi);
+      case 44:
+        ++tokPos;
+        return finishToken(_comma);
+      case 91:
+        ++tokPos;
+        return finishToken(_bracketL);
+      case 93:
+        ++tokPos;
+        return finishToken(_bracketR);
+      case 123:
+        ++tokPos;
+        return finishToken(_braceL);
+      case 125:
+        ++tokPos;
+        return finishToken(_braceR);
+      case 58:
+        ++tokPos;
+        return finishToken(_colon);
+      case 63:
+        ++tokPos;
+        return finishToken(_question);
 
       // '0x' is a hexadecimal number.
-    case 48: // '0'
-      if (next === 120 || next === 88) return readHexNumber();
+      case 48: // '0'
+        if (next === 120 || next === 88) return readHexNumber();
       // Anything else beginning with a digit is an integer, octal
       // number, or float.
-    case 49: case 50: case 51: case 52: case 53: case 54: case 55: case 56: case 57: // 1-9
-      return readNumber(String.fromCharCode(code));
+      case 49:
+      case 50:
+      case 51:
+      case 52:
+      case 53:
+      case 54:
+      case 55:
+      case 56:
+      case 57: // 1-9
+        return readNumber(String.fromCharCode(code));
 
       // Quotes produce strings.
-    case 34: case 39: // '"', "'"
-      return readString(code);
+      case 34:
+      case 39: // '"', "'"
+        return readString(code);
 
-    // Operators are parsed inline in tiny state machines. '=' (61) is
-    // often referred to. `finishOp` simply skips the amount of
-    // characters it is given as second argument, and returns a token
-    // of the type given by its first argument.
+      // Operators are parsed inline in tiny state machines. '=' (61) is
+      // often referred to. `finishOp` simply skips the amount of
+      // characters it is given as second argument, and returns a token
+      // of the type given by its first argument.
 
-    case 47: // '/'
-      if (tokRegexpAllowed) {++tokPos; return readRegexp();}
-      if (next === 61) return finishOp(_assign, 2);
-      return finishOp(_slash, 1);
+      case 47: // '/'
+        if (tokRegexpAllowed) {
+          ++tokPos;
+          return readRegexp();
+        }
+        if (next === 61) return finishOp(_assign, 2);
+        return finishOp(_slash, 1);
 
-    case 37: case 42: // '%*'
-      if (next === 61) return finishOp(_assign, 2);
-      return finishOp(_bin10, 1);
+      case 37:
+      case 42: // '%*'
+        if (next === 61) return finishOp(_assign, 2);
+        return finishOp(_bin10, 1);
 
-    case 124: case 38: // '|&'
-      if (next === code) return finishOp(code === 124 ? _bin1 : _bin2, 2);
-      if (next === 61) return finishOp(_assign, 2);
-      return finishOp(code === 124 ? _bin3 : _bin5, 1);
+      case 124:
+      case 38: // '|&'
+        if (next === code) return finishOp(code === 124 ? _bin1 : _bin2, 2);
+        if (next === 61) return finishOp(_assign, 2);
+        return finishOp(code === 124 ? _bin3 : _bin5, 1);
 
-    case 94: // '^'
-      if (next === 61) return finishOp(_assign, 2);
-      return finishOp(_bin4, 1);
+      case 94: // '^'
+        if (next === 61) return finishOp(_assign, 2);
+        return finishOp(_bin4, 1);
 
-    case 43: case 45: // '+-'
-      if (next === code) return finishOp(_incdec, 2);
-      if (next === 61) return finishOp(_assign, 2);
-      return finishOp(_plusmin, 1);
+      case 43:
+      case 45: // '+-'
+        if (next === code) return finishOp(_incdec, 2);
+        if (next === 61) return finishOp(_assign, 2);
+        return finishOp(_plusmin, 1);
 
-    case 60: case 62: // '<>'
-      var size = 1;
-      if (next === code) {
-        size = code === 62 && input.charCodeAt(tokPos+2) === 62 ? 3 : 2;
-        if (input.charCodeAt(tokPos + size) === 61) return finishOp(_assign, size + 1);
-        return finishOp(_bin8, size);
-      }
-      if (next === 61)
-        size = input.charCodeAt(tokPos+2) === 61 ? 3 : 2;
-      return finishOp(_bin7, size);
+      case 60:
+      case 62: // '<>'
+        var size = 1;
+        if (next === code) {
+          size = code === 62 && input.charCodeAt(tokPos + 2) === 62 ? 3 : 2;
+          if (input.charCodeAt(tokPos + size) === 61) return finishOp(_assign, size + 1);
+          return finishOp(_bin8, size);
+        }
+        if (next === 61)
+          size = input.charCodeAt(tokPos + 2) === 61 ? 3 : 2;
+        return finishOp(_bin7, size);
 
-    case 61: case 33: // '=!'
-      if (next === 61) return finishOp(_bin6, input.charCodeAt(tokPos+2) === 61 ? 3 : 2);
-      return finishOp(code === 61 ? _eq : _prefix, 1);
+      case 61:
+      case 33: // '=!'
+        if (next === 61) return finishOp(_bin6, input.charCodeAt(tokPos + 2) === 61 ? 3 : 2);
+        return finishOp(code === 61 ? _eq : _prefix, 1);
 
-    case 126: // '~'
-      return finishOp(_prefix, 1);
+      case 126: // '~'
+        return finishOp(_prefix, 1);
     }
 
     // If we are here, we either found a non-ASCII identifier
@@ -596,7 +638,7 @@
 
   function readRegexp() {
     var content = "", escaped, inClass, start = tokPos;
-    for (;;) {
+    for (; ;) {
       if (tokPos >= inputLen) raise(start, "Unterminated regular expression");
       var ch = input.charAt(tokPos);
       if (newline.test(ch)) raise(start, "Unterminated regular expression");
@@ -623,7 +665,7 @@
 
   function readInt(radix, len) {
     var start = tokPos, total = 0;
-    for (;;) {
+    for (; ;) {
       var code = input.charCodeAt(tokPos), val;
       if (code >= 97) val = code - 97 + 10; // a
       else if (code >= 65) val = code - 65 + 10; // A
@@ -647,7 +689,7 @@
   }
 
   // Read an integer, octal integer, or floating-point number.
-  
+
   function readNumber(ch) {
     var start = tokPos, isFloat = ch === ".";
     if (!isFloat && readInt(10) == null) raise(start, "Invalid number");
@@ -678,7 +720,7 @@
   function readString(quote) {
     tokPos++;
     var str = [];
-    for (;;) {
+    for (; ;) {
       if (tokPos >= inputLen) raise(tokStart, "Unterminated string constant");
       var ch = input.charCodeAt(tokPos);
       if (ch === quote) {
@@ -698,19 +740,43 @@
           tokPos += octal.length - 1;
         } else {
           switch (ch) {
-          case 110: str.push(10); break; // 'n' -> '\n'
-          case 114: str.push(13); break; // 'r' -> '\r'
-          case 120: str.push(readHexChar(2)); break; // 'x'
-          case 117: str.push(readHexChar(4)); break; // 'u'
-          case 85: str.push(readHexChar(8)); break; // 'U'
-          case 116: str.push(9); break; // 't' -> '\t'
-          case 98: str.push(8); break; // 'b' -> '\b'
-          case 118: str.push(11); break; // 'v' -> '\u000b'
-          case 102: str.push(12); break; // 'f' -> '\f'
-          case 48: str.push(0); break; // 0 -> '\0'
-          case 13: if (input.charCodeAt(tokPos) === 10) ++tokPos; // '\r\n'
-          case 10: break; // ' \n'
-          default: str.push(ch); break;
+            case 110:
+              str.push(10);
+              break; // 'n' -> '\n'
+            case 114:
+              str.push(13);
+              break; // 'r' -> '\r'
+            case 120:
+              str.push(readHexChar(2));
+              break; // 'x'
+            case 117:
+              str.push(readHexChar(4));
+              break; // 'u'
+            case 85:
+              str.push(readHexChar(8));
+              break; // 'U'
+            case 116:
+              str.push(9);
+              break; // 't' -> '\t'
+            case 98:
+              str.push(8);
+              break; // 'b' -> '\b'
+            case 118:
+              str.push(11);
+              break; // 'v' -> '\u000b'
+            case 102:
+              str.push(12);
+              break; // 'f' -> '\f'
+            case 48:
+              str.push(0);
+              break; // 0 -> '\0'
+            case 13:
+              if (input.charCodeAt(tokPos) === 10) ++tokPos; // '\r\n'
+            case 10:
+              break; // ' \n'
+            default:
+              str.push(ch);
+              break;
           }
         }
       } else {
@@ -744,7 +810,7 @@
   function readWord1() {
     containsEsc = false;
     var word, first = true, start = tokPos;
-    for (;;) {
+    for (; ;) {
       var ch = input.charCodeAt(tokPos);
       if (isIdentifierChar(ch)) {
         if (containsEsc) word += input.charAt(tokPos);
@@ -778,8 +844,8 @@
     if (!containsEsc) {
       if (isKeyword(word)) type = keywordTypes[word];
       else if (options.forbidReserved &&
-               (options.ecmaVersion === 3 ? isReservedWord3 : isReservedWord5)(word) ||
-               strict && isStrictReservedWord(word))
+        (options.ecmaVersion === 3 ? isReservedWord3 : isReservedWord5)(word) ||
+        strict && isStrictReservedWord(word))
         raise(tokStart, "The keyword '" + word + "' is reserved");
     }
     return finishToken(type, word);
@@ -808,7 +874,7 @@
   // ### Parser utilities
 
   // Continue to the next token.
-  
+
   function next() {
     lastStart = tokStart;
     lastEnd = tokEnd;
@@ -992,41 +1058,42 @@
     // complexity.
 
     switch (starttype) {
-    case _break: case _continue:
-      next();
-      var isBreak = starttype === _break;
-      if (eat(_semi) || canInsertSemicolon()) node.label = null;
-      else if (tokType !== _name) unexpected();
-      else {
-        node.label = parseIdent();
-        semicolon();
-      }
-
-      // Verify that there is an actual destination to break or
-      // continue to.
-      for (var i = 0; i < labels.length; ++i) {
-        var lab = labels[i];
-        if (node.label == null || lab.name === node.label.name) {
-          if (lab.kind != null && (isBreak || lab.kind === "loop")) break;
-          if (node.label && isBreak) break;
+      case _break:
+      case _continue:
+        next();
+        var isBreak = starttype === _break;
+        if (eat(_semi) || canInsertSemicolon()) node.label = null;
+        else if (tokType !== _name) unexpected();
+        else {
+          node.label = parseIdent();
+          semicolon();
         }
-      }
-      if (i === labels.length) raise(node.start, "Unsyntactic " + starttype.keyword);
-      return finishNode(node, isBreak ? "BreakStatement" : "ContinueStatement");
 
-    case _debugger:
-      next();
-      return finishNode(node, "DebuggerStatement");
+        // Verify that there is an actual destination to break or
+        // continue to.
+        for (var i = 0; i < labels.length; ++i) {
+          var lab = labels[i];
+          if (node.label == null || lab.name === node.label.name) {
+            if (lab.kind != null && (isBreak || lab.kind === "loop")) break;
+            if (node.label && isBreak) break;
+          }
+        }
+        if (i === labels.length) raise(node.start, "Unsyntactic " + starttype.keyword);
+        return finishNode(node, isBreak ? "BreakStatement" : "ContinueStatement");
 
-    case _do:
-      next();
-      labels.push(loopLabel);
-      node.body = parseStatement();
-      labels.pop();
-      expect(_while);
-      node.test = parseParenExpression();
-      semicolon();
-      return finishNode(node, "DoWhileStatement");
+      case _debugger:
+        next();
+        return finishNode(node, "DebuggerStatement");
+
+      case _do:
+        next();
+        labels.push(loopLabel);
+        node.body = parseStatement();
+        labels.pop();
+        expect(_while);
+        node.test = parseParenExpression();
+        semicolon();
+        return finishNode(node, "DoWhileStatement");
 
       // Disambiguating between a `for` and a `for`/`in` loop is
       // non-trivial. Basically, we have to parse the init `var`
@@ -1036,135 +1103,142 @@
       // (semicolon immediately after the opening parenthesis), it is
       // a regular `for` loop.
 
-    case _for:
-      next();
-      labels.push(loopLabel);
-      expect(_parenL);
-      if (tokType === _semi) return parseFor(node, null);
-      if (tokType === _var) {
-        var init = startNode();
+      case _for:
         next();
-        parseVar(init, true);
-        if (init.declarations.length === 1 && eat(_in))
-          return parseForIn(node, init);
-        return parseFor(node, init);
-      }
-      var init = parseExpression(false, true);
-      if (eat(_in)) {checkLVal(init); return parseForIn(node, init);}
-      return parseFor(node, init);
-
-    case _function:
-      next();
-      return parseFunction(node, true);
-
-    case _if:
-      next();
-      node.test = parseParenExpression();
-      node.consequent = parseStatement();
-      node.alternate = eat(_else) ? parseStatement() : null;
-      return finishNode(node, "IfStatement");
-
-    case _return:
-      if (!inFunction) raise(tokStart, "'return' outside of function");
-      next();
-
-      // In `return` (and `break`/`continue`), the keywords with
-      // optional arguments, we eagerly look for a semicolon or the
-      // possibility to insert one.
-      
-      if (eat(_semi) || canInsertSemicolon()) node.argument = null;
-      else { node.argument = parseExpression(); semicolon(); }
-      return finishNode(node, "ReturnStatement");
-
-    case _switch:
-      next();
-      node.discriminant = parseParenExpression();
-      node.cases = [];
-      expect(_braceL);
-      labels.push(switchLabel);
-
-      // Statements under must be grouped (by label) in SwitchCase
-      // nodes. `cur` is used to keep the node that we are currently
-      // adding statements to.
-      
-      for (var cur, sawDefault; tokType != _braceR;) {
-        if (tokType === _case || tokType === _default) {
-          var isCase = tokType === _case;
-          if (cur) finishNode(cur, "SwitchCase");
-          node.cases.push(cur = startNode());
-          cur.consequent = [];
-          next();
-          if (isCase) cur.test = parseExpression();
-          else {
-            if (sawDefault) raise(lastStart, "Multiple default clauses"); sawDefault = true;
-            cur.test = null;
-          }
-          expect(_colon);
-        } else {
-          if (!cur) unexpected();
-          cur.consequent.push(parseStatement());
-        }
-      }
-      if (cur) finishNode(cur, "SwitchCase");
-      next(); // Closing brace
-      labels.pop();
-      return finishNode(node, "SwitchStatement");
-
-    case _throw:
-      next();
-      if (newline.test(input.slice(lastEnd, tokStart)))
-        raise(lastEnd, "Illegal newline after throw");
-      node.argument = parseExpression();
-      return finishNode(node, "ThrowStatement");
-
-    case _try:
-      next();
-      node.block = parseBlock();
-      node.handlers = [];
-      while (tokType === _catch) {
-        var clause = startNode();
-        next();
+        labels.push(loopLabel);
         expect(_parenL);
-        clause.param = parseIdent();
-        if (strict && isStrictBadIdWord(clause.param.name))
-          raise(clause.param.start, "Binding " + clause.param.name + " in strict mode");
-        expect(_parenR);
-        clause.guard = null;
-        clause.body = parseBlock();
-        node.handlers.push(finishNode(clause, "CatchClause"));
-      }
-      node.finalizer = eat(_finally) ? parseBlock() : null;
-      if (!node.handlers.length && !node.finalizer)
-        raise(node.start, "Missing catch or finally clause");
-      return finishNode(node, "TryStatement");
+        if (tokType === _semi) return parseFor(node, null);
+        if (tokType === _var) {
+          var init = startNode();
+          next();
+          parseVar(init, true);
+          if (init.declarations.length === 1 && eat(_in))
+            return parseForIn(node, init);
+          return parseFor(node, init);
+        }
+        var init = parseExpression(false, true);
+        if (eat(_in)) {
+          checkLVal(init);
+          return parseForIn(node, init);
+        }
+        return parseFor(node, init);
 
-    case _var:
-      next();
-      node = parseVar(node);
-      semicolon();
-      return node;
+      case _function:
+        next();
+        return parseFunction(node, true);
 
-    case _while:
-      next();
-      node.test = parseParenExpression();
-      labels.push(loopLabel);
-      node.body = parseStatement();
-      labels.pop();
-      return finishNode(node, "WhileStatement");
+      case _if:
+        next();
+        node.test = parseParenExpression();
+        node.consequent = parseStatement();
+        node.alternate = eat(_else) ? parseStatement() : null;
+        return finishNode(node, "IfStatement");
 
-    case _with:
-      if (strict) raise(tokStart, "'with' in strict mode");
-      next();
-      node.object = parseParenExpression();
-      node.body = parseStatement();
-      return finishNode(node, "WithStatement");
+      case _return:
+        if (!inFunction) raise(tokStart, "'return' outside of function");
+        next();
 
-    case _braceL:
-      return parseBlock();
+        // In `return` (and `break`/`continue`), the keywords with
+        // optional arguments, we eagerly look for a semicolon or the
+        // possibility to insert one.
 
-    case _semi:
-      next();
-      return finishNode(node, "EmptyStatement");
+        if (eat(_semi) || canInsertSemicolon()) node.argument = null;
+        else {
+          node.argument = parseExpression();
+          semicolon();
+        }
+        return finishNode(node, "ReturnStatement");
+
+      case _switch:
+        next();
+        node.discriminant = parseParenExpression();
+        node.cases = [];
+        expect(_braceL);
+        labels.push(switchLabel);
+
+        // Statements under must be grouped (by label) in SwitchCase
+        // nodes. `cur` is used to keep the node that we are currently
+        // adding statements to.
+
+        for (var cur, sawDefault; tokType != _braceR;) {
+          if (tokType === _case || tokType === _default) {
+            var isCase = tokType === _case;
+            if (cur) finishNode(cur, "SwitchCase");
+            node.cases.push(cur = startNode());
+            cur.consequent = [];
+            next();
+            if (isCase) cur.test = parseExpression();
+            else {
+              if (sawDefault) raise(lastStart, "Multiple default clauses");
+              sawDefault = true;
+              cur.test = null;
+            }
+            expect(_colon);
+          } else {
+            if (!cur) unexpected();
+            cur.consequent.push(parseStatement());
+          }
+        }
+        if (cur) finishNode(cur, "SwitchCase");
+        next(); // Closing brace
+        labels.pop();
+        return finishNode(node, "SwitchStatement");
+
+      case _throw:
+        next();
+        if (newline.test(input.slice(lastEnd, tokStart)))
+          raise(lastEnd, "Illegal newline after throw");
+        node.argument = parseExpression();
+        return finishNode(node, "ThrowStatement");
+
+      case _try:
+        next();
+        node.block = parseBlock();
+        node.handlers = [];
+        while (tokType === _catch) {
+          var clause = startNode();
+          next();
+          expect(_parenL);
+          clause.param = parseIdent();
+          if (strict && isStrictBadIdWord(clause.param.name))
+            raise(clause.param.start, "Binding " + clause.param.name + " in strict mode");
+          expect(_parenR);
+          clause.guard = null;
+          clause.body = parseBlock();
+          node.handlers.push(finishNode(clause, "CatchClause"));
+        }
+        node.finalizer = eat(_finally) ? parseBlock() : null;
+        if (!node.handlers.length && !node.finalizer)
+          raise(node.start, "Missing catch or finally clause");
+        return finishNode(node, "TryStatement");
+
+      case _var:
+        next();
+        node = parseVar(node);
+        semicolon();
+        return node;
+
+      case _while:
+        next();
+        node.test = parseParenExpression();
+        labels.push(loopLabel);
+        node.body = parseStatement();
+        labels.pop();
+        return finishNode(node, "WhileStatement");
+
+      case _with:
+        if (strict) raise(tokStart, "'with' in strict mode");
+        next();
+        node.object = parseParenExpression();
+        node.body = parseStatement();
+        return finishNode(node, "WithStatement");
+
+      case _braceL:
+        return parseBlock();
+
+      case _semi:
+        next();
+        return finishNode(node, "EmptyStatement");
 
       // If the statement does not start with a statement keyword or a
       // brace, it's an ExpressionStatement or LabeledStatement. We
@@ -1172,21 +1246,21 @@
       // next token is a colon and the expression was a simple
       // Identifier node, we switch to interpreting it as a label.
 
-    default:
-      var maybeName = tokVal, expr = parseExpression();
-      if (starttype === _name && expr.type === "Identifier" && eat(_colon)) {
-        for (var i = 0; i < labels.length; ++i)
-          if (labels[i].name === maybeName) raise(expr.start, "Label '" + maybeName + "' is already declared");
-        var kind = tokType.isLoop ? "loop" : tokType === _switch ? "switch" : null;
-        labels.push({name: maybeName, kind: kind});
-        node.body = parseStatement();
-        node.label = expr;
-        return finishNode(node, "LabeledStatement");
-      } else {
-        node.expression = expr;
-        semicolon();
-        return finishNode(node, "ExpressionStatement");
-      }
+      default:
+        var maybeName = tokVal, expr = parseExpression();
+        if (starttype === _name && expr.type === "Identifier" && eat(_colon)) {
+          for (var i = 0; i < labels.length; ++i)
+            if (labels[i].name === maybeName) raise(expr.start, "Label '" + maybeName + "' is already declared");
+          var kind = tokType.isLoop ? "loop" : tokType === _switch ? "switch" : null;
+          labels.push({name: maybeName, kind: kind});
+          node.body = parseStatement();
+          node.label = expr;
+          return finishNode(node, "LabeledStatement");
+        } else {
+          node.expression = expr;
+          semicolon();
+          return finishNode(node, "ExpressionStatement");
+        }
     }
   }
 
@@ -1253,7 +1327,7 @@
   function parseVar(node, noIn) {
     node.declarations = [];
     node.kind = "var";
-    for (;;) {
+    for (; ;) {
       var decl = startNode();
       decl.id = parseIdent();
       if (strict && isStrictBadIdWord(decl.id.name))
@@ -1359,7 +1433,7 @@
       node.argument = parseMaybeUnary(noIn);
       if (update) checkLVal(node.argument);
       else if (strict && node.operator === "delete" &&
-               node.argument.type === "Identifier")
+        node.argument.type === "Identifier")
         raise(node.start, "Deleting local variable in strict mode");
       return finishNode(node, update ? "UpdateExpression" : "UnaryExpression");
     }
@@ -1411,50 +1485,54 @@
 
   function parseExprAtom() {
     switch (tokType) {
-    case _this:
-      var node = startNode();
-      next();
-      return finishNode(node, "ThisExpression");
-    case _name:
-      return parseIdent();
-    case _num: case _string: case _regexp:
-      var node = startNode();
-      node.value = tokVal;
-      node.raw = input.slice(tokStart, tokEnd);
-      next();
-      return finishNode(node, "Literal");
+      case _this:
+        var node = startNode();
+        next();
+        return finishNode(node, "ThisExpression");
+      case _name:
+        return parseIdent();
+      case _num:
+      case _string:
+      case _regexp:
+        var node = startNode();
+        node.value = tokVal;
+        node.raw = input.slice(tokStart, tokEnd);
+        next();
+        return finishNode(node, "Literal");
 
-    case _null: case _true: case _false:
-      var node = startNode();
-      node.value = tokType.atomValue;
-      next();
-      return finishNode(node, "Literal");
+      case _null:
+      case _true:
+      case _false:
+        var node = startNode();
+        node.value = tokType.atomValue;
+        next();
+        return finishNode(node, "Literal");
 
-    case _parenL:
-      next();
-      var val = parseExpression();
-      expect(_parenR);
-      return val;
+      case _parenL:
+        next();
+        var val = parseExpression();
+        expect(_parenR);
+        return val;
 
-    case _bracketL:
-      var node = startNode();
-      next();
-      node.elements = parseExprList(_bracketR, true, true);
-      return finishNode(node, "ArrayExpression");
+      case _bracketL:
+        var node = startNode();
+        next();
+        node.elements = parseExprList(_bracketR, true, true);
+        return finishNode(node, "ArrayExpression");
 
-    case _braceL:
-      return parseObj();
+      case _braceL:
+        return parseObj();
 
-    case _function:
-      var node = startNode();
-      next();
-      return parseFunction(node, false);
+      case _function:
+        var node = startNode();
+        next();
+        return parseFunction(node, false);
 
-    case _new:
-      return parseNew();
+      case _new:
+        return parseNew();
 
-    default:
-      unexpected();
+      default:
+        unexpected();
     }
   }
 
@@ -1488,7 +1566,7 @@
         prop.value = parseExpression(true);
         kind = prop.kind = "init";
       } else if (options.ecmaVersion >= 5 && prop.key.type === "Identifier" &&
-                 (prop.key.name === "get" || prop.key.name === "set")) {
+        (prop.key.name === "get" || prop.key.name === "set")) {
         isGetSet = sawGetSet = true;
         kind = prop.kind = prop.key.name;
         prop.key = parsePropertyName();
@@ -1539,9 +1617,11 @@
     // Start a new scope with regard to labels and the `inFunction`
     // flag (restore them to their old value afterwards).
     var oldInFunc = inFunction, oldLabels = labels;
-    inFunction = true; labels = [];
+    inFunction = true;
+    labels = [];
     node.body = parseBlock(true);
-    inFunction = oldInFunc; labels = oldLabels;
+    inFunction = oldInFunc;
+    labels = oldLabels;
 
     // If this is a strict mode function, verify that argument names
     // are not repeated, and it does not try to bind the words `eval`

@@ -1,10 +1,10 @@
 CodeMirror.defineMode("verilog", function(config, parserConfig) {
   var indentUnit = config.indentUnit,
-      keywords = parserConfig.keywords || {},
-      blockKeywords = parserConfig.blockKeywords || {},
-      atoms = parserConfig.atoms || {},
-      hooks = parserConfig.hooks || {},
-      multiLineStrings = parserConfig.multiLineStrings;
+    keywords = parserConfig.keywords || {},
+    blockKeywords = parserConfig.blockKeywords || {},
+    atoms = parserConfig.atoms || {},
+    hooks = parserConfig.hooks || {},
+    multiLineStrings = parserConfig.multiLineStrings;
   var isOperatorChar = /[&|~><!\)\(*#%@+\/=?\:;}{,\.\^\-\[\]]/;
 
   var curPunc;
@@ -55,7 +55,10 @@ CodeMirror.defineMode("verilog", function(config, parserConfig) {
     return function(stream, state) {
       var escaped = false, next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
+        if (next == quote && !escaped) {
+          end = true;
+          break;
+        }
         escaped = !escaped && next == "\\";
       }
       if (end || !(escaped || multiLineStrings))
@@ -83,9 +86,11 @@ CodeMirror.defineMode("verilog", function(config, parserConfig) {
     this.align = align;
     this.prev = prev;
   }
+
   function pushContext(state, col, type) {
     return state.context = new Context(state.indented, col, type, null, state.context);
   }
+
   function popContext(state) {
     var t = state.context.type;
     if (t == ")" || t == "]" || t == "}")

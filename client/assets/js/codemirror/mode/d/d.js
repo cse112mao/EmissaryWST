@@ -1,12 +1,12 @@
 CodeMirror.defineMode("d", function(config, parserConfig) {
   var indentUnit = config.indentUnit,
-      statementIndentUnit = parserConfig.statementIndentUnit || indentUnit,
-      keywords = parserConfig.keywords || {},
-      builtin = parserConfig.builtin || {},
-      blockKeywords = parserConfig.blockKeywords || {},
-      atoms = parserConfig.atoms || {},
-      hooks = parserConfig.hooks || {},
-      multiLineStrings = parserConfig.multiLineStrings;
+    statementIndentUnit = parserConfig.statementIndentUnit || indentUnit,
+    keywords = parserConfig.keywords || {},
+    builtin = parserConfig.builtin || {},
+    blockKeywords = parserConfig.blockKeywords || {},
+    atoms = parserConfig.atoms || {},
+    hooks = parserConfig.hooks || {},
+    multiLineStrings = parserConfig.multiLineStrings;
   var isOperatorChar = /[+\-*&%=<>!?|\/]/;
 
   var curPunc;
@@ -65,7 +65,10 @@ CodeMirror.defineMode("d", function(config, parserConfig) {
     return function(stream, state) {
       var escaped = false, next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
+        if (next == quote && !escaped) {
+          end = true;
+          break;
+        }
         escaped = !escaped && next == "\\";
       }
       if (end || !(escaped || multiLineStrings))
@@ -105,12 +108,14 @@ CodeMirror.defineMode("d", function(config, parserConfig) {
     this.align = align;
     this.prev = prev;
   }
+
   function pushContext(state, col, type) {
     var indent = state.indented;
     if (state.context && state.context.type == "statement")
       indent = state.context.indented;
     return state.context = new Context(indent, col, type, null, state.context);
   }
+
   function popContext(state) {
     var t = state.context.type;
     if (t == ")" || t == "]" || t == "}")
@@ -181,19 +186,19 @@ CodeMirror.defineMode("d", function(config, parserConfig) {
   }
 
   var blockKeywords = "body catch class do else enum for foreach foreach_reverse if in interface mixin " +
-                      "out scope struct switch try union unittest version while with";
+    "out scope struct switch try union unittest version while with";
 
   CodeMirror.defineMIME("text/x-d", {
     name: "d",
     keywords: words("abstract alias align asm assert auto break case cast cdouble cent cfloat const continue " +
-                    "debug default delegate delete deprecated export extern final finally function goto immutable " +
-                    "import inout invariant is lazy macro module new nothrow override package pragma private " +
-                    "protected public pure ref return shared short static super synchronized template this " +
-                    "throw typedef typeid typeof volatile __FILE__ __LINE__ __gshared __traits __vector __parameters " +
-                    blockKeywords),
+      "debug default delegate delete deprecated export extern final finally function goto immutable " +
+      "import inout invariant is lazy macro module new nothrow override package pragma private " +
+      "protected public pure ref return shared short static super synchronized template this " +
+      "throw typedef typeid typeof volatile __FILE__ __LINE__ __gshared __traits __vector __parameters " +
+      blockKeywords),
     blockKeywords: words(blockKeywords),
     builtin: words("bool byte char creal dchar double float idouble ifloat int ireal long real short ubyte " +
-                   "ucent uint ulong ushort wchar wstring void size_t sizediff_t"),
+      "ucent uint ulong ushort wchar wstring void size_t sizediff_t"),
     atoms: words("exit failure success true false null"),
     hooks: {
       "@": function(stream, _state) {

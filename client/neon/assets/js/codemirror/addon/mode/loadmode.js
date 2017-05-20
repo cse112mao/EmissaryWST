@@ -2,10 +2,14 @@
   if (!CodeMirror.modeURL) CodeMirror.modeURL = "../mode/%N/%N.js";
 
   var loading = {};
+
   function splitCallback(cont, n) {
     var countDown = n;
-    return function() { if (--countDown == 0) cont(); };
+    return function() {
+      if (--countDown == 0) cont();
+    };
   }
+
   function ensureDeps(mode, cont) {
     var deps = CodeMirror.modes[mode].dependencies;
     if (!deps) return cont();

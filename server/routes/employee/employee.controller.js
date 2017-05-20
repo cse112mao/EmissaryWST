@@ -12,7 +12,7 @@ var Employee = require('../../models/Employee');
  *  @api {post} /api/employees/login
  *  @apiName PostLogin
  *  @apiGroup Employees
- *  
+ *
  *  @apiDescription Login into an employee account
  *
  *  @apiParam {String} email email to login with
@@ -42,23 +42,23 @@ var Employee = require('../../models/Employee');
 
 
 exports.login = function(req, res) {
-    Employee.findOne({email:req.body.email}, function(err, e) {
-        if(err || !e){
-          return res.status(400).send({error: "Can not Find"});
-        }
-        if(!e.validPassword(req.body.password))
-          return res.status(400).send({error: "Incorrect Credentials"});
-        var employee_json=e.toJSON();
-        delete employee_json.password;
-        return res.status(200).json(employee_json);
-    });
+  Employee.findOne({email: req.body.email}, function(err, e) {
+    if (err || !e) {
+      return res.status(400).send({error: "Can not Find"});
+    }
+    if (!e.validPassword(req.body.password))
+      return res.status(400).send({error: "Incorrect Credentials"});
+    var employee_json = e.toJSON();
+    delete employee_json.password;
+    return res.status(200).json(employee_json);
+  });
 };
 
 /**
  *  @api {get} /api/employees/company/:id
  *  @apiName GetAllEmployees
  *  @apiGroup Employees
- *  
+ *
  *  @apiDescription Get data pertaining to all employee based on a provided company id
  *
  *  @apiParam {String} id unique id of the company
@@ -98,8 +98,8 @@ exports.login = function(req, res) {
  */
 
 exports.getAllEmployees = function(req, res) {
-  Employee.find({company_id : req.params.id}, { password: 0}, function(err, result) {
-    if(err){
+  Employee.find({company_id: req.params.id}, {password: 0}, function(err, result) {
+    if (err) {
       return res.status(400).send({error: "Can not Find"});
     }
     return res.status(200).json(result);
@@ -111,7 +111,7 @@ exports.getAllEmployees = function(req, res) {
  *  @api {get} /api/employees/:id
  *  @apiName GetEmployees
  *  @apiGroup Employees
- *  
+ *
  *  @apiDescription Get data pertaining to an employee based on their id
  *
  *  @apiParam {String} id unique id of the employee
@@ -140,21 +140,21 @@ exports.getAllEmployees = function(req, res) {
  */
 
 exports.getById = function(req, res) {
-   Employee.findById(req.params.id, { password: 0}, function(err, employee) {
-      if(err) {
-          return res.status(400).json({error: "Can not Find"});
-      } else {
-          console.log(employee)
-          return res.status(200).json(employee);
-      }
-    });
+  Employee.findById(req.params.id, {password: 0}, function(err, employee) {
+    if (err) {
+      return res.status(400).json({error: "Can not Find"});
+    } else {
+      console.log(employee)
+      return res.status(200).json(employee);
+    }
+  });
 };
 
 /**
  *  @api {post} /api/employees
  *  @apiName PostEmployees
  *  @apiGroup Employees
- *  
+ *
  *  @apiDescription Create a new employee and insert into the system
  *
  *  @apiParam {String} first_name employee email to signup with
@@ -173,8 +173,8 @@ exports.getById = function(req, res) {
  *  @apiError error Can not Save
  *
  *  @apiErrorExample Role:
- *      c_admin: company admin   
- *      c_receptionist: company receptionist   
+ *      c_admin: company admin
+ *      c_receptionist: company receptionist
  *      c_employee: company employee
  *      a_admin: app administrator
  *
@@ -193,32 +193,32 @@ exports.getById = function(req, res) {
  */
 
 exports.insert = function(req, res) {
-    var employee = new Employee();
+  var employee = new Employee();
 
-    /* required info */
-    employee.first_name = req.body.first_name;
-    employee.last_name = req.body.last_name;
-    employee.email = req.body.email,
-    employee.phone_number  = req.body.phone_number,
+  /* required info */
+  employee.first_name = req.body.first_name;
+  employee.last_name = req.body.last_name;
+  employee.email = req.body.email,
+    employee.phone_number = req.body.phone_number,
     employee.company_id = req.body.company_id,
     employee.password = employee.generateHash(req.body.password),
-    employee.role =  req.body.role
+    employee.role = req.body.role
 
-    employee.save(function(err, e) {
-        if(err) {
-            return res.status(400).json({error: "Can not Save"});
-        }
-        var employee_json=e.toJSON();
-        delete employee_json.password;
-        return res.status(200).json(employee_json);
-    });
+  employee.save(function(err, e) {
+    if (err) {
+      return res.status(400).json({error: "Can not Save"});
+    }
+    var employee_json = e.toJSON();
+    delete employee_json.password;
+    return res.status(200).json(employee_json);
+  });
 };
 
 /**
  *  @api {put} /api/employees
  *  @apiName PutEmployees
  *  @apiGroup Employees
- *  
+ *
  *  @apiDescription Update an employees record
  *
  *  @apiParam {String} [first_name] employee email to signup with
@@ -252,34 +252,34 @@ exports.insert = function(req, res) {
  */
 
 exports.update = function(req, res) {
-    Employee.findById(req.params.id, function (err, employee) {
-        if(err)
-            return res.status(400).json({error: "Can not Update"});
- 
-        employee.first_name = req.body.first_name || employee.first_name;
-        employee.last_name = req.body.last_name || employee.last_name;
-        employee.email = req.body.email || employee.email;
-        employee.phone_number = req.body.phone_number || employee.phone_number;
-        employee.password = employee.generateHash(req.body.password) || employee.password;
-        employee.role = req.body.role || employee.role;
+  Employee.findById(req.params.id, function(err, employee) {
+    if (err)
+      return res.status(400).json({error: "Can not Update"});
 
-        employee.save(function(err) {
-            console.log(err);
-            console.log(employee);
-            if(err)
-                return res.status(400).json({error: "Can not Save"});
-            var employee_json=employee.toJSON();
-            delete employee_json.password;
-            return res.status(200).send(employee_json);
-        });
-   });
+    employee.first_name = req.body.first_name || employee.first_name;
+    employee.last_name = req.body.last_name || employee.last_name;
+    employee.email = req.body.email || employee.email;
+    employee.phone_number = req.body.phone_number || employee.phone_number;
+    employee.password = employee.generateHash(req.body.password) || employee.password;
+    employee.role = req.body.role || employee.role;
+
+    employee.save(function(err) {
+      console.log(err);
+      console.log(employee);
+      if (err)
+        return res.status(400).json({error: "Can not Save"});
+      var employee_json = employee.toJSON();
+      delete employee_json.password;
+      return res.status(200).send(employee_json);
+    });
+  });
 };
 
 /**
  *  @api {delete} /api/employees
  *  @apiName DeleteEmployees
  *  @apiGroup Employees
- *  
+ *
  *  @apiDescription Delete an employee from the record
  *
  *  @apiSuccess {String} _id unique id of entry
@@ -308,12 +308,12 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
   Employee.findById(req.params.id, function(err, employee) {
     return employee.remove(function(err) {
-      if(err) {
+      if (err) {
         res.status(400).json({error: "Can not Find"});
       } else {
-          var employee_json=employee.toJSON();
-          delete employee_json.password;
-          return res.status(200).send(employee_json);
+        var employee_json = employee.toJSON();
+        delete employee_json.password;
+        return res.status(200).send(employee_json);
       }
     });
   });

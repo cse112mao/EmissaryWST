@@ -5,6 +5,7 @@ CodeMirror.defineMode("turtle", function(config) {
   function wordRegexp(words) {
     return new RegExp("^(?:" + words.join("|") + ")$", "i");
   }
+
   var ops = wordRegexp([]);
   var keywords = wordRegexp(["@prefix", "@base", "a"]);
   var operatorChars = /[*+\-<>=&|]/;
@@ -33,23 +34,23 @@ CodeMirror.defineMode("turtle", function(config) {
       return null;
     }
     else if (ch == ":") {
-          return "operator";
-        } else {
+      return "operator";
+    } else {
       stream.eatWhile(/[_\w\d]/);
-      if(stream.peek() == ":") {
+      if (stream.peek() == ":") {
         return "variable-3";
       } else {
-             var word = stream.current();
+        var word = stream.current();
 
-             if(keywords.test(word)) {
-                        return "meta";
-             }
+        if (keywords.test(word)) {
+          return "meta";
+        }
 
-             if(ch >= "A" && ch <= "Z") {
-                    return "comment";
-                 } else {
-                        return "keyword";
-                 }
+        if (ch >= "A" && ch <= "Z") {
+          return "comment";
+        } else {
+          return "keyword";
+        }
       }
       var word = stream.current();
       if (ops.test(word))
@@ -78,6 +79,7 @@ CodeMirror.defineMode("turtle", function(config) {
   function pushContext(state, type, col) {
     state.context = {prev: state.context, indent: state.indent, col: col, type: type};
   }
+
   function popContext(state) {
     state.indent = state.context.indent;
     state.context = state.context.prev;
@@ -85,10 +87,12 @@ CodeMirror.defineMode("turtle", function(config) {
 
   return {
     startState: function() {
-      return {tokenize: tokenBase,
-              context: null,
-              indent: 0,
-              col: 0};
+      return {
+        tokenize: tokenBase,
+        context: null,
+        indent: 0,
+        col: 0
+      };
     },
 
     token: function(stream, state) {

@@ -1,12 +1,13 @@
 CodeMirror.defineMode('shell', function() {
 
   var words = {};
+
   function define(style, string) {
     var split = string.split(' ');
-    for(var i = 0; i < split.length; i++) {
+    for (var i = 0; i < split.length; i++) {
       words[split[i]] = style;
     }
-  };
+  }
 
   // Atoms
   define('atom', 'true false');
@@ -53,7 +54,7 @@ CodeMirror.defineMode('shell', function() {
     }
     if (/\d/.test(ch)) {
       stream.eatWhile(/\d/);
-      if(!/\w/.test(stream.peek())) {
+      if (!/\w/.test(stream.peek())) {
         return 'number';
       }
     }
@@ -84,7 +85,7 @@ CodeMirror.defineMode('shell', function() {
       }
       return (quote === '`' || quote === ')' ? 'quote' : 'string');
     };
-  };
+  }
 
   var tokenDollar = function(stream, state) {
     if (state.tokens.length > 1) stream.eat('$');
@@ -103,11 +104,13 @@ CodeMirror.defineMode('shell', function() {
   };
 
   function tokenize(stream, state) {
-    return (state.tokens[0] || tokenBase) (stream, state);
-  };
+    return (state.tokens[0] || tokenBase)(stream, state);
+  }
 
   return {
-    startState: function() {return {tokens:[]};},
+    startState: function() {
+      return {tokens: []};
+    },
     token: function(stream, state) {
       if (stream.eatSpace()) return null;
       return tokenize(stream, state);

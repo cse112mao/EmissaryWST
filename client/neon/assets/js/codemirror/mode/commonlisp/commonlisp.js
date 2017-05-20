@@ -1,4 +1,4 @@
-CodeMirror.defineMode("commonlisp", function (config) {
+CodeMirror.defineMode("commonlisp", function(config) {
   var assumeBody = /^with|^def|^do|^prog|case$|^cond$|bind$|when$|unless$/;
   var numLiteral = /^(?:[+\-]?(?:\d+|\d*\.\d+)(?:[efd][+\-]?\d+)?|[+\-]?\d+(?:\/[+\-]?\d+)?|#b[+\-]?[01]+|#o[+\-]?[0-7]+|#x[+\-]?[\da-f]+)/;
   var symbol = /[^\s'`,@()\[\]";]/;
@@ -8,32 +8,60 @@ CodeMirror.defineMode("commonlisp", function (config) {
     var ch;
     while (ch = stream.next()) {
       if (ch == "\\") stream.next();
-      else if (!symbol.test(ch)) { stream.backUp(1); break; }
+      else if (!symbol.test(ch)) {
+        stream.backUp(1);
+        break;
+      }
     }
     return stream.current();
   }
 
   function base(stream, state) {
-    if (stream.eatSpace()) {type = "ws"; return null;}
+    if (stream.eatSpace()) {
+      type = "ws";
+      return null;
+    }
     if (stream.match(numLiteral)) return "number";
     var ch = stream.next();
     if (ch == "\\") ch = stream.next();
 
     if (ch == '"') return (state.tokenize = inString)(stream, state);
-    else if (ch == "(") { type = "open"; return "bracket"; }
-    else if (ch == ")" || ch == "]") { type = "close"; return "bracket"; }
-    else if (ch == ";") { stream.skipToEnd(); type = "ws"; return "comment"; }
+    else if (ch == "(") {
+      type = "open";
+      return "bracket";
+    }
+    else if (ch == ")" || ch == "]") {
+      type = "close";
+      return "bracket";
+    }
+    else if (ch == ";") {
+      stream.skipToEnd();
+      type = "ws";
+      return "comment";
+    }
     else if (/['`,@]/.test(ch)) return null;
     else if (ch == "|") {
-      if (stream.skipTo("|")) { stream.next(); return "symbol"; }
-      else { stream.skipToEnd(); return "error"; }
+      if (stream.skipTo("|")) {
+        stream.next();
+        return "symbol";
+      }
+      else {
+        stream.skipToEnd();
+        return "error";
+      }
     } else if (ch == "#") {
       var ch = stream.next();
-      if (ch == "[") { type = "open"; return "bracket"; }
+      if (ch == "[") {
+        type = "open";
+        return "bracket";
+      }
       else if (/[+\-=\.']/.test(ch)) return null;
       else if (/\d/.test(ch) && stream.match(/^\d*#/)) return null;
       else if (ch == "|") return (state.tokenize = inComment)(stream, state);
-      else if (ch == ":") { readSym(stream); return "meta"; }
+      else if (ch == ":") {
+        readSym(stream);
+        return "meta";
+      }
       else return "error";
     } else {
       var name = readSym(stream);
@@ -49,7 +77,10 @@ CodeMirror.defineMode("commonlisp", function (config) {
   function inString(stream, state) {
     var escaped = false, next;
     while (next = stream.next()) {
-      if (next == '"' && !escaped) { state.tokenize = base; break; }
+      if (next == '"' && !escaped) {
+        state.tokenize = base;
+        break;
+      }
       escaped = !escaped && next == "\\";
     }
     return "string";
@@ -58,7 +89,10 @@ CodeMirror.defineMode("commonlisp", function (config) {
   function inComment(stream, state) {
     var next, last;
     while (next = stream.next()) {
-      if (next == "#" && last == "|") { state.tokenize = base; break; }
+      if (next == "#" && last == "|") {
+        state.tokenize = base;
+        break;
+      }
       last = next;
     }
     type = "ws";
@@ -66,11 +100,11 @@ CodeMirror.defineMode("commonlisp", function (config) {
   }
 
   return {
-    startState: function () {
+    startState: function() {
       return {ctx: {prev: null, start: 0, indentTo: 0}, tokenize: base};
     },
 
-    token: function (stream, state) {
+    token: function(stream, state) {
       if (stream.sol() && typeof state.ctx.indentTo != "number")
         state.ctx.indentTo = state.ctx.start + 1;
 
@@ -91,7 +125,7 @@ CodeMirror.defineMode("commonlisp", function (config) {
       return style;
     },
 
-    indent: function (state, _textAfter) {
+    indent: function(state, _textAfter) {
       var i = state.ctx.indentTo;
       return typeof i == "number" ? i : state.ctx.start + 1;
     },

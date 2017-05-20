@@ -17,7 +17,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
       }
       var content = "";
       // replace tabs
-      for (var pos = 0;;) {
+      for (var pos = 0; ;) {
         var idx = text.indexOf("\t", pos);
         if (idx == -1) {
           content += text.slice(pos);

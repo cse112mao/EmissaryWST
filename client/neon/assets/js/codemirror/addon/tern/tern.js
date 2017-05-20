@@ -53,14 +53,18 @@
       this.server = new WorkerServer(this);
     } else {
       this.server = new tern.Server({
-        getFile: function(name, c) { return getFile(self, name, c); },
+        getFile: function(name, c) {
+          return getFile(self, name, c);
+        },
         async: true,
         defs: this.options.defs || [],
         plugins: plugins
       });
     }
     this.docs = Object.create(null);
-    this.trackChange = function(doc, change) { trackChange(self, doc, change); };
+    this.trackChange = function(doc, change) {
+      trackChange(self, doc, change);
+    };
 
     this.cachedArgHints = null;
     this.activeArgHints = null;
@@ -91,27 +95,41 @@
 
     complete: function(cm) {
       var self = this;
-      CodeMirror.showHint(cm, function(cm, c) { return hint(self, cm, c); }, {async: true});
+      CodeMirror.showHint(cm, function(cm, c) {
+        return hint(self, cm, c);
+      }, {async: true});
     },
 
-    getHint: function(cm, c) { return hint(this, cm, c); },
+    getHint: function(cm, c) {
+      return hint(this, cm, c);
+    },
 
-    showType: function(cm, pos) { showType(this, cm, pos); },
+    showType: function(cm, pos) {
+      showType(this, cm, pos);
+    },
 
-    updateArgHints: function(cm) { updateArgHints(this, cm); },
+    updateArgHints: function(cm) {
+      updateArgHints(this, cm);
+    },
 
-    jumpToDef: function(cm) { jumpToDef(this, cm); },
+    jumpToDef: function(cm) {
+      jumpToDef(this, cm);
+    },
 
-    jumpBack: function(cm) { jumpBack(this, cm); },
+    jumpBack: function(cm) {
+      jumpBack(this, cm);
+    },
 
-    rename: function(cm) { rename(this, cm); },
+    rename: function(cm) {
+      rename(this, cm);
+    },
 
-    request: function (cm, query, c, pos) {
+    request: function(cm, query, c, pos) {
       var self = this;
       var doc = findDoc(this, cm.getDoc());
       var request = buildRequest(this, doc, query, pos);
 
-      this.server.request(request, function (error, data) {
+      this.server.request(request, function(error, data) {
         if (!error && self.options.responseFilter)
           data = self.options.responseFilter(doc, query, request, error, data);
         c(error, data);
@@ -138,9 +156,12 @@
       var cur = ts.docs[n];
       if (cur.doc == doc) return cur;
     }
-    if (!name) for (var i = 0;; ++i) {
+    if (!name) for (var i = 0; ; ++i) {
       n = "[doc" + (i || "") + "]";
-      if (!ts.docs[n]) { name = n; break; }
+      if (!ts.docs[n]) {
+        name = n;
+        break;
+      }
     }
     return ts.addDoc(name, doc);
   }
@@ -180,28 +201,34 @@
       var completions = [], after = "";
       var from = data.start, to = data.end;
       if (cm.getRange(Pos(from.line, from.ch - 2), from) == "[\"" &&
-          cm.getRange(to, Pos(to.line, to.ch + 2)) != "\"]")
+        cm.getRange(to, Pos(to.line, to.ch + 2)) != "\"]")
         after = "\"]";
 
       for (var i = 0; i < data.completions.length; ++i) {
         var completion = data.completions[i], className = typeToIcon(completion.type);
         if (data.guess) className += " " + cls + "guess";
-        completions.push({text: completion.name + after,
-                          displayText: completion.name,
-                          className: className,
-                          data: completion});
+        completions.push({
+          text: completion.name + after,
+          displayText: completion.name,
+          className: className,
+          data: completion
+        });
       }
 
       var obj = {from: from, to: to, list: completions};
       var tooltip = null;
-      CodeMirror.on(obj, "close", function() { remove(tooltip); });
-      CodeMirror.on(obj, "update", function() { remove(tooltip); });
+      CodeMirror.on(obj, "close", function() {
+        remove(tooltip);
+      });
+      CodeMirror.on(obj, "update", function() {
+        remove(tooltip);
+      });
       CodeMirror.on(obj, "select", function(cur, node) {
         remove(tooltip);
         var content = ts.options.completionTip ? ts.options.completionTip(cur.data) : cur.data.doc;
         if (content) {
           tooltip = makeTooltip(node.parentNode.getBoundingClientRect().right + window.pageXOffset,
-                                node.getBoundingClientRect().top + window.pageYOffset, content);
+            node.getBoundingClientRect().top + window.pageYOffset, content);
           tooltip.className += " " + cls + "hint-doc";
         }
       });
@@ -254,14 +281,17 @@
     var ch, argPos = lex.pos || 0, tabSize = cm.getOption("tabSize");
     for (var line = cm.getCursor().line, e = Math.max(0, line - 9), found = false; line >= e; --line) {
       var str = cm.getLine(line), extra = 0;
-      for (var pos = 0;;) {
+      for (var pos = 0; ;) {
         var tab = str.indexOf("\t", pos);
         if (tab == -1) break;
         extra += tabSize - (tab + extra) % tabSize - 1;
         pos = tab + 1;
       }
       ch = lex.column - extra;
-      if (str.charAt(ch) == "(") {found = true; break;}
+      if (str.charAt(ch) == "(") {
+        found = true;
+        break;
+      }
     }
     if (!found) return;
 
@@ -288,7 +318,7 @@
 
     var cache = ts.cachedArgHints, tp = cache.type;
     var tip = elt("span", cache.guess ? cls + "fhint-guess" : null,
-                  elt("span", cls + "fname", cache.name), "(");
+      elt("span", cls + "fname", cache.name), "(");
     for (var i = 0; i < tp.args.length; ++i) {
       if (i) tip.appendChild(document.createTextNode(", "));
       var arg = tp.args[i];
@@ -309,7 +339,7 @@
 
     function skipMatching(upto) {
       var depth = 0, start = pos;
-      for (;;) {
+      for (; ;) {
         var next = text.charAt(pos);
         if (upto.test(next) && !depth) return text.slice(start, pos);
         if (/[{\[\(]/.test(next)) ++depth;
@@ -319,7 +349,7 @@
     }
 
     // Parse arguments
-    if (text.charAt(pos) != ")") for (;;) {
+    if (text.charAt(pos) != ")") for (; ;) {
       var name = text.slice(pos).match(/^([^, \(\[\{]+): /);
       if (name) {
         pos += name[0].length;
@@ -343,14 +373,19 @@
       var doc = findDoc(ts, cm.getDoc());
       ts.server.request(buildRequest(ts, doc, req), function(error, data) {
         if (error) return showError(ts, cm, error);
-        if (!data.file && data.url) { window.open(data.url); return; }
+        if (!data.file && data.url) {
+          window.open(data.url);
+          return;
+        }
 
         if (data.file) {
           var localDoc = ts.docs[data.file], found;
           if (localDoc && (found = findContext(localDoc.doc, data))) {
-            ts.jumpStack.push({file: doc.name,
-                               start: cm.getCursor("from"),
-                               end: cm.getCursor("to")});
+            ts.jumpStack.push({
+              file: doc.name,
+              start: cm.getCursor("from"),
+              end: cm.getCursor("to")
+            });
             moveTo(ts, doc, localDoc, found.start, found.end);
             return;
           }
@@ -360,7 +395,9 @@
     }
 
     if (!atInterestingExpression(cm))
-      dialog(cm, "Jump to variable", function(name) { if (name) inner(name); });
+      dialog(cm, "Jump to variable", function(name) {
+        if (name) inner(name);
+      });
     else
       inner();
   }
@@ -395,7 +432,10 @@
     while (cursor.findNext()) {
       var from = cursor.from(), dist = Math.abs(from.line - start.line) * 10000;
       if (!dist) dist = Math.abs(from.ch - start.ch);
-      if (dist < nearestDist) { nearest = from; nearestDist = dist; }
+      if (dist < nearestDist) {
+        nearest = from;
+        nearestDist = dist;
+      }
     }
     if (!nearest) return null;
 
@@ -430,6 +470,7 @@
   }
 
   var nextChangeOrig = 0;
+
   function applyChanges(ts, changes) {
     var perFile = Object.create(null);
     for (var i = 0; i < changes.length; ++i) {
@@ -437,9 +478,11 @@
       (perFile[ch.file] || (perFile[ch.file] = [])).push(ch);
     }
     for (var file in perFile) {
-      var known = ts.docs[file], chs = perFile[file];;
+      var known = ts.docs[file], chs = perFile[file];
       if (!known) continue;
-      chs.sort(function(a, b) { return cmpPos(b.start, a.start); });
+      chs.sort(function(a, b) {
+        return cmpPos(b.start, a.start);
+      });
       var origin = "*rename" + (++nextChangeOrig);
       for (var i = 0; i < chs.length; ++i) {
         var ch = chs[i];
@@ -464,17 +507,19 @@
 
     if (doc.changed) {
       if (doc.doc.lineCount() > bigDoc && allowFragments !== false &&
-          doc.changed.to - doc.changed.from < 100 &&
-          doc.changed.from <= startPos.line && doc.changed.to > query.end.line) {
+        doc.changed.to - doc.changed.from < 100 &&
+        doc.changed.from <= startPos.line && doc.changed.to > query.end.line) {
         files.push(getFragmentAround(doc, startPos, query.end));
         query.file = "#0";
         var offsetLines = files[0].offsetLines;
         if (query.start != null) query.start = Pos(query.start.line - -offsetLines, query.start.ch);
         query.end = Pos(query.end.line - offsetLines, query.end.ch);
       } else {
-        files.push({type: "full",
-                    name: doc.name,
-                    text: docValue(ts, doc)});
+        files.push({
+          type: "full",
+          name: doc.name,
+          text: docValue(ts, doc)
+        });
         query.file = doc.name;
         doc.changed = null;
       }
@@ -513,15 +558,19 @@
     }
     var from = Pos(minLine, 0);
 
-    return {type: "part",
-            name: data.name,
-            offsetLines: from.line,
-            text: doc.getRange(from, Pos(endLine, 0))};
+    return {
+      type: "part",
+      name: data.name,
+      offsetLines: from.line,
+      text: doc.getRange(from, Pos(endLine, 0))
+    };
   }
 
   // Generic utilities
 
-  function cmpPos(a, b) { return a.line - b.line || a.ch - b.ch; }
+  function cmpPos(a, b) {
+    return a.line - b.line || a.ch - b.ch;
+  }
 
   function elt(tagname, cls /*, ... elts*/) {
     var e = document.createElement(tagname);
@@ -546,11 +595,13 @@
   function tempTooltip(cm, content) {
     var where = cm.cursorCoords();
     var tip = makeTooltip(where.right + 1, where.bottom, content);
+
     function clear() {
       if (!tip.parentNode) return;
       cm.off("cursorActivity", clear);
       fadeOut(tip);
     }
+
     setTimeout(clear, 1700);
     cm.on("cursorActivity", clear);
   }
@@ -570,7 +621,9 @@
 
   function fadeOut(tooltip) {
     tooltip.style.opacity = "0";
-    setTimeout(function() { remove(tooltip); }, 1100);
+    setTimeout(function() {
+      remove(tooltip);
+    }, 1100);
   }
 
   function showError(ts, cm, msg) {
@@ -581,7 +634,10 @@
   }
 
   function closeArgHints(ts) {
-    if (ts.activeArgHints) { remove(ts.activeArgHints); ts.activeArgHints = null; }
+    if (ts.activeArgHints) {
+      remove(ts.activeArgHints);
+      ts.activeArgHints = null;
+    }
   }
 
   function docValue(ts, doc) {
@@ -594,10 +650,12 @@
 
   function WorkerServer(ts) {
     var worker = new Worker(ts.options.workerScript);
-    worker.postMessage({type: "init",
-                        defs: ts.options.defs,
-                        plugins: ts.options.plugins,
-                        scripts: ts.options.workerDeps});
+    worker.postMessage({
+      type: "init",
+      defs: ts.options.defs,
+      plugins: ts.options.plugins,
+      scripts: ts.options.workerDeps
+    });
     var msgId = 0, pending = {};
 
     function send(data, c) {
@@ -607,6 +665,7 @@
       }
       worker.postMessage(data);
     }
+
     worker.onmessage = function(e) {
       var data = e.data;
       if (data.type == "getFile") {
@@ -625,8 +684,14 @@
       pending = {};
     };
 
-    this.addFile = function(name, text) { send({type: "add", name: name, text: text}); };
-    this.delFile = function(name) { send({type: "del", name: name}); };
-    this.request = function(body, c) { send({type: "req", body: body}, c); };
+    this.addFile = function(name, text) {
+      send({type: "add", name: name, text: text});
+    };
+    this.delFile = function(name) {
+      send({type: "del", name: name});
+    };
+    this.request = function(body, c) {
+      send({type: "req", body: body}, c);
+    };
   }
 })();

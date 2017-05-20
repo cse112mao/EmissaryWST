@@ -25,6 +25,7 @@
       if (found) found(node, st);
       base[type](node, st, c);
     }
+
     c(node, state);
   };
 
@@ -35,9 +36,11 @@
   // nodes).
   exports.recursive = function(node, state, funcs, base) {
     var visitor = exports.make(funcs, base);
+
     function c(node, st, override) {
       visitor[override || node.type](node, st, c);
     }
+
     c(node, state);
   };
 
@@ -51,8 +54,12 @@
     return visitor;
   };
 
-  function skipThrough(node, st, c) { c(node, st); }
-  function ignore(node, st, c) {}
+  function skipThrough(node, st, c) {
+    c(node, st);
+  }
+
+  function ignore(node, st, c) {
+  }
 
   // Node walkers.
 
@@ -183,6 +190,7 @@
   function makeScope(prev) {
     return {vars: Object.create(null), prev: prev};
   }
+
   exports.scopeVisitor = exports.make({
     Function: function(node, scope, c) {
       var inner = makeScope(scope);

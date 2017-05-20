@@ -1,9 +1,11 @@
-(function () {
+(function() {
   "use strict";
 
-  var pseudoClasses = {link: 1, visited: 1, active: 1, hover: 1, focus: 1,
-                       "first-letter": 1, "first-line": 1, "first-child": 1,
-                       before: 1, after: 1, lang: 1};
+  var pseudoClasses = {
+    link: 1, visited: 1, active: 1, hover: 1, focus: 1,
+    "first-letter": 1, "first-line": 1, "first-child": 1,
+    before: 1, after: 1, lang: 1
+  };
 
   CodeMirror.registerHelper("hint", "css", function(cm) {
     var cur = cm.getCursor(), token = cm.getTokenAt(cur);
@@ -12,12 +14,14 @@
 
     var word = token.string, start = token.start, end = token.end;
     if (/[^\w$_-]/.test(word)) {
-      word = ""; start = end = cur.ch;
+      word = "";
+      start = end = cur.ch;
     }
 
     var spec = CodeMirror.resolveMode("text/css");
 
     var result = [];
+
     function add(keywords) {
       for (var name in keywords)
         if (!word || name.lastIndexOf(word, 0) == 0)

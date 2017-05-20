@@ -13,7 +13,7 @@ CodeMirror.defineMode("diff", function() {
       if (!stream.sol() || tw_pos === 0) {
         stream.skipToEnd();
         return ("error " + (
-          TOKEN_NAMES[stream.string.charAt(0)] || '')).replace(/ $/, '');
+        TOKEN_NAMES[stream.string.charAt(0)] || '')).replace(/ $/, '');
       }
 
       var token_name = TOKEN_NAMES[stream.peek()] || stream.skipToEnd();

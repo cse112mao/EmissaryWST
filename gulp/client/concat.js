@@ -11,8 +11,8 @@ gulp.task('concat:js', function() {
     './client/app/**/*.module.js',
     './client/app/**/*.js'
   ])
-  .pipe(concat('bundle.js'))
-  .pipe(gulp.dest('./dist/'));
+    .pipe(concat('bundle.js'))
+    .pipe(gulp.dest('./dist/'));
 });
 
 /* Concatenate all css files into bundle.css and place it

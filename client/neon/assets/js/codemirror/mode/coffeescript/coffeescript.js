@@ -15,13 +15,13 @@ CodeMirror.defineMode("coffeescript", function(conf) {
   var properties = /^(@|this\.)[_A-Za-z$][_A-Za-z$0-9]*/;
 
   var wordOperators = wordRegexp(["and", "or", "not",
-                                  "is", "isnt", "in",
-                                  "instanceof", "typeof"]);
+    "is", "isnt", "in",
+    "instanceof", "typeof"]);
   var indentKeywords = ["for", "while", "loop", "if", "unless", "else",
-                        "switch", "try", "catch", "finally", "class"];
+    "switch", "try", "catch", "finally", "class"];
   var commonKeywords = ["break", "by", "continue", "debugger", "delete",
-                        "do", "in", "of", "new", "return", "then",
-                        "this", "throw", "when", "until"];
+    "do", "in", "of", "new", "return", "then",
+    "this", "throw", "when", "until"];
 
   var keywords = wordRegexp(indentKeywords.concat(commonKeywords));
 
@@ -93,7 +93,7 @@ CodeMirror.defineMode("coffeescript", function(conf) {
 
       if (floatLiteral) {
         // prevent from getting extra . on 1..
-        if (stream.peek() == "."){
+        if (stream.peek() == ".") {
           stream.backUp(1);
         }
         return "number";
@@ -268,19 +268,19 @@ CodeMirror.defineMode("coffeescript", function(conf) {
       state.dedent += 1;
     }
     if (((current === "->" || current === "=>") &&
-         !state.lambda &&
-         !stream.peek())
-        || style === "indent") {
+      !state.lambda &&
+      !stream.peek())
+      || style === "indent") {
       indent(stream, state);
     }
     var delimiter_index = "[({".indexOf(current);
     if (delimiter_index !== -1) {
-      indent(stream, state, "])}".slice(delimiter_index, delimiter_index+1));
+      indent(stream, state, "])}".slice(delimiter_index, delimiter_index + 1));
     }
-    if (indentKeywords.exec(current)){
+    if (indentKeywords.exec(current)) {
       indent(stream, state);
     }
-    if (current == "then"){
+    if (current == "then") {
       dedent(stream, state);
     }
 
@@ -309,7 +309,7 @@ CodeMirror.defineMode("coffeescript", function(conf) {
     startState: function(basecolumn) {
       return {
         tokenize: tokenBase,
-        scope: {offset:basecolumn || 0, type:"coffee", prev: null, align: false},
+        scope: {offset: basecolumn || 0, type: "coffee", prev: null, align: false},
         lastToken: null,
         lambda: false,
         dedent: 0
@@ -323,7 +323,7 @@ CodeMirror.defineMode("coffeescript", function(conf) {
       var style = tokenLexer(stream, state);
       if (fillAlign && style && style != "comment") fillAlign.align = true;
 
-      state.lastToken = {style:style, content: stream.current()};
+      state.lastToken = {style: style, content: stream.current()};
 
       if (stream.eol() && stream.lambda) {
         state.lambda = false;

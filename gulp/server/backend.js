@@ -1,5 +1,5 @@
-var  nodemon = require('gulp-nodemon'),
-     shell = require('gulp-shell');
+var nodemon = require('gulp-nodemon'),
+  shell = require('gulp-shell');
 
 var gulp = require('gulp');
 
@@ -14,9 +14,9 @@ gulp.task('serve:backend', function() {
     watch: ['server/**/*.js'],
     ignore: ['server/test/**/*.js']
   })
-  .on('restart', function() {
-    console.log('Server restarting. Please wait.');
-  });
+    .on('restart', function() {
+      console.log('Server restarting. Please wait.');
+    });
 });
 
 /* Use foreman to serve the server, allowing gulp-nodemon

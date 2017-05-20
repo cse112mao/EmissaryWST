@@ -5,6 +5,7 @@
   var Pos = CodeMirror.Pos;
 
   var matching = {"(": ")>", ")": "(<", "[": "]>", "]": "[<", "{": "}>", "}": "{<"};
+
   function findMatchingBracket(cm, where, strict) {
     var state = cm.state.matchBrackets;
     var maxScanLen = (state && state.maxScanLineLength) || 10000;
@@ -18,6 +19,7 @@
     var style = cm.getTokenTypeAt(Pos(cur.line, pos + 1));
 
     var stack = [line.text.charAt(pos)], re = /[(){}[\]]/;
+
     function scan(line, lineNo, start) {
       if (!line.text) return;
       var pos = forward ? 0 : line.text.length - 1, end = forward ? line.text.length : -1;
@@ -33,13 +35,16 @@
         }
       }
     }
-    for (var i = cur.line, found, e = forward ? Math.min(i + maxScanLines, cm.lineCount()) : Math.max(-1, i - maxScanLines); i != e; i+=d) {
+
+    for (var i = cur.line, found, e = forward ? Math.min(i + maxScanLines, cm.lineCount()) : Math.max(-1, i - maxScanLines); i != e; i += d) {
       if (i == cur.line) found = scan(line, i, pos);
       else found = scan(cm.getLineHandle(i), i);
       if (found) break;
     }
-    return {from: Pos(cur.line, pos), to: found && Pos(i, found.pos),
-            match: found && found.match, forward: forward};
+    return {
+      from: Pos(cur.line, pos), to: found && Pos(i, found.pos),
+      match: found && found.match, forward: forward
+    };
   }
 
   function matchBrackets(cm, autoclear) {
@@ -47,7 +52,7 @@
     var maxHighlightLen = cm.state.matchBrackets.maxHighlightLineLength || 1000;
     var found = findMatchingBracket(cm);
     if (!found || cm.getLine(found.from.line).length > maxHighlightLen ||
-       found.to && cm.getLine(found.to.line).length > maxHighlightLen)
+      found.to && cm.getLine(found.to.line).length > maxHighlightLen)
       return;
 
     var style = found.match ? "CodeMirror-matchingbracket" : "CodeMirror-nonmatchingbracket";
@@ -57,16 +62,23 @@
     // input stops going to the textarea whenever this fires.
     if (ie_lt8 && cm.state.focused) cm.display.input.focus();
     var clear = function() {
-      cm.operation(function() { one.clear(); two && two.clear(); });
+      cm.operation(function() {
+        one.clear();
+        two && two.clear();
+      });
     };
     if (autoclear) setTimeout(clear, 800);
     else return clear;
   }
 
   var currentlyHighlighted = null;
+
   function doMatchBrackets(cm) {
     cm.operation(function() {
-      if (currentlyHighlighted) {currentlyHighlighted(); currentlyHighlighted = null;}
+      if (currentlyHighlighted) {
+        currentlyHighlighted();
+        currentlyHighlighted = null;
+      }
       if (!cm.somethingSelected()) currentlyHighlighted = matchBrackets(cm, false);
     });
   }
@@ -80,8 +92,10 @@
     }
   });
 
-  CodeMirror.defineExtension("matchBrackets", function() {matchBrackets(this, true);});
-  CodeMirror.defineExtension("findMatchingBracket", function(pos, strict){
+  CodeMirror.defineExtension("matchBrackets", function() {
+    matchBrackets(this, true);
+  });
+  CodeMirror.defineExtension("findMatchingBracket", function(pos, strict) {
     return findMatchingBracket(this, pos, strict);
   });
 })();

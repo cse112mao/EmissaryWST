@@ -17,8 +17,6 @@ var cors = require('cors');
 var Theme = require('../../models/Theme');
 
 
-
-
 //post with default values
 router.post('/:user_id/theme', controller.template.create);
 

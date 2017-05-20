@@ -1,19 +1,18 @@
+// Wait Module
+// ===========
 
-    // Wait Module
-    // ===========
+// Wait
+// ----
+//    Delays execution by the amount of time
+//    specified by the parameter
 
-    // Wait
-    // ----
-    //    Delays execution by the amount of time
-    //    specified by the parameter
+selectBoxIt.wait = function(time, callback) {
 
-    selectBoxIt.wait = function(time, callback) {
+  var self = this;
 
-        var self = this;
+  self.widgetProto._delay.call(self, callback, time);
 
-        self.widgetProto._delay.call(self, callback, time);
+  // Maintains chainability
+  return self;
 
-        // Maintains chainability
-        return self;
-
-    };
+};

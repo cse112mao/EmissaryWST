@@ -13,13 +13,13 @@ var employees = [];
 
 describe("Notification", function() {
 
-    it('It should send an email', function(done){
+    it('It should send an email', function(done) {
       this.timeout(9000);
       Email.sendEmail("Tony Montana", employees, done);
       //done();
     });
 
-    it('It should send an text', function(done){
+    it('It should send an text', function(done) {
       this.timeout(9000);
       TextModel.sendText("Tony Montana", employees, done);
       //done();

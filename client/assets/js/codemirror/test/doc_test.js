@@ -38,7 +38,7 @@
 
   function eqAll(val) {
     var end = arguments.length, msg = null;
-    if (typeof arguments[end-1] == "string")
+    if (typeof arguments[end - 1] == "string")
       msg = arguments[--end];
     if (i == end) throw new Error("No editors provided to eqAll");
     for (var i = 1; i < end; ++i)
@@ -97,7 +97,10 @@
     eqAll("abx\ncdy\nef", a, b);
     b.redo();
     eqAll("abx\ncdy\nefz", a, b);
-    a.undo(); b.undo(); a.undo(); a.undo();
+    a.undo();
+    b.undo();
+    a.undo();
+    a.undo();
     eqAll("ab\ncd\nef", a, b);
   }, null, ie_lt8);
 
@@ -116,7 +119,10 @@
     eqAll("abx\ncd\nefz", a, b);
     a.redo();
     eqAll("abxq\ncd\nefz", a, b);
-    a.undo(); a.undo(); a.undo(); a.undo();
+    a.undo();
+    a.undo();
+    a.undo();
+    a.undo();
     eqAll("ab\ncd\nef", a, b);
     b.redo();
     eqAll("ab\ncdy\nef", a, b);
@@ -127,13 +133,15 @@
     a.replaceRange("z", Pos(2));
     // This should clear the first undo event in a, but not the second
     b.replaceRange("y", Pos(0));
-    a.undo(); a.undo();
+    a.undo();
+    a.undo();
     eqAll("abxy\ncd\nef", a, b);
     a.replaceRange("u", Pos(2));
     a.replaceRange("v", Pos(0));
     // This should clear both events in a
     b.replaceRange("w", Pos(0));
-    a.undo(); a.undo();
+    a.undo();
+    a.undo();
     eqAll("abxyvw\ncd\nefu", a, b);
   });
 
@@ -300,7 +308,7 @@
 
   testDoc("sharedMarker", "A='ab\ncd\nef\ngh' B<A C<~A/1-2", function(a, b, c) {
     var mark = b.markText(Pos(0, 1), Pos(3, 1),
-                          {className: "cm-searching", shared: true});
+      {className: "cm-searching", shared: true});
     var found = a.findMarksAt(Pos(0, 2));
     eq(found.length, 1);
     eq(found[0], mark);
@@ -311,8 +319,12 @@
     eqPos(mark.find().from, Pos(2, 1));
     eqPos(mark.find().to, Pos(5, 1));
     var cleared = 0;
-    CodeMirror.on(mark, "clear", function() {++cleared;});
-    b.operation(function(){mark.clear();});
+    CodeMirror.on(mark, "clear", function() {
+      ++cleared;
+    });
+    b.operation(function() {
+      mark.clear();
+    });
     eq(a.findMarksAt(Pos(3, 1)).length, 0);
     eq(b.findMarksAt(Pos(3, 1)).length, 0);
     eq(c.findMarksAt(Pos(3, 1)).length, 0);

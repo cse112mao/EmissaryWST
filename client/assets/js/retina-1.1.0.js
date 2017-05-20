@@ -18,10 +18,10 @@
   };
 
 
-
   root.Retina = Retina;
 
-  function Retina() {}
+  function Retina() {
+  }
 
   Retina.configure = function(options) {
     if (options == null) options = {};
@@ -43,7 +43,7 @@
     }
   };
 
-  Retina.isRetina = function(){
+  Retina.isRetina = function() {
     var mediaQuery = "(-webkit-min-device-pixel-ratio: 1.5),\
                       (min--moz-device-pixel-ratio: 1.5),\
                       (-o-min-device-pixel-ratio: 3/2),\
@@ -67,7 +67,9 @@
       this.at_2x_path = at_2x_path;
       this.perform_check = false;
     } else {
-      this.at_2x_path = path.replace(/\.\w+$/, function(match) { return "@2x" + match; });
+      this.at_2x_path = path.replace(/\.\w+$/, function(match) {
+        return "@2x" + match;
+      });
       this.perform_check = true;
     }
   }
@@ -113,7 +115,6 @@
   }
 
 
-
   function RetinaImage(el) {
     this.el = el;
     this.path = new RetinaImagePath(this.el.getAttribute('src'), this.el.getAttribute('data-at2x'));
@@ -129,8 +130,9 @@
     if (typeof path == 'undefined') path = this.path.at_2x_path;
 
     var that = this;
+
     function load() {
-      if (! that.el.complete) {
+      if (!that.el.complete) {
         setTimeout(load, 5);
       } else {
         that.el.setAttribute('width', that.el.offsetWidth);
@@ -138,10 +140,9 @@
         that.el.setAttribute('src', path);
       }
     }
+
     load();
   }
-
-
 
 
   if (Retina.isRetina()) {

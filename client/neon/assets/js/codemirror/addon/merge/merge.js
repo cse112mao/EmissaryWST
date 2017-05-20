@@ -9,18 +9,22 @@
     this.mv = mv;
     this.type = type;
     this.classes = type == "left"
-      ? {chunk: "CodeMirror-merge-l-chunk",
-         start: "CodeMirror-merge-l-chunk-start",
-         end: "CodeMirror-merge-l-chunk-end",
-         insert: "CodeMirror-merge-l-inserted",
-         del: "CodeMirror-merge-l-deleted",
-         connect: "CodeMirror-merge-l-connect"}
-      : {chunk: "CodeMirror-merge-r-chunk",
-         start: "CodeMirror-merge-r-chunk-start",
-         end: "CodeMirror-merge-r-chunk-end",
-         insert: "CodeMirror-merge-r-inserted",
-         del: "CodeMirror-merge-r-deleted",
-         connect: "CodeMirror-merge-r-connect"};
+      ? {
+        chunk: "CodeMirror-merge-l-chunk",
+        start: "CodeMirror-merge-l-chunk-start",
+        end: "CodeMirror-merge-l-chunk-end",
+        insert: "CodeMirror-merge-l-inserted",
+        del: "CodeMirror-merge-l-deleted",
+        connect: "CodeMirror-merge-l-connect"
+      }
+      : {
+        chunk: "CodeMirror-merge-r-chunk",
+        start: "CodeMirror-merge-r-chunk-start",
+        end: "CodeMirror-merge-r-chunk-end",
+        insert: "CodeMirror-merge-r-inserted",
+        del: "CodeMirror-merge-r-deleted",
+        connect: "CodeMirror-merge-r-connect"
+      };
   }
 
   DiffView.prototype = {
@@ -50,6 +54,7 @@
     var edit = {from: 0, to: 0, marked: []};
     var orig = {from: 0, to: 0, marked: []};
     var debounceChange;
+
     function update(mode) {
       if (mode == "full") {
         if (dv.svg) clear(dv.svg);
@@ -69,10 +74,12 @@
       }
       drawConnectors(dv);
     }
+
     function set(slow) {
       clearTimeout(debounceChange);
       debounceChange = setTimeout(update, slow == true ? 250 : 100);
     }
+
     function change() {
       if (!dv.diffOutOfDate) {
         dv.diffOutOfDate = true;
@@ -80,6 +87,7 @@
       }
       set(true);
     }
+
     dv.edit.on("change", change);
     dv.orig.on("change", change);
     dv.edit.on("viewportChange", set);
@@ -102,8 +110,14 @@
     if (dv.diffOutOfDate) return false;
     if (!dv.lockScroll) return true;
     var editor, other, now = +new Date;
-    if (type == DIFF_INSERT) { editor = dv.edit; other = dv.orig; }
-    else { editor = dv.orig; other = dv.edit; }
+    if (type == DIFF_INSERT) {
+      editor = dv.edit;
+      other = dv.orig;
+    }
+    else {
+      editor = dv.orig;
+      other = dv.edit;
+    }
     // Don't take action if the position of this editor was recently set
     // (to prevent feedback loops)
     if (editor.state.scrollSetBy == dv && (editor.state.scrollSetAt || 0) + 50 > now) return false;
@@ -137,8 +151,10 @@
   function getOffsets(editor, around) {
     var bot = around.after;
     if (bot == null) bot = editor.lastLine() + 1;
-    return {top: editor.heightAtLine(around.before || 0, "local"),
-            bot: editor.heightAtLine(bot, "local")};
+    return {
+      top: editor.heightAtLine(around.before || 0, "local"),
+      bot: editor.heightAtLine(bot, "local")
+    };
   }
 
   function setScrollLock(dv, val, action) {
@@ -170,7 +186,8 @@
       if (state.from == state.to || vp.from - state.to > 20 || state.from - vp.to > 20) {
         clearMarks(editor, state.marked, classes);
         markChanges(editor, diff, type, state.marked, vp.from, vp.to, classes);
-        state.from = vp.from; state.to = vp.to;
+        state.from = vp.from;
+        state.to = vp.to;
       } else {
         if (vp.from < state.from) {
           markChanges(editor, diff, type, state.marked, vp.from, state.from, classes);
@@ -188,6 +205,7 @@
     var pos = Pos(0, 0);
     var top = Pos(from, 0), bot = editor.clipPos(Pos(to - 1));
     var cls = type == DIFF_DELETE ? classes.del : classes.insert;
+
     function markChunk(start, end) {
       var bfrom = Math.max(from, start), bto = Math.min(to, end);
       for (var i = bfrom; i < bto; ++i) {
@@ -246,23 +264,31 @@
     var sTopEdit = dv.edit.getScrollInfo().top, sTopOrig = dv.orig.getScrollInfo().top;
     iterateChunks(dv.diff, function(topOrig, botOrig, topEdit, botEdit) {
       if (topEdit > vpEdit.to || botEdit < vpEdit.from ||
-          topOrig > vpOrig.to || botOrig < vpOrig.from)
+        topOrig > vpOrig.to || botOrig < vpOrig.from)
         return;
       var topLpx = dv.orig.heightAtLine(topOrig, "local") - sTopOrig, top = topLpx;
       if (dv.svg) {
         var topRpx = dv.edit.heightAtLine(topEdit, "local") - sTopEdit;
-        if (flip) { var tmp = topLpx; topLpx = topRpx; topRpx = tmp; }
+        if (flip) {
+          var tmp = topLpx;
+          topLpx = topRpx;
+          topRpx = tmp;
+        }
         var botLpx = dv.orig.heightAtLine(botOrig, "local") - sTopOrig;
         var botRpx = dv.edit.heightAtLine(botEdit, "local") - sTopEdit;
-        if (flip) { var tmp = botLpx; botLpx = botRpx; botRpx = tmp; }
-        var curveTop = " C " + w/2 + " " + topRpx + " " + w/2 + " " + topLpx + " " + (w + 2) + " " + topLpx;
-        var curveBot = " C " + w/2 + " " + botLpx + " " + w/2 + " " + botRpx + " -1 " + botRpx;
+        if (flip) {
+          var tmp = botLpx;
+          botLpx = botRpx;
+          botRpx = tmp;
+        }
+        var curveTop = " C " + w / 2 + " " + topRpx + " " + w / 2 + " " + topLpx + " " + (w + 2) + " " + topLpx;
+        var curveBot = " C " + w / 2 + " " + botLpx + " " + w / 2 + " " + botRpx + " -1 " + botRpx;
         attrs(dv.svg.appendChild(document.createElementNS(svgNS, "path")),
-              "d", "M -1 " + topRpx + curveTop + " L " + (w + 2) + " " + botLpx + curveBot + " z",
-              "class", dv.classes.connect);
+          "d", "M -1 " + topRpx + curveTop + " L " + (w + 2) + " " + botLpx + curveBot + " z",
+          "class", dv.classes.connect);
       }
       var copy = dv.copyButtons.appendChild(elt("div", dv.type == "left" ? "\u21dd" : "\u21dc",
-                                                "CodeMirror-merge-copy"));
+        "CodeMirror-merge-copy"));
       copy.title = "Revert chunk";
       copy.chunk = {topEdit: topEdit, botEdit: botEdit, topOrig: topOrig, botOrig: botOrig};
       copy.style.top = top + "px";
@@ -272,7 +298,7 @@
   function copyChunk(dv, chunk) {
     if (dv.diffOutOfDate) return;
     dv.edit.replaceRange(dv.orig.getRange(Pos(chunk.topOrig, 0), Pos(chunk.botOrig, 0)),
-                         Pos(chunk.topEdit, 0), Pos(chunk.botEdit, 0));
+      Pos(chunk.topEdit, 0), Pos(chunk.botEdit, 0));
   }
 
   // Merge view, containing 0, 1, or 2 diff views.
@@ -317,8 +343,12 @@
     };
     CodeMirror.on(window, "resize", onResize);
     var resizeInterval = setInterval(function() {
-      for (var p = wrapElt.parentNode; p && p != document.body; p = p.parentNode) {}
-      if (!p) { clearInterval(resizeInterval); CodeMirror.off(window, "resize", onResize); }
+      for (var p = wrapElt.parentNode; p && p != document.body; p = p.parentNode) {
+      }
+      if (!p) {
+        clearInterval(resizeInterval);
+        CodeMirror.off(window, "resize", onResize);
+      }
     }, 5000);
   };
 
@@ -326,7 +356,9 @@
     var lock = dv.lockButton = elt("div", null, "CodeMirror-merge-scrolllock");
     lock.title = "Toggle locked scrolling";
     var lockWrap = elt("div", [lock], "CodeMirror-merge-scrolllock-wrap");
-    CodeMirror.on(lock, "click", function() { setScrollLock(dv, !dv.lockScroll); });
+    CodeMirror.on(lock, "click", function() {
+      setScrollLock(dv, !dv.lockScroll);
+    });
     dv.copyButtons = elt("div", null, "CodeMirror-merge-copybuttons-" + dv.type);
     CodeMirror.on(dv.copyButtons, "click", function(e) {
       var node = e.target || e.srcElement;
@@ -343,9 +375,15 @@
 
   MergeView.prototype = {
     constuctor: MergeView,
-    editor: function() { return this.edit; },
-    rightOriginal: function() { return this.right && this.right.orig; },
-    leftOriginal: function() { return this.left && this.left.orig; },
+    editor: function() {
+      return this.edit;
+    },
+    rightOriginal: function() {
+      return this.right && this.right.orig;
+    },
+    leftOriginal: function() {
+      return this.left && this.left.orig;
+    },
     setShowDifferences: function(val) {
       if (this.right) this.right.setShowDifferences(val);
       if (this.left) this.left.setShowDifferences(val);
@@ -360,6 +398,7 @@
   // Operations on diffs
 
   var dmp = new diff_match_patch();
+
   function getDiff(a, b) {
     var diff = dmp.diff_main(a, b);
     dmp.diff_cleanupSemantic(diff);
@@ -389,7 +428,8 @@
         var cleanToEdit = edit.line + endOff, cleanToOrig = orig.line + endOff;
         if (cleanToEdit > cleanFromEdit) {
           if (i) f(startOrig, cleanFromOrig, startEdit, cleanFromEdit);
-          startEdit = cleanToEdit; startOrig = cleanToOrig;
+          startEdit = cleanToEdit;
+          startOrig = cleanToOrig;
         }
       } else {
         moveOver(tp == DIFF_INSERT ? edit : orig, part[1]);
@@ -423,11 +463,23 @@
       var fromLocal = nInEdit ? fromEdit : fromOrig;
       var toLocal = nInEdit ? toEdit : toOrig;
       if (afterE == null) {
-        if (fromLocal > n) { afterE = fromEdit; afterO = fromOrig; }
-        else if (toLocal > n) { afterE = toEdit; afterO = toOrig; }
+        if (fromLocal > n) {
+          afterE = fromEdit;
+          afterO = fromOrig;
+        }
+        else if (toLocal > n) {
+          afterE = toEdit;
+          afterO = toOrig;
+        }
       }
-      if (toLocal <= n) { beforeE = toEdit; beforeO = toOrig; }
-      else if (fromLocal <= n) { beforeE = fromEdit; beforeO = fromOrig; }
+      if (toLocal <= n) {
+        beforeE = toEdit;
+        beforeO = toOrig;
+      }
+      else if (fromLocal <= n) {
+        beforeE = fromEdit;
+        beforeO = fromOrig;
+      }
     });
     return {edit: {before: beforeE, after: afterE}, orig: {before: beforeO, after: afterO}};
   }
@@ -450,7 +502,7 @@
 
   function attrs(elt) {
     for (var i = 1; i < arguments.length; i += 2)
-      elt.setAttribute(arguments[i], arguments[i+1]);
+      elt.setAttribute(arguments[i], arguments[i + 1]);
   }
 
   function copyObj(obj, target) {
@@ -461,7 +513,7 @@
 
   function moveOver(pos, str, copy, other) {
     var out = copy ? Pos(pos.line, pos.ch) : pos, at = 0;
-    for (;;) {
+    for (; ;) {
       var nl = str.indexOf("\n", at);
       if (nl == -1) break;
       ++out.line;
@@ -473,7 +525,15 @@
     return out;
   }
 
-  function posMin(a, b) { return (a.line - b.line || a.ch - b.ch) < 0 ? a : b; }
-  function posMax(a, b) { return (a.line - b.line || a.ch - b.ch) > 0 ? a : b; }
-  function posEq(a, b) { return a.line == b.line && a.ch == b.ch; }
+  function posMin(a, b) {
+    return (a.line - b.line || a.ch - b.ch) < 0 ? a : b;
+  }
+
+  function posMax(a, b) {
+    return (a.line - b.line || a.ch - b.ch) > 0 ? a : b;
+  }
+
+  function posEq(a, b) {
+    return a.line == b.line && a.ch == b.ch;
+  }
 })();

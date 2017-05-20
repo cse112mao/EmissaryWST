@@ -20,13 +20,13 @@
 
   function charsAround(cm, pos) {
     var str = cm.getRange(CodeMirror.Pos(pos.line, pos.ch - 1),
-                          CodeMirror.Pos(pos.line, pos.ch + 1));
+      CodeMirror.Pos(pos.line, pos.ch + 1));
     return str.length == 2 ? str : null;
   }
 
   function buildKeymap(pairs) {
     var map = {
-      name : "autoCloseBrackets",
+      name: "autoCloseBrackets",
       Backspace: function(cm) {
         if (cm.somethingSelected() || cm.getOption("disableInput")) return CodeMirror.Pass;
         var cur = cm.getCursor(), around = charsAround(cm, cur);
@@ -43,19 +43,22 @@
         var selection = cm.getSelection();
         cm.replaceSelection(left + selection + right);
       }
+
       function maybeOverwrite(cm) {
         var cur = cm.getCursor(), ahead = cm.getRange(cur, CodeMirror.Pos(cur.line, cur.ch + 1));
         if (ahead != right || cm.somethingSelected()) return CodeMirror.Pass;
         else cm.execCommand("goCharRight");
       }
+
       map["'" + left + "'"] = function(cm) {
         if (left == "'" && cm.getTokenAt(cm.getCursor()).type == "comment" ||
-            cm.getOption("disableInput"))
+          cm.getOption("disableInput"))
           return CodeMirror.Pass;
         if (cm.somethingSelected()) return surround(cm);
         if (left == right && maybeOverwrite(cm) != CodeMirror.Pass) return;
         var cur = cm.getCursor(), ahead = CodeMirror.Pos(cur.line, cur.ch + 1);
-        var line = cm.getLine(cur.line), nextChar = line.charAt(cur.ch), curChar = cur.ch > 0 ? line.charAt(cur.ch - 1) : "";
+        var line = cm.getLine(cur.line), nextChar = line.charAt(cur.ch),
+          curChar = cur.ch > 0 ? line.charAt(cur.ch - 1) : "";
         if (left == right && CodeMirror.isWordChar(curChar))
           return CodeMirror.Pass;
         if (line.length == cur.ch || closingBrackets.indexOf(nextChar) >= 0 || SPACE_CHAR_REGEX.test(nextChar))
