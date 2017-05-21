@@ -28,3 +28,4 @@ exclude_paths:
 - client/assets/
 - client/test/
 - server/test/
+- client/neon
