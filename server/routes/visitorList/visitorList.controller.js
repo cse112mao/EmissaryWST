@@ -91,7 +91,7 @@ exports.getCompanyVisitorListReq = function(req, res) {
   var company_id = req.params.id;
   exports.getCompanyVisitorList(company_id, function(err_msg, result) {
     if (err_msg) return res.status(400).json(err_msg);
-    if (result == null) {
+    if (result === null) {
       result = new VisitorList();
       result.visitors = [];
       result.company_id = companyId;
@@ -111,7 +111,7 @@ exports.getCompanyVisitorList = function(company_id, callback) {
     return callback({error: "Please send company id."}, null);
   VisitorList.findOne({company_id: company_id}, function(err, list) {
     if (err) return callback({error: "Getting Visitor List"}, null);
-    if (list == null) {
+    if (list === null) {
       list = new VisitorList();
       list.visitors = [];
       list.company_id = company_id;
@@ -242,7 +242,7 @@ exports.delete = function(list_id, callback) {
   if (!list_id)
     return callback({error: "Please send list id."}, null);
   VisitorList.findOne({_id: list_id}, function(err, list) {
-    if (err || list == null) return callback({error: "Can't find company"}, null);
+    if (err || list === null) return callback({error: "Can't find company"}, null);
     list.visitors = [];
     list.save(function(err) {
       if (err) return callback({error: "Can't save"}, null);
@@ -384,7 +384,7 @@ exports.create = function(param, callback) {
       function(err, list) {
         if (err)
           return callback({error: "an error occured while finding"}, null);
-        if (list == null) {
+        if (list === null) {
           list = new VisitorList();
           list.visitors = [];
           list.company_id = company_id;
