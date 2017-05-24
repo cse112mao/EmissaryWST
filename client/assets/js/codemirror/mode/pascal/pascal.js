@@ -4,9 +4,10 @@ CodeMirror.defineMode("pascal", function() {
     for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
     return obj;
   }
+
   var keywords = words("and array begin case const div do downto else end file for forward integer " +
-                       "boolean char function goto if in label mod nil not of or packed procedure " +
-                       "program record repeat set string then to type until var while with");
+    "boolean char function goto if in label mod nil not of or packed procedure " +
+    "program record repeat set string then to type until var while with");
   var atoms = {"null": true};
 
   var isOperatorChar = /[+\-*&%=<>!?|\/]/;
@@ -53,7 +54,10 @@ CodeMirror.defineMode("pascal", function() {
     return function(stream, state) {
       var escaped = false, next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
+        if (next == quote && !escaped) {
+          end = true;
+          break;
+        }
         escaped = !escaped && next == "\\";
       }
       if (end || !escaped) state.tokenize = null;

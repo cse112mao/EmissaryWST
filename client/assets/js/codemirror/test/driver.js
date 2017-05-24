@@ -1,7 +1,11 @@
 var tests = [], filters = [], allNames = [];
 
-function Failure(why) {this.message = why;}
-Failure.prototype.toString = function() { return this.message; };
+function Failure(why) {
+  this.message = why;
+}
+Failure.prototype.toString = function() {
+  return this.message;
+};
 
 function indexOf(collection, elt) {
   if (collection.indexOf) return collection.indexOf(elt);
@@ -14,7 +18,7 @@ function test(name, run, expectedFail) {
   // Force unique names
   var originalName = name;
   var i = 2; // Second function would be NAME_2
-  while (indexOf(allNames, name) !== -1){
+  while (indexOf(allNames, name) !== -1) {
     name = originalName + "_" + i;
     i++;
   }
@@ -43,11 +47,12 @@ function testCM(name, run, opts, expectedFail) {
 
 function runTests(callback) {
   var totalTime = 0;
+
   function step(i) {
-    if (i === tests.length){
+    if (i === tests.length) {
       running = false;
       return callback("done");
-    } 
+    }
     var test = tests[i], expFail = test.expectedFail, startTime = +new Date;
     if (filters.length) {
       for (var j = 0; j < filters.length; j++) {
@@ -55,7 +60,7 @@ function runTests(callback) {
           break;
         }
       }
-      if (j == filters.length) {      
+      if (j == filters.length) {
         callback("skipped", test.name, message);
         return step(i + 1);
       }
@@ -63,7 +68,7 @@ function runTests(callback) {
     var threw = false;
     try {
       var message = test.func();
-    } catch(e) {
+    } catch (e) {
       threw = true;
       if (expFail) callback("expected", test.name);
       else if (e instanceof Failure) callback("fail", test.name, e.message);
@@ -79,16 +84,19 @@ function runTests(callback) {
     if (!quit) { // Run next test
       var delay = 0;
       totalTime += (+new Date) - startTime;
-      if (totalTime > 500){
+      if (totalTime > 500) {
         totalTime = 0;
         delay = 50;
       }
-      setTimeout(function(){step(i + 1);}, delay);
+      setTimeout(function() {
+        step(i + 1);
+      }, delay);
     } else { // Quit tests
       running = false;
       return null;
     }
   }
+
   step(0);
 }
 
@@ -100,7 +108,10 @@ function eq(a, b, msg) {
   if (a != b) throw new Failure(label(a + " != " + b, msg));
 }
 function eqPos(a, b, msg) {
-  function str(p) { return "{line:" + p.line + ",ch:" + p.ch + "}"; }
+  function str(p) {
+    return "{line:" + p.line + ",ch:" + p.ch + "}";
+  }
+
   if (a == b) return;
   if (a == null) throw new Failure(label("comparing null to " + str(b), msg));
   if (b == null) throw new Failure(label("comparing " + str(a) + " to null", msg));

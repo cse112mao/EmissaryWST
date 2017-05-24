@@ -14,31 +14,44 @@
       tt.style.top = Math.max(0, e.clientY - tt.offsetHeight - 5) + "px";
       tt.style.left = (e.clientX + 5) + "px";
     }
+
     CodeMirror.on(document, "mousemove", position);
     position(e);
     if (tt.style.opacity != null) tt.style.opacity = 1;
     return tt;
   }
+
   function rm(elt) {
     if (elt.parentNode) elt.parentNode.removeChild(elt);
   }
+
   function hideTooltip(tt) {
     if (!tt.parentNode) return;
     if (tt.style.opacity == null) rm(tt);
     tt.style.opacity = 0;
-    setTimeout(function() { rm(tt); }, 600);
+    setTimeout(function() {
+      rm(tt);
+    }, 600);
   }
 
   function showTooltipFor(e, content, node) {
     var tooltip = showTooltip(e, content);
+
     function hide() {
       CodeMirror.off(node, "mouseout", hide);
-      if (tooltip) { hideTooltip(tooltip); tooltip = null; }
+      if (tooltip) {
+        hideTooltip(tooltip);
+        tooltip = null;
+      }
     }
+
     var poll = setInterval(function() {
-      if (tooltip) for (var n = node;; n = n.parentNode) {
+      if (tooltip) for (var n = node; ; n = n.parentNode) {
         if (n == document.body) return;
-        if (!n) { hide(); break; }
+        if (!n) {
+          hide();
+          break;
+        }
       }
       if (!tooltip) return clearInterval(poll);
     }, 400);
@@ -50,7 +63,9 @@
     this.options = options;
     this.timeout = null;
     this.hasGutter = hasGutter;
-    this.onMouseOver = function(e) { onMouseOver(cm, e); };
+    this.onMouseOver = function(e) {
+      onMouseOver(cm, e);
+    };
   }
 
   function parseOptions(cm, options) {
@@ -145,7 +160,7 @@
 
       if (state.hasGutter)
         cm.setGutterMarker(line, GUTTER_ID, makeMarker(tipLabel, maxSeverity, anns.length > 1,
-                                                       state.options.tooltips));
+          state.options.tooltips));
     }
     if (options.onUpdateLinting) options.onUpdateLinting(annotationsNotSorted, annotations, cm);
   }
@@ -153,7 +168,9 @@
   function onChange(cm) {
     var state = cm.state.lint;
     clearTimeout(state.timeout);
-    state.timeout = setTimeout(function(){startLinting(cm);}, state.options.delay || 500);
+    state.timeout = setTimeout(function() {
+      startLinting(cm);
+    }, state.options.delay || 500);
   }
 
   function popupSpanTooltip(ann, e) {
@@ -169,8 +186,10 @@
   function onMouseOver(cm, e) {
     if (!/\bCodeMirror-lint-mark-/.test((e.target || e.srcElement).className)) return;
     for (var i = 0; i < nearby.length; i += 2) {
-      var spans = cm.findMarksAt(cm.coordsChar({left: e.clientX + nearby[i],
-                                                top: e.clientY + nearby[i + 1]}));
+      var spans = cm.findMarksAt(cm.coordsChar({
+        left: e.clientX + nearby[i],
+        top: e.clientY + nearby[i + 1]
+      }));
       for (var j = 0; j < spans.length; ++j) {
         var span = spans[j], ann = span.__annotation;
         if (ann) return popupSpanTooltip(ann, e);

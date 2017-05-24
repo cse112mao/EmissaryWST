@@ -14,7 +14,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     scala: "text/x-scala"
   };
 
-  var getMode = (function () {
+  var getMode = (function() {
     var i, modes = {}, mimes = {}, mime;
 
     var list = [];
@@ -37,7 +37,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         modes[a] = aliases[a];
     }
 
-    return function (lang) {
+    return function(lang) {
       return modes[lang] ? CodeMirror.getMode(cmCfg, modes[lang]) : null;
     };
   }());
@@ -64,29 +64,29 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
   var codeDepth = 0;
 
-  var header   = 'header'
-  ,   code     = 'comment'
-  ,   quote    = 'quote'
-  ,   list1    = 'variable-2'
-  ,   list2    = 'variable-3'
-  ,   list3    = 'keyword'
-  ,   hr       = 'hr'
-  ,   image    = 'tag'
-  ,   formatting = 'formatting'
-  ,   linkinline = 'link'
-  ,   linkemail = 'link'
-  ,   linktext = 'link'
-  ,   linkhref = 'string'
-  ,   em       = 'em'
-  ,   strong   = 'strong';
+  var header = 'header'
+    , code = 'comment'
+    , quote = 'quote'
+    , list1 = 'variable-2'
+    , list2 = 'variable-3'
+    , list3 = 'keyword'
+    , hr = 'hr'
+    , image = 'tag'
+    , formatting = 'formatting'
+    , linkinline = 'link'
+    , linkemail = 'link'
+    , linktext = 'link'
+    , linkhref = 'string'
+    , em = 'em'
+    , strong = 'strong';
 
   var hrRE = /^([*\-=_])(?:\s*\1){2,}\s*$/
-  ,   ulRE = /^[*\-+]\s+/
-  ,   olRE = /^[0-9]+\.\s+/
-  ,   taskListRE = /^\[(x| )\](?=\s)/ // Must follow ulRE or olRE
-  ,   atxHeaderRE = /^#+/
-  ,   setextHeaderRE = /^(?:\={1,}|-{1,})$/
-  ,   textRE = /^[^#!\[\]*_\\<>` "'(]+/;
+    , ulRE = /^[*\-+]\s+/
+    , olRE = /^[0-9]+\.\s+/
+    , taskListRE = /^\[(x| )\](?=\s)/ // Must follow ulRE or olRE
+    , atxHeaderRE = /^#+/
+    , setextHeaderRE = /^(?:\={1,}|-{1,})$/
+    , textRE = /^[^#!\[\]*_\\<>` "'(]+/;
 
   function switchInline(stream, state, f) {
     state.f = state.inline = f;
@@ -200,7 +200,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   function htmlBlock(stream, state) {
     var style = htmlMode.token(stream, state.htmlState);
     if ((htmlFound && !state.htmlState.tagName && !state.htmlState.context) ||
-        (state.md_inside && stream.current().indexOf(">") > -1)) {
+      (state.md_inside && stream.current().indexOf(">") > -1)) {
       state.f = inlineNormal;
       state.block = blockNormal;
       state.htmlState = null;
@@ -268,14 +268,25 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       return styles.length ? styles.join(' ') : null;
     }
 
-    if (state.strong) { styles.push(strong); }
-    if (state.em) { styles.push(em); }
+    if (state.strong) {
+      styles.push(strong);
+    }
+    if (state.em) {
+      styles.push(em);
+    }
 
-    if (state.linkText) { styles.push(linktext); }
+    if (state.linkText) {
+      styles.push(linktext);
+    }
 
-    if (state.code) { styles.push(code); }
+    if (state.code) {
+      styles.push(code);
+    }
 
-    if (state.header) { styles.push(header); styles.push(header + state.header); }
+    if (state.header) {
+      styles.push(header);
+      styles.push(header + state.header);
+    }
 
     if (state.quote) {
       styles.push(quote);
@@ -365,7 +376,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       if (ch === '(') {
         matchCh = ')';
       }
-      matchCh = (matchCh+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+      matchCh = (matchCh + '').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
       var regex = '^\\s*(?:[^' + matchCh + '\\\\]+|\\\\\\\\|\\\\.)' + matchCh;
       if (stream.match(new RegExp(regex), true)) {
         return linkhref;
@@ -420,7 +431,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.f = state.inline = linkInline;
       if (modeCfg.highlightFormatting) state.formatting = "link";
       var type = getType(state);
-      if (type){
+      if (type) {
         type += " ";
       } else {
         type = "";
@@ -432,7 +443,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.f = state.inline = linkInline;
       if (modeCfg.highlightFormatting) state.formatting = "link";
       var type = getType(state);
-      if (type){
+      if (type) {
         type += " ";
       } else {
         type = "";
@@ -442,7 +453,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
     if (ch === '<' && stream.match(/^\w/, false)) {
       if (stream.string.indexOf(">") != -1) {
-        var atts = stream.string.substring(1,stream.string.indexOf(">"));
+        var atts = stream.string.substring(1, stream.string.indexOf(">"));
         if (/markdown\s*=\s*('|"){0,1}1('|"){0,1}/.test(atts)) {
           state.md_inside = true;
         }
@@ -519,7 +530,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
       state.f = state.inline = inlineNormal;
       if (modeCfg.highlightFormatting) state.formatting = "link";
       var type = getType(state);
-      if (type){
+      if (type) {
         type += " ";
       } else {
         type = "";
@@ -534,7 +545,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
   function linkHref(stream, state) {
     // Check if space, and return NULL if so (to avoid marking the space)
-    if(stream.eatSpace()){
+    if (stream.eatSpace()) {
       return null;
     }
     var ch = stream.next();
@@ -595,7 +606,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
 
   function footnoteUrl(stream, state) {
     // Check if space, and return NULL if so (to avoid marking the space)
-    if(stream.eatSpace()){
+    if (stream.eatSpace()) {
       return null;
     }
     // Match URL
@@ -611,10 +622,11 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   }
 
   var savedInlineRE = [];
+
   function inlineRE(endChar) {
     if (!savedInlineRE[endChar]) {
       // Escape endChar for RegExp (taken from http://stackoverflow.com/a/494122/526741)
-      endChar = (endChar+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+      endChar = (endChar + '').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
       // Match any non-endChar, escaped character, as well as the closing
       // endChar.
       savedInlineRE[endChar] = new RegExp('^(?:[^\\\\]|\\\\.)*?(' + endChar + ')');

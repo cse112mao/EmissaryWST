@@ -1,4 +1,4 @@
-(function () {
+(function() {
   "use strict";
 
   function forEach(arr, f) {
@@ -24,8 +24,10 @@
     // If it's not a 'word-style' token, ignore the token.
 
     if (!/^[\w$_]*$/.test(token.string)) {
-        token = tprop = {start: cur.ch, end: cur.ch, string: "", state: token.state,
-                         className: token.string == ":" ? "pig-type" : null};
+      token = tprop = {
+        start: cur.ch, end: cur.ch, string: "", state: token.state,
+        className: token.string == ":" ? "pig-type" : null
+      };
     }
 
     if (!context) var context = [];
@@ -34,26 +36,31 @@
     var completionList = getCompletions(token, context);
     completionList = completionList.sort();
     //prevent autocomplete for last word, instead show dropdown with one word
-    if(completionList.length == 1) {
+    if (completionList.length == 1) {
       completionList.push(" ");
     }
 
-    return {list: completionList,
-            from: CodeMirror.Pos(cur.line, token.start),
-            to: CodeMirror.Pos(cur.line, token.end)};
+    return {
+      list: completionList,
+      from: CodeMirror.Pos(cur.line, token.start),
+      to: CodeMirror.Pos(cur.line, token.end)
+    };
   }
 
   function pigHint(editor) {
-    return scriptHint(editor, pigKeywordsU, function (e, cur) {return e.getTokenAt(cur);});
+    return scriptHint(editor, pigKeywordsU, function(e, cur) {
+      return e.getTokenAt(cur);
+    });
   }
+
   CodeMirror.pigHint = pigHint; // deprecated
   CodeMirror.registerHelper("hint", "pig", pigHint);
 
   var pigKeywords = "VOID IMPORT RETURNS DEFINE LOAD FILTER FOREACH ORDER CUBE DISTINCT COGROUP "
-  + "JOIN CROSS UNION SPLIT INTO IF OTHERWISE ALL AS BY USING INNER OUTER ONSCHEMA PARALLEL "
-  + "PARTITION GROUP AND OR NOT GENERATE FLATTEN ASC DESC IS STREAM THROUGH STORE MAPREDUCE "
-  + "SHIP CACHE INPUT OUTPUT STDERROR STDIN STDOUT LIMIT SAMPLE LEFT RIGHT FULL EQ GT LT GTE LTE "
-  + "NEQ MATCHES TRUE FALSE";
+    + "JOIN CROSS UNION SPLIT INTO IF OTHERWISE ALL AS BY USING INNER OUTER ONSCHEMA PARALLEL "
+    + "PARTITION GROUP AND OR NOT GENERATE FLATTEN ASC DESC IS STREAM THROUGH STORE MAPREDUCE "
+    + "SHIP CACHE INPUT OUTPUT STDERROR STDIN STDOUT LIMIT SAMPLE LEFT RIGHT FULL EQ GT LT GTE LTE "
+    + "NEQ MATCHES TRUE FALSE";
   var pigKeywordsU = pigKeywords.split(" ");
   var pigKeywordsL = pigKeywords.toLowerCase().split(" ");
 
@@ -62,15 +69,15 @@
   var pigTypesL = pigTypes.toLowerCase().split(" ");
 
   var pigBuiltins = "ABS ACOS ARITY ASIN ATAN AVG BAGSIZE BINSTORAGE BLOOM BUILDBLOOM CBRT CEIL "
-  + "CONCAT COR COS COSH COUNT COUNT_STAR COV CONSTANTSIZE CUBEDIMENSIONS DIFF DISTINCT DOUBLEABS "
-  + "DOUBLEAVG DOUBLEBASE DOUBLEMAX DOUBLEMIN DOUBLEROUND DOUBLESUM EXP FLOOR FLOATABS FLOATAVG "
-  + "FLOATMAX FLOATMIN FLOATROUND FLOATSUM GENERICINVOKER INDEXOF INTABS INTAVG INTMAX INTMIN "
-  + "INTSUM INVOKEFORDOUBLE INVOKEFORFLOAT INVOKEFORINT INVOKEFORLONG INVOKEFORSTRING INVOKER "
-  + "ISEMPTY JSONLOADER JSONMETADATA JSONSTORAGE LAST_INDEX_OF LCFIRST LOG LOG10 LOWER LONGABS "
-  + "LONGAVG LONGMAX LONGMIN LONGSUM MAX MIN MAPSIZE MONITOREDUDF NONDETERMINISTIC OUTPUTSCHEMA  "
-  + "PIGSTORAGE PIGSTREAMING RANDOM REGEX_EXTRACT REGEX_EXTRACT_ALL REPLACE ROUND SIN SINH SIZE "
-  + "SQRT STRSPLIT SUBSTRING SUM STRINGCONCAT STRINGMAX STRINGMIN STRINGSIZE TAN TANH TOBAG "
-  + "TOKENIZE TOMAP TOP TOTUPLE TRIM TEXTLOADER TUPLESIZE UCFIRST UPPER UTF8STORAGECONVERTER";
+    + "CONCAT COR COS COSH COUNT COUNT_STAR COV CONSTANTSIZE CUBEDIMENSIONS DIFF DISTINCT DOUBLEABS "
+    + "DOUBLEAVG DOUBLEBASE DOUBLEMAX DOUBLEMIN DOUBLEROUND DOUBLESUM EXP FLOOR FLOATABS FLOATAVG "
+    + "FLOATMAX FLOATMIN FLOATROUND FLOATSUM GENERICINVOKER INDEXOF INTABS INTAVG INTMAX INTMIN "
+    + "INTSUM INVOKEFORDOUBLE INVOKEFORFLOAT INVOKEFORINT INVOKEFORLONG INVOKEFORSTRING INVOKER "
+    + "ISEMPTY JSONLOADER JSONMETADATA JSONSTORAGE LAST_INDEX_OF LCFIRST LOG LOG10 LOWER LONGABS "
+    + "LONGAVG LONGMAX LONGMIN LONGSUM MAX MIN MAPSIZE MONITOREDUDF NONDETERMINISTIC OUTPUTSCHEMA  "
+    + "PIGSTORAGE PIGSTREAMING RANDOM REGEX_EXTRACT REGEX_EXTRACT_ALL REPLACE ROUND SIN SINH SIZE "
+    + "SQRT STRSPLIT SUBSTRING SUM STRINGCONCAT STRINGMAX STRINGMIN STRINGSIZE TAN TANH TOBAG "
+    + "TOKENIZE TOMAP TOP TOTUPLE TRIM TEXTLOADER TUPLESIZE UCFIRST UPPER UTF8STORAGECONVERTER";
   var pigBuiltinsU = pigBuiltins.split(" ").join("() ").split(" ");
   var pigBuiltinsL = pigBuiltins.toLowerCase().split(" ").join("() ").split(" ");
   var pigBuiltinsC = ("BagSize BinStorage Bloom BuildBloom ConstantSize CubeDimensions DoubleAbs "
@@ -83,12 +90,13 @@
 
   function getCompletions(token, context) {
     var found = [], start = token.string;
+
     function maybeAdd(str) {
       if (str.lastIndexOf(start, 0) == 0 && !arrayContains(found, str)) found.push(str);
     }
 
     function gatherCompletions(obj) {
-      if(obj == ":") {
+      if (obj == ":") {
         forEach(pigTypesL, maybeAdd);
       }
       else {
@@ -108,9 +116,9 @@
       var obj = context.pop(), base;
 
       if (obj.type == "variable")
-          base = obj.string;
-      else if(obj.type == "variable-3")
-          base = ":" + obj.string;
+        base = obj.string;
+      else if (obj.type == "variable-3")
+        base = ":" + obj.string;
 
       while (base != null && context.length)
         base = base[context.pop().string];

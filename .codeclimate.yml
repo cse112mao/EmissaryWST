@@ -3,7 +3,7 @@ engines:
   csslint:
     enabled: true
   duplication:
-    enabled: true
+    enabled: false 
     config:
       languages:
       - ruby
@@ -28,3 +28,4 @@ exclude_paths:
 - client/assets/
 - client/test/
 - server/test/
+- client/neon

@@ -18,7 +18,7 @@ describe('Product Service', function() {
         .respond(200, {name: 'product one'});
     });
 
-    afterEach(function(){
+    afterEach(function() {
       http.verifyNoOutstandingExpectation();
       http.verifyNoOutstandingRequest();
     });

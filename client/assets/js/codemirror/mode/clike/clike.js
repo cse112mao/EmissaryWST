@@ -1,13 +1,13 @@
 CodeMirror.defineMode("clike", function(config, parserConfig) {
   var indentUnit = config.indentUnit,
-      statementIndentUnit = parserConfig.statementIndentUnit || indentUnit,
-      dontAlignCalls = parserConfig.dontAlignCalls,
-      keywords = parserConfig.keywords || {},
-      builtin = parserConfig.builtin || {},
-      blockKeywords = parserConfig.blockKeywords || {},
-      atoms = parserConfig.atoms || {},
-      hooks = parserConfig.hooks || {},
-      multiLineStrings = parserConfig.multiLineStrings;
+    statementIndentUnit = parserConfig.statementIndentUnit || indentUnit,
+    dontAlignCalls = parserConfig.dontAlignCalls,
+    keywords = parserConfig.keywords || {},
+    builtin = parserConfig.builtin || {},
+    blockKeywords = parserConfig.blockKeywords || {},
+    atoms = parserConfig.atoms || {},
+    hooks = parserConfig.hooks || {},
+    multiLineStrings = parserConfig.multiLineStrings;
   var isOperatorChar = /[+\-*&%=<>!?|\/]/;
 
   var curPunc;
@@ -62,7 +62,10 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     return function(stream, state) {
       var escaped = false, next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
+        if (next == quote && !escaped) {
+          end = true;
+          break;
+        }
         escaped = !escaped && next == "\\";
       }
       if (end || !(escaped || multiLineStrings))
@@ -90,12 +93,14 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     this.align = align;
     this.prev = prev;
   }
+
   function pushContext(state, col, type) {
     var indent = state.indented;
     if (state.context && state.context.type == "statement")
       indent = state.context.indented;
     return state.context = new Context(indent, col, type, null, state.context);
   }
+
   function popContext(state) {
     var t = state.context.type;
     if (t == ")" || t == "]" || t == "}")
@@ -169,13 +174,14 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
     return obj;
   }
+
   var cKeywords = "auto if break int case long char register continue return default short do sizeof " +
     "double static else struct entry switch extern typedef float union for unsigned " +
     "goto while enum void const signed volatile";
 
   function cppHook(stream, state) {
     if (!state.startOfLine) return false;
-    for (;;) {
+    for (; ;) {
       if (stream.skipTo("\\")) {
         stream.next();
         if (stream.eol()) {
@@ -205,10 +211,12 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
   function def(mimes, mode) {
     var words = [];
+
     function add(obj) {
       if (obj) for (var prop in obj) if (obj.hasOwnProperty(prop))
         words.push(prop);
     }
+
     add(mode.keywords);
     add(mode.builtin);
     add(mode.atoms);
@@ -233,9 +241,9 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
   def(["text/x-c++src", "text/x-c++hdr"], {
     name: "clike",
     keywords: words(cKeywords + " asm dynamic_cast namespace reinterpret_cast try bool explicit new " +
-                    "static_cast typeid catch operator template typename class friend private " +
-                    "this using const_cast inline public throw virtual delete mutable protected " +
-                    "wchar_t"),
+      "static_cast typeid catch operator template typename class friend private " +
+      "this using const_cast inline public throw virtual delete mutable protected " +
+      "wchar_t"),
     blockKeywords: words("catch class do else finally for if struct switch try while"),
     atoms: words("true false null"),
     hooks: {"#": cppHook},
@@ -244,10 +252,10 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
   CodeMirror.defineMIME("text/x-java", {
     name: "clike",
     keywords: words("abstract assert boolean break byte case catch char class const continue default " +
-                    "do double else enum extends final finally float for goto if implements import " +
-                    "instanceof int interface long native new package private protected public " +
-                    "return short static strictfp super switch synchronized this throw throws transient " +
-                    "try void volatile while"),
+      "do double else enum extends final finally float for goto if implements import " +
+      "instanceof int interface long native new package private protected public " +
+      "return short static strictfp super switch synchronized this throw throws transient " +
+      "try void volatile while"),
     blockKeywords: words("catch class do else finally for if switch try while"),
     atoms: words("true false null"),
     hooks: {
@@ -261,17 +269,17 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
   CodeMirror.defineMIME("text/x-csharp", {
     name: "clike",
     keywords: words("abstract as base break case catch checked class const continue" +
-                    " default delegate do else enum event explicit extern finally fixed for" +
-                    " foreach goto if implicit in interface internal is lock namespace new" +
-                    " operator out override params private protected public readonly ref return sealed" +
-                    " sizeof stackalloc static struct switch this throw try typeof unchecked" +
-                    " unsafe using virtual void volatile while add alias ascending descending dynamic from get" +
-                    " global group into join let orderby partial remove select set value var yield"),
+      " default delegate do else enum event explicit extern finally fixed for" +
+      " foreach goto if implicit in interface internal is lock namespace new" +
+      " operator out override params private protected public readonly ref return sealed" +
+      " sizeof stackalloc static struct switch this throw try typeof unchecked" +
+      " unsafe using virtual void volatile while add alias ascending descending dynamic from get" +
+      " global group into join let orderby partial remove select set value var yield"),
     blockKeywords: words("catch class do else finally for foreach if struct switch try while"),
     builtin: words("Boolean Byte Char DateTime DateTimeOffset Decimal Double" +
-                    " Guid Int16 Int32 Int64 Object SByte Single String TimeSpan UInt16 UInt32" +
-                    " UInt64 bool byte char decimal double short int long object"  +
-                    " sbyte float string ushort uint ulong"),
+      " Guid Int16 Int32 Int64 Object SByte Single String TimeSpan UInt16 UInt32" +
+      " UInt64 bool byte char decimal double short int long object" +
+      " sbyte float string ushort uint ulong"),
     atoms: words("true false null"),
     hooks: {
       "@": function(stream, state) {
@@ -287,7 +295,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
   CodeMirror.defineMIME("text/x-scala", {
     name: "clike",
     keywords: words(
-
       /* scala */
       "abstract case catch class def do else extends false final finally for forSome if " +
       "implicit import lazy match new null object override package private protected return " +
@@ -309,8 +316,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
       "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
       "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void"
-
-
     ),
     blockKeywords: words("catch class do else finally for forSome if match switch try while"),
     atoms: words("true false null"),
@@ -324,57 +329,57 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
   def(["x-shader/x-vertex", "x-shader/x-fragment"], {
     name: "clike",
     keywords: words("float int bool void " +
-                    "vec2 vec3 vec4 ivec2 ivec3 ivec4 bvec2 bvec3 bvec4 " +
-                    "mat2 mat3 mat4 " +
-                    "sampler1D sampler2D sampler3D samplerCube " +
-                    "sampler1DShadow sampler2DShadow" +
-                    "const attribute uniform varying " +
-                    "break continue discard return " +
-                    "for while do if else struct " +
-                    "in out inout"),
+      "vec2 vec3 vec4 ivec2 ivec3 ivec4 bvec2 bvec3 bvec4 " +
+      "mat2 mat3 mat4 " +
+      "sampler1D sampler2D sampler3D samplerCube " +
+      "sampler1DShadow sampler2DShadow" +
+      "const attribute uniform varying " +
+      "break continue discard return " +
+      "for while do if else struct " +
+      "in out inout"),
     blockKeywords: words("for while do if else struct"),
     builtin: words("radians degrees sin cos tan asin acos atan " +
-                    "pow exp log exp2 sqrt inversesqrt " +
-                    "abs sign floor ceil fract mod min max clamp mix step smootstep " +
-                    "length distance dot cross normalize ftransform faceforward " +
-                    "reflect refract matrixCompMult " +
-                    "lessThan lessThanEqual greaterThan greaterThanEqual " +
-                    "equal notEqual any all not " +
-                    "texture1D texture1DProj texture1DLod texture1DProjLod " +
-                    "texture2D texture2DProj texture2DLod texture2DProjLod " +
-                    "texture3D texture3DProj texture3DLod texture3DProjLod " +
-                    "textureCube textureCubeLod " +
-                    "shadow1D shadow2D shadow1DProj shadow2DProj " +
-                    "shadow1DLod shadow2DLod shadow1DProjLod shadow2DProjLod " +
-                    "dFdx dFdy fwidth " +
-                    "noise1 noise2 noise3 noise4"),
+      "pow exp log exp2 sqrt inversesqrt " +
+      "abs sign floor ceil fract mod min max clamp mix step smootstep " +
+      "length distance dot cross normalize ftransform faceforward " +
+      "reflect refract matrixCompMult " +
+      "lessThan lessThanEqual greaterThan greaterThanEqual " +
+      "equal notEqual any all not " +
+      "texture1D texture1DProj texture1DLod texture1DProjLod " +
+      "texture2D texture2DProj texture2DLod texture2DProjLod " +
+      "texture3D texture3DProj texture3DLod texture3DProjLod " +
+      "textureCube textureCubeLod " +
+      "shadow1D shadow2D shadow1DProj shadow2DProj " +
+      "shadow1DLod shadow2DLod shadow1DProjLod shadow2DProjLod " +
+      "dFdx dFdy fwidth " +
+      "noise1 noise2 noise3 noise4"),
     atoms: words("true false " +
-                "gl_FragColor gl_SecondaryColor gl_Normal gl_Vertex " +
-                "gl_MultiTexCoord0 gl_MultiTexCoord1 gl_MultiTexCoord2 gl_MultiTexCoord3 " +
-                "gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6 gl_MultiTexCoord7 " +
-                "gl_FogCoord " +
-                "gl_Position gl_PointSize gl_ClipVertex " +
-                "gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor " +
-                "gl_TexCoord gl_FogFragCoord " +
-                "gl_FragCoord gl_FrontFacing " +
-                "gl_FragColor gl_FragData gl_FragDepth " +
-                "gl_ModelViewMatrix gl_ProjectionMatrix gl_ModelViewProjectionMatrix " +
-                "gl_TextureMatrix gl_NormalMatrix gl_ModelViewMatrixInverse " +
-                "gl_ProjectionMatrixInverse gl_ModelViewProjectionMatrixInverse " +
-                "gl_TexureMatrixTranspose gl_ModelViewMatrixInverseTranspose " +
-                "gl_ProjectionMatrixInverseTranspose " +
-                "gl_ModelViewProjectionMatrixInverseTranspose " +
-                "gl_TextureMatrixInverseTranspose " +
-                "gl_NormalScale gl_DepthRange gl_ClipPlane " +
-                "gl_Point gl_FrontMaterial gl_BackMaterial gl_LightSource gl_LightModel " +
-                "gl_FrontLightModelProduct gl_BackLightModelProduct " +
-                "gl_TextureColor gl_EyePlaneS gl_EyePlaneT gl_EyePlaneR gl_EyePlaneQ " +
-                "gl_FogParameters " +
-                "gl_MaxLights gl_MaxClipPlanes gl_MaxTextureUnits gl_MaxTextureCoords " +
-                "gl_MaxVertexAttribs gl_MaxVertexUniformComponents gl_MaxVaryingFloats " +
-                "gl_MaxVertexTextureImageUnits gl_MaxTextureImageUnits " +
-                "gl_MaxFragmentUniformComponents gl_MaxCombineTextureImageUnits " +
-                "gl_MaxDrawBuffers"),
+      "gl_FragColor gl_SecondaryColor gl_Normal gl_Vertex " +
+      "gl_MultiTexCoord0 gl_MultiTexCoord1 gl_MultiTexCoord2 gl_MultiTexCoord3 " +
+      "gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6 gl_MultiTexCoord7 " +
+      "gl_FogCoord " +
+      "gl_Position gl_PointSize gl_ClipVertex " +
+      "gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor " +
+      "gl_TexCoord gl_FogFragCoord " +
+      "gl_FragCoord gl_FrontFacing " +
+      "gl_FragColor gl_FragData gl_FragDepth " +
+      "gl_ModelViewMatrix gl_ProjectionMatrix gl_ModelViewProjectionMatrix " +
+      "gl_TextureMatrix gl_NormalMatrix gl_ModelViewMatrixInverse " +
+      "gl_ProjectionMatrixInverse gl_ModelViewProjectionMatrixInverse " +
+      "gl_TexureMatrixTranspose gl_ModelViewMatrixInverseTranspose " +
+      "gl_ProjectionMatrixInverseTranspose " +
+      "gl_ModelViewProjectionMatrixInverseTranspose " +
+      "gl_TextureMatrixInverseTranspose " +
+      "gl_NormalScale gl_DepthRange gl_ClipPlane " +
+      "gl_Point gl_FrontMaterial gl_BackMaterial gl_LightSource gl_LightModel " +
+      "gl_FrontLightModelProduct gl_BackLightModelProduct " +
+      "gl_TextureColor gl_EyePlaneS gl_EyePlaneT gl_EyePlaneR gl_EyePlaneQ " +
+      "gl_FogParameters " +
+      "gl_MaxLights gl_MaxClipPlanes gl_MaxTextureUnits gl_MaxTextureCoords " +
+      "gl_MaxVertexAttribs gl_MaxVertexUniformComponents gl_MaxVaryingFloats " +
+      "gl_MaxVertexTextureImageUnits gl_MaxTextureImageUnits " +
+      "gl_MaxFragmentUniformComponents gl_MaxCombineTextureImageUnits " +
+      "gl_MaxDrawBuffers"),
     hooks: {"#": cppHook},
     modeProps: {fold: ["brace", "include"]}
   });

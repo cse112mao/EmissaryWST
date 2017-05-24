@@ -24,12 +24,16 @@
   });
 
   function onCursorActivity(cm) {
-    cm.operation(function() { update(cm); });
+    cm.operation(function() {
+      update(cm);
+    });
   }
 
   function onChange(cm) {
     if (cm.state.markedSelection.length)
-      cm.operation(function() { clear(cm); });
+      cm.operation(function() {
+        clear(cm);
+      });
   }
 
   var CHUNK_SIZE = 8;
@@ -43,7 +47,7 @@
     if (cmp(from, to) == 0) return;
     var array = cm.state.markedSelection;
     var cls = cm.state.markedSelectionStyle;
-    for (var line = from.line;;) {
+    for (var line = from.line; ;) {
       var start = line == from.line ? from : Pos(line, 0);
       var endLine = line + CHUNK_SIZE, atEnd = endLine >= to.line;
       var end = atEnd ? to : Pos(endLine, 0);
@@ -76,7 +80,7 @@
 
     var coverStart = array[0].find(), coverEnd = array[array.length - 1].find();
     if (!coverStart || !coverEnd || to.line - from.line < CHUNK_SIZE ||
-        cmp(from, coverEnd.to) >= 0 || cmp(to, coverStart.from) <= 0)
+      cmp(from, coverEnd.to) >= 0 || cmp(to, coverStart.from) <= 0)
       return reset(cm);
 
     while (cmp(from, coverStart.from) > 0) {

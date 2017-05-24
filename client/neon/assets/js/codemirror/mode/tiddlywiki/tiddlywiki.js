@@ -1,35 +1,36 @@
 /***
-    |''Name''|tiddlywiki.js|
-    |''Description''|Enables TiddlyWikiy syntax highlighting using CodeMirror|
-    |''Author''|PMario|
-    |''Version''|0.1.7|
-    |''Status''|''stable''|
-    |''Source''|[[GitHub|https://github.com/pmario/CodeMirror2/blob/tw-syntax/mode/tiddlywiki]]|
-    |''Documentation''|http://codemirror.tiddlyspace.com/|
-    |''License''|[[MIT License|http://www.opensource.org/licenses/mit-license.php]]|
-    |''CoreVersion''|2.5.0|
-    |''Requires''|codemirror.js|
-    |''Keywords''|syntax highlighting color code mirror codemirror|
-    ! Info
-    CoreVersion parameter is needed for TiddlyWiki only!
-***/
+ |''Name''|tiddlywiki.js|
+ |''Description''|Enables TiddlyWikiy syntax highlighting using CodeMirror|
+ |''Author''|PMario|
+ |''Version''|0.1.7|
+ |''Status''|''stable''|
+ |''Source''|[[GitHub|https://github.com/pmario/CodeMirror2/blob/tw-syntax/mode/tiddlywiki]]|
+ |''Documentation''|http://codemirror.tiddlyspace.com/|
+ |''License''|[[MIT License|http://www.opensource.org/licenses/mit-license.php]]|
+ |''CoreVersion''|2.5.0|
+ |''Requires''|codemirror.js|
+ |''Keywords''|syntax highlighting color code mirror codemirror|
+ ! Info
+ CoreVersion parameter is needed for TiddlyWiki only!
+ ***/
 //{{{
-CodeMirror.defineMode("tiddlywiki", function () {
+CodeMirror.defineMode("tiddlywiki", function() {
   // Tokenizer
   var textwords = {};
 
-  var keywords = function () {
+  var keywords = function() {
     function kw(type) {
-      return { type: type, style: "macro"};
+      return {type: type, style: "macro"};
     }
+
     return {
       "allTags": kw('allTags'), "closeAll": kw('closeAll'), "list": kw('list'),
       "newJournal": kw('newJournal'), "newTiddler": kw('newTiddler'),
       "permaview": kw('permaview'), "saveChanges": kw('saveChanges'),
-      "search": kw('search'), "slider": kw('slider'),   "tabs": kw('tabs'),
-      "tag": kw('tag'), "tagging": kw('tagging'),       "tags": kw('tags'),
+      "search": kw('search'), "slider": kw('slider'), "tabs": kw('tabs'),
+      "tag": kw('tag'), "tagging": kw('tagging'), "tags": kw('tags'),
       "tiddler": kw('tiddler'), "timeline": kw('timeline'),
-      "today": kw('today'), "version": kw('version'),   "option": kw('option'),
+      "today": kw('today'), "version": kw('version'), "option": kw('option'),
 
       "with": kw('with'),
       "filter": kw('filter')
@@ -37,20 +38,20 @@ CodeMirror.defineMode("tiddlywiki", function () {
   }();
 
   var isSpaceName = /[\w_\-]/i,
-  reHR = /^\-\-\-\-+$/,                                 // <hr>
-  reWikiCommentStart = /^\/\*\*\*$/,            // /***
-  reWikiCommentStop = /^\*\*\*\/$/,             // ***/
-  reBlockQuote = /^<<<$/,
+    reHR = /^\-\-\-\-+$/,                                 // <hr>
+    reWikiCommentStart = /^\/\*\*\*$/,            // /***
+    reWikiCommentStop = /^\*\*\*\/$/,             // ***/
+    reBlockQuote = /^<<<$/,
 
-  reJsCodeStart = /^\/\/\{\{\{$/,                       // //{{{ js block start
-  reJsCodeStop = /^\/\/\}\}\}$/,                        // //}}} js stop
-  reXmlCodeStart = /^<!--\{\{\{-->$/,           // xml block start
-  reXmlCodeStop = /^<!--\}\}\}-->$/,            // xml stop
+    reJsCodeStart = /^\/\/\{\{\{$/,                       // //{{{ js block start
+    reJsCodeStop = /^\/\/\}\}\}$/,                        // //}}} js stop
+    reXmlCodeStart = /^<!--\{\{\{-->$/,           // xml block start
+    reXmlCodeStop = /^<!--\}\}\}-->$/,            // xml stop
 
-  reCodeBlockStart = /^\{\{\{$/,                        // {{{ TW text div block start
-  reCodeBlockStop = /^\}\}\}$/,                 // }}} TW text stop
+    reCodeBlockStart = /^\{\{\{$/,                        // {{{ TW text div block start
+    reCodeBlockStop = /^\}\}\}$/,                 // }}} TW text stop
 
-  reUntilCodeStop = /.*?\}\}\}/;
+    reUntilCodeStop = /.*?\}\}\}/;
 
   function chain(stream, state, f) {
     state.tokenize = f;
@@ -197,7 +198,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
     // core macro handling
     stream.eatWhile(/[\w\$_]/);
     var word = stream.current(),
-    known = textwords.propertyIsEnumerable(word) && textwords[word];
+      known = textwords.propertyIsEnumerable(word) && textwords[word];
 
     return known ? ret(known.type, known.style, word) : ret("text", null, word);
 
@@ -206,7 +207,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
   // tw invisible comment
   function twTokenComment(stream, state) {
     var maybeEnd = false,
-    ch;
+      ch;
     while (ch = stream.next()) {
       if (ch == "/" && maybeEnd) {
         state.tokenize = jsTokenBase;
@@ -220,7 +221,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
   // tw strong / bold
   function twTokenStrong(stream, state) {
     var maybeEnd = false,
-    ch;
+      ch;
     while (ch = stream.next()) {
       if (ch == "'" && maybeEnd) {
         state.tokenize = jsTokenBase;
@@ -256,7 +257,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
   // tw em / italic
   function twTokenEm(stream, state) {
     var maybeEnd = false,
-    ch;
+      ch;
     while (ch = stream.next()) {
       if (ch == "/" && maybeEnd) {
         state.tokenize = jsTokenBase;
@@ -270,7 +271,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
   // tw underlined text
   function twTokenUnderline(stream, state) {
     var maybeEnd = false,
-    ch;
+      ch;
     while (ch = stream.next()) {
       if (ch == "_" && maybeEnd) {
         state.tokenize = jsTokenBase;
@@ -331,7 +332,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
 
   // Interface
   return {
-    startState: function () {
+    startState: function() {
       return {
         tokenize: jsTokenBase,
         indented: 0,
@@ -339,7 +340,7 @@ CodeMirror.defineMode("tiddlywiki", function () {
       };
     },
 
-    token: function (stream, state) {
+    token: function(stream, state) {
       if (stream.eatSpace()) return null;
       var style = state.tokenize(stream, state);
       return style;

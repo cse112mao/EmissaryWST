@@ -45,7 +45,7 @@ CodeMirror.defineMode("sieve", function(config) {
       return null;
     }
 
-    if (ch == ")")  {
+    if (ch == ")") {
       state._indent.pop();
       state._indent.pop();
     }
@@ -86,8 +86,7 @@ CodeMirror.defineMode("sieve", function(config) {
     // "text:" *(SP / HTAB) (hash-comment / CRLF)
     // *(multiline-literal / multiline-dotstart)
     // "." CRLF
-    if ((cur == "text") && stream.eat(":"))
-    {
+    if ((cur == "text") && stream.eat(":")) {
       state.tokenize = tokenMultiLineString;
       return "string";
     }
@@ -101,8 +100,7 @@ CodeMirror.defineMode("sieve", function(config) {
     return null;
   }
 
-  function tokenMultiLineString(stream, state)
-  {
+  function tokenMultiLineString(stream, state) {
     state._multiLineString = true;
     // the first line is special it may contain a comment
     if (!stream.sol()) {
@@ -117,8 +115,7 @@ CodeMirror.defineMode("sieve", function(config) {
       return "string";
     }
 
-    if ((stream.next() == ".")  && (stream.eol()))
-    {
+    if ((stream.next() == ".") && (stream.eol())) {
       state._multiLineString = false;
       state.tokenize = tokenBase;
     }
@@ -153,16 +150,18 @@ CodeMirror.defineMode("sieve", function(config) {
 
   return {
     startState: function(base) {
-      return {tokenize: tokenBase,
-              baseIndent: base || 0,
-              _indent: []};
+      return {
+        tokenize: tokenBase,
+        baseIndent: base || 0,
+        _indent: []
+      };
     },
 
     token: function(stream, state) {
       if (stream.eatSpace())
         return null;
 
-      return (state.tokenize || tokenBase)(stream, state);;
+      return (state.tokenize || tokenBase)(stream, state);
     },
 
     indent: function(state, _textAfter) {
@@ -170,7 +169,7 @@ CodeMirror.defineMode("sieve", function(config) {
       if (_textAfter && (_textAfter[0] == "}"))
         length--;
 
-      if (length <0)
+      if (length < 0)
         length = 0;
 
       return length * indentUnit;

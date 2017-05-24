@@ -6,10 +6,16 @@ CodeMirror.defineMode("changes", function() {
   return {
     token: function(stream) {
       if (stream.sol()) {
-        if (stream.match(headerSeperator)) { return 'tag'; }
-        if (stream.match(headerLine)) { return 'tag'; }
+        if (stream.match(headerSeperator)) {
+          return 'tag';
+        }
+        if (stream.match(headerLine)) {
+          return 'tag';
+        }
       }
-      if (stream.match(simpleEmail)) { return 'string'; }
+      if (stream.match(simpleEmail)) {
+        return 'string';
+      }
       stream.next();
       return null;
     }

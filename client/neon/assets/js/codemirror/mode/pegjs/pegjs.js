@@ -1,4 +1,4 @@
-CodeMirror.defineMode("pegjs", function (config) {
+CodeMirror.defineMode("pegjs", function(config) {
   var jsMode = CodeMirror.getMode(config, "javascript");
 
   function identifier(stream) {
@@ -6,7 +6,7 @@ CodeMirror.defineMode("pegjs", function (config) {
   }
 
   return {
-    startState: function () {
+    startState: function() {
       return {
         inString: false,
         stringType: null,
@@ -17,15 +17,15 @@ CodeMirror.defineMode("pegjs", function (config) {
         localState: null
       };
     },
-    token: function (stream, state) {
+    token: function(stream, state) {
       if (stream)
 
       //check for state changes
-      if (!state.inString && !state.inComment && ((stream.peek() == '"') || (stream.peek() == "'"))) {
-        state.stringType = stream.peek();
-        stream.next(); // Skip quote
-        state.inString = true; // Update state
-      }
+        if (!state.inString && !state.inComment && ((stream.peek() == '"') || (stream.peek() == "'"))) {
+          state.stringType = stream.peek();
+          stream.next(); // Skip quote
+          state.inString = true; // Update state
+        }
       if (!state.inString && !state.inComment && stream.match(/^\/\*/)) {
         state.inComment = true;
       }
@@ -54,11 +54,11 @@ CodeMirror.defineMode("pegjs", function (config) {
         }
         return "comment";
       } else if (state.inChracterClass) {
-          while (state.inChracterClass && !stream.eol()) {
-            if (!(stream.match(/^[^\]\\]+/) || stream.match(/^\\./))) {
-              state.inChracterClass = false;
-            }
+        while (state.inChracterClass && !stream.eol()) {
+          if (!(stream.match(/^[^\]\\]+/) || stream.match(/^\\./))) {
+            state.inChracterClass = false;
           }
+        }
       } else if (stream.peek() === '[') {
         stream.next();
         state.inChracterClass = true;
@@ -79,7 +79,7 @@ CodeMirror.defineMode("pegjs", function (config) {
             } else if (text[i] === '}') {
               state.braced--;
             }
-          };
+          }
         }
         return token;
       } else if (identifier(stream)) {

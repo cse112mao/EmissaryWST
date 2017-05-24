@@ -76,17 +76,17 @@ CodeMirror.defineMode("ecl", function(config) {
       if (blockKeywords.propertyIsEnumerable(cur)) curPunc = "newstatement";
       return "builtin";
     } else { //Data types are of from KEYWORD##
-                var i = cur.length - 1;
-                while(i >= 0 && (!isNaN(cur[i]) || cur[i] == '_'))
-                        --i;
+      var i = cur.length - 1;
+      while (i >= 0 && (!isNaN(cur[i]) || cur[i] == '_'))
+        --i;
 
-                if (i > 0) {
-                        var cur2 = cur.substr(0, i + 1);
-                if (variable_3.propertyIsEnumerable(cur2)) {
-                        if (blockKeywords.propertyIsEnumerable(cur2)) curPunc = "newstatement";
-                        return "variable-3";
-                }
-            }
+      if (i > 0) {
+        var cur2 = cur.substr(0, i + 1);
+        if (variable_3.propertyIsEnumerable(cur2)) {
+          if (blockKeywords.propertyIsEnumerable(cur2)) curPunc = "newstatement";
+          return "variable-3";
+        }
+      }
     }
     if (atoms.propertyIsEnumerable(cur)) return "atom";
     return null;
@@ -96,7 +96,10 @@ CodeMirror.defineMode("ecl", function(config) {
     return function(stream, state) {
       var escaped = false, next, end = false;
       while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
+        if (next == quote && !escaped) {
+          end = true;
+          break;
+        }
         escaped = !escaped && next == "\\";
       }
       if (end || !(escaped || multiLineStrings))
@@ -124,9 +127,11 @@ CodeMirror.defineMode("ecl", function(config) {
     this.align = align;
     this.prev = prev;
   }
+
   function pushContext(state, col, type) {
     return state.context = new Context(state.indented, col, type, null, state.context);
   }
+
   function popContext(state) {
     var t = state.context.type;
     if (t == ")" || t == "]" || t == "}")

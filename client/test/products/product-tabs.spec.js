@@ -14,7 +14,7 @@ describe('ProductTab', function() {
       expect(tabCtrl).to.not.be.undefined();
     });
 
-    it('Should be initially set to 1', function (){
+    it('Should be initially set to 1', function() {
       expect(tabCtrl.isSet(1)).to.be.true();
     });
 

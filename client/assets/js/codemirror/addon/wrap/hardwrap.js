@@ -8,12 +8,18 @@
     for (var start = pos.line, first = cm.firstLine(); start > first; --start) {
       var line = cm.getLine(start);
       if (startRE && startRE.test(line)) break;
-      if (!/\S/.test(line)) { ++start; break; }
+      if (!/\S/.test(line)) {
+        ++start;
+        break;
+      }
     }
     var endRE = options.paragraphEnd || cm.getHelper(pos, "paragraphEnd");
     for (var end = pos.line + 1, last = cm.lastLine(); end <= last; ++end) {
       var line = cm.getLine(end);
-      if (endRE && endRE.test(line)) { ++end; break; }
+      if (endRE && endRE.test(line)) {
+        ++end;
+        break;
+      }
       if (!/\S/.test(line)) break;
     }
     return {from: start, to: end};
@@ -30,7 +36,8 @@
   }
 
   function wrapRange(cm, from, to, options) {
-    from = cm.clipPos(from); to = cm.clipPos(to);
+    from = cm.clipPos(from);
+    to = cm.clipPos(to);
     var column = options.column || 80;
     var wrapOn = options.wrapOn || /\s\S|-[^\.\d]/;
     var killTrailing = options.killTrailingSpace !== false;
@@ -56,9 +63,11 @@
           findBreakPoint(curLine, column, wrapOn, killTrailing);
         // If this isn't broken, or is broken at a different point, remove old break
         if (!firstBreak || firstBreak.from != oldLen || firstBreak.to != oldLen + spaceInserted) {
-          changes.push({text: [spaceInserted ? " " : ""],
-                        from: Pos(curNo, oldLen),
-                        to: Pos(curNo + 1, spaceTrimmed.length)});
+          changes.push({
+            text: [spaceInserted ? " " : ""],
+            from: Pos(curNo, oldLen),
+            to: Pos(curNo + 1, spaceTrimmed.length)
+          });
         } else {
           curLine = leadingSpace + text;
           ++curNo;
@@ -66,9 +75,11 @@
       }
       while (curLine.length > column) {
         var bp = findBreakPoint(curLine, column, wrapOn, killTrailing);
-        changes.push({text: ["", leadingSpace],
-                      from: Pos(curNo, bp.from),
-                      to: Pos(curNo, bp.to)});
+        changes.push({
+          text: ["", leadingSpace],
+          from: Pos(curNo, bp.from),
+          to: Pos(curNo, bp.to)
+        });
         curLine = leadingSpace + curLine.slice(bp.to);
         ++curNo;
       }

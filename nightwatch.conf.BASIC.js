@@ -16,7 +16,7 @@ module.exports = {
     "host": "127.0.0.1",
     "port": 4444, // standard selenium port
     "cli_args": { // chromedriver is downloaded by selenium-download (see readme)
-      "webdriver.chrome.driver" : "./node_modules/nightwatch/bin/chromedriver"
+      "webdriver.chrome.driver": "./node_modules/nightwatch/bin/chromedriver"
     }
   },
   "test_settings": {
@@ -25,8 +25,8 @@ module.exports = {
       "selenium_port": 80,
       "selenium_host": "ondemand.saucelabs.com",
       "silent": true,
-      "username" : "MAO",
-      "access_key" : "dc201543-557e-41e2-97b3-9a7cdd6bb305",
+      "username": "MAO",
+      "access_key": "dc201543-557e-41e2-97b3-9a7cdd6bb305",
       "screenshots": {
         "enabled": true, // if you want to keep screenshots
         "path": './screenshots' // save screenshots here
@@ -55,7 +55,7 @@ module.exports = {
  /the following code checks for the existence of `selenium.jar` before trying to run our tests.
  */
 
-require('fs').stat(BINPATH + 'selenium.jar', function (err, stat) { // got it?
+require('fs').stat(BINPATH + 'selenium.jar', function(err, stat) { // got it?
   if (err || !stat || stat.size < 1) {
     require('selenium-download').ensure(BINPATH, function(error) {
       if (error) throw new Error(error); // no point continuing so exit!
@@ -64,7 +64,7 @@ require('fs').stat(BINPATH + 'selenium.jar', function (err, stat) { // got it?
   }
 });
 
-function padLeft (count) { // theregister.co.uk/2016/03/23/npm_left_pad_chaos/
+function padLeft(count) { // theregister.co.uk/2016/03/23/npm_left_pad_chaos/
   return count < 10 ? '0' + count : count.toString();
 }
 
@@ -76,7 +76,7 @@ var FILECOUNT = 0; // "global" screenshot file count
  * While we're at it, we are adding some meta-data to the filename, specifically
  * the Platform/Browser where the test was run and the test (file) name.
  */
-function imgpath (browser) {
+function imgpath(browser) {
   var a = browser.options.desiredCapabilities;
   var meta = [a.platform];
   meta.push(a.browserName ? a.browserName : 'any');

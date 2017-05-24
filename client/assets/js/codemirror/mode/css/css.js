@@ -4,17 +4,21 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   if (!parserConfig.propertyKeywords) parserConfig = CodeMirror.resolveMode("text/css");
 
   var indentUnit = config.indentUnit,
-      tokenHooks = parserConfig.tokenHooks,
-      mediaTypes = parserConfig.mediaTypes || {},
-      mediaFeatures = parserConfig.mediaFeatures || {},
-      propertyKeywords = parserConfig.propertyKeywords || {},
-      colorKeywords = parserConfig.colorKeywords || {},
-      valueKeywords = parserConfig.valueKeywords || {},
-      fontProperties = parserConfig.fontProperties || {},
-      allowNested = parserConfig.allowNested;
+    tokenHooks = parserConfig.tokenHooks,
+    mediaTypes = parserConfig.mediaTypes || {},
+    mediaFeatures = parserConfig.mediaFeatures || {},
+    propertyKeywords = parserConfig.propertyKeywords || {},
+    colorKeywords = parserConfig.colorKeywords || {},
+    valueKeywords = parserConfig.valueKeywords || {},
+    fontProperties = parserConfig.fontProperties || {},
+    allowNested = parserConfig.allowNested;
 
   var type, override;
-  function ret(style, tp) { type = tp; return style; }
+
+  function ret(style, tp) {
+    type = tp;
+    return style;
+  }
 
   // Tokenizers
 
@@ -111,6 +115,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
   function pass(type, stream, state) {
     return states[state.context.type](type, stream, state);
   }
+
   function popAndPass(type, stream, state, n) {
     for (var i = n || 1; i > 0; i--)
       state.context = state.context.prev;
@@ -203,7 +208,10 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
 
   states.propBlock = function(type, _stream, state) {
     if (type == "}") return popContext(state);
-    if (type == "word") { override = "property"; return "maybeprop"; }
+    if (type == "word") {
+      override = "property";
+      return "maybeprop";
+    }
     return state.context.type;
   };
 
@@ -288,9 +296,11 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
 
   return {
     startState: function(base) {
-      return {tokenize: null,
-              state: "top",
-              context: new Context("top", base || 0, null)};
+      return {
+        tokenize: null,
+        state: "top",
+        context: new Context("top", base || 0, null)
+      };
     },
 
     token: function(stream, state) {
@@ -309,9 +319,9 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       var cx = state.context, ch = textAfter && textAfter.charAt(0);
       var indent = cx.indent;
       if (cx.prev &&
-          (ch == "}" && (cx.type == "block" || cx.type == "top" || cx.type == "interpolation" || cx.type == "font_face") ||
-           ch == ")" && (cx.type == "parens" || cx.type == "params" || cx.type == "media_parens") ||
-           ch == "{" && (cx.type == "at" || cx.type == "media"))) {
+        (ch == "}" && (cx.type == "block" || cx.type == "top" || cx.type == "interpolation" || cx.type == "font_face") ||
+        ch == ")" && (cx.type == "parens" || cx.type == "params" || cx.type == "media_parens") ||
+        ch == "{" && (cx.type == "at" || cx.type == "media"))) {
         indent = cx.indent - indentUnit;
         cx = cx.prev;
       }

@@ -2,21 +2,33 @@
   "use strict";
 
   var Pos = CodeMirror.Pos;
-  function posEq(a, b) { return a.line == b.line && a.ch == b.ch; }
+
+  function posEq(a, b) {
+    return a.line == b.line && a.ch == b.ch;
+  }
 
   // Kill 'ring'
 
   var killRing = [];
+
   function addToRing(str) {
     killRing.push(str);
     if (killRing.length > 50) killRing.shift();
   }
+
   function growRingTop(str) {
     if (!killRing.length) return addToRing(str);
     killRing[killRing.length - 1] += str;
   }
-  function getFromRing(n) { return killRing[killRing.length - (n ? Math.min(n, 1) : 1)] || ""; }
-  function popFromRing() { if (killRing.length > 1) killRing.pop(); return getFromRing(); }
+
+  function getFromRing(n) {
+    return killRing[killRing.length - (n ? Math.min(n, 1) : 1)] || "";
+  }
+
+  function popFromRing() {
+    if (killRing.length > 1) killRing.pop();
+    return getFromRing();
+  }
 
   var lastKill = null;
 
@@ -55,7 +67,7 @@
     var no = pos.line, line = cm.getLine(no);
     var sawText = /\S/.test(dir < 0 ? line.slice(0, pos.ch) : line.slice(pos.ch));
     var fst = cm.firstLine(), lst = cm.lastLine();
-    for (;;) {
+    for (; ;) {
       no += dir;
       if (no < fst || no > lst)
         return cm.clipPos(Pos(no - dir, dir < 0 ? 0 : null));
@@ -69,7 +81,7 @@
   function bySentence(cm, pos, dir) {
     var line = pos.line, ch = pos.ch;
     var text = cm.getLine(pos.line), sawWord = false;
-    for (;;) {
+    for (; ;) {
       var next = text.charAt(ch + (dir < 0 ? -1 : 0));
       if (!next) { // End/beginning of line reached
         if (line == (dir < 0 ? cm.firstLine() : cm.lastLine())) return Pos(line, ch);
@@ -88,10 +100,10 @@
   function byExpr(cm, pos, dir) {
     var wrap;
     if (cm.findMatchingBracket && (wrap = cm.findMatchingBracket(pos, true))
-        && wrap.match && (wrap.forward ? 1 : -1) == dir)
+      && wrap.match && (wrap.forward ? 1 : -1) == dir)
       return dir > 0 ? Pos(wrap.to.line, wrap.to.ch + 1) : wrap.to;
 
-    for (var first = true;; first = false) {
+    for (var first = true; ; first = false) {
       var token = cm.getTokenAt(pos);
       var after = Pos(pos.line, dir < 0 ? token.start : token.end);
       if (first && dir > 0 && token.end == pos.ch || !/\w/.test(token.string)) {
@@ -114,7 +126,9 @@
   }
 
   function repeated(cmd) {
-    var f = typeof cmd == "string" ? function(cm) { cm.execCommand(cmd); } : cmd;
+    var f = typeof cmd == "string" ? function(cm) {
+      cm.execCommand(cmd);
+    } : cmd;
     return function(cm) {
       var prefix = getPrefix(cm);
       f(cm);
@@ -124,7 +138,10 @@
 
   function findEnd(cm, by, dir) {
     var pos = cm.getCursor(), prefix = getPrefix(cm);
-    if (prefix < 0) { dir = -dir; prefix = -prefix; }
+    if (prefix < 0) {
+      dir = -dir;
+      prefix = -prefix;
+    }
     for (var i = 0; i < prefix; ++i) {
       var newPos = by(cm, pos, dir);
       if (posEq(newPos, pos)) break;
@@ -198,7 +215,9 @@
   function setMark(cm) {
     cm.setCursor(cm.getCursor());
     cm.setExtending(true);
-    cm.on("change", function() { cm.setExtending(false); });
+    cm.on("change", function() {
+      cm.setExtending(false);
+    });
   }
 
   function clearMark(cm) {
@@ -235,7 +254,8 @@
         else if (/[\(\{\[]/.test(ch) && (!stack.length || stack.pop() != ch))
           return cm.extendSelection(Pos(line, i));
       }
-      --line; ch = null;
+      --line;
+      ch = null;
     }
   }
 
@@ -247,7 +267,9 @@
   // Actual keymap
 
   var keyMap = CodeMirror.keyMap.emacs = {
-    "Ctrl-W": function(cm) {kill(cm, cm.getCursor("start"), cm.getCursor("end"));},
+    "Ctrl-W": function(cm) {
+      kill(cm, cm.getCursor("start"), cm.getCursor("end"));
+    },
     "Ctrl-K": repeated(function(cm) {
       var start = cm.getCursor(), end = cm.clipPos(Pos(start.line));
       var text = cm.getRange(start, end);
@@ -266,20 +288,34 @@
       cm.replaceRange(getFromRing(getPrefix(cm)), start, start, "paste");
       cm.setSelection(start, cm.getCursor());
     },
-    "Alt-Y": function(cm) {cm.replaceSelection(popFromRing());},
+    "Alt-Y": function(cm) {
+      cm.replaceSelection(popFromRing());
+    },
 
     "Ctrl-Space": setMark, "Ctrl-Shift-2": setMark,
 
     "Ctrl-F": move(byChar, 1), "Ctrl-B": move(byChar, -1),
     "Right": move(byChar, 1), "Left": move(byChar, -1),
-    "Ctrl-D": function(cm) { killTo(cm, byChar, 1); },
-    "Delete": function(cm) { killTo(cm, byChar, 1); },
-    "Ctrl-H": function(cm) { killTo(cm, byChar, -1); },
-    "Backspace": function(cm) { killTo(cm, byChar, -1); },
+    "Ctrl-D": function(cm) {
+      killTo(cm, byChar, 1);
+    },
+    "Delete": function(cm) {
+      killTo(cm, byChar, 1);
+    },
+    "Ctrl-H": function(cm) {
+      killTo(cm, byChar, -1);
+    },
+    "Backspace": function(cm) {
+      killTo(cm, byChar, -1);
+    },
 
     "Alt-F": move(byWord, 1), "Alt-B": move(byWord, -1),
-    "Alt-D": function(cm) { killTo(cm, byWord, 1); },
-    "Alt-Backspace": function(cm) { killTo(cm, byWord, -1); },
+    "Alt-D": function(cm) {
+      killTo(cm, byWord, 1);
+    },
+    "Alt-Backspace": function(cm) {
+      killTo(cm, byWord, -1);
+    },
 
     "Ctrl-N": move(byLine, 1), "Ctrl-P": move(byLine, -1),
     "Down": move(byLine, 1), "Up": move(byLine, -1),
@@ -292,10 +328,16 @@
     "Ctrl-Up": move(byParagraph, -1), "Ctrl-Down": move(byParagraph, 1),
 
     "Alt-A": move(bySentence, -1), "Alt-E": move(bySentence, 1),
-    "Alt-K": function(cm) { killTo(cm, bySentence, 1); },
+    "Alt-K": function(cm) {
+      killTo(cm, bySentence, 1);
+    },
 
-    "Ctrl-Alt-K": function(cm) { killTo(cm, byExpr, 1); },
-    "Ctrl-Alt-Backspace": function(cm) { killTo(cm, byExpr, -1); },
+    "Ctrl-Alt-K": function(cm) {
+      killTo(cm, byExpr, 1);
+    },
+    "Ctrl-Alt-Backspace": function(cm) {
+      killTo(cm, byExpr, -1);
+    },
     "Ctrl-Alt-F": move(byExpr, 1), "Ctrl-Alt-B": move(byExpr, -1),
 
     "Shift-Ctrl-Alt-2": function(cm) {
@@ -305,7 +347,7 @@
       var leftStart = byExpr(cm, cm.getCursor(), -1), leftEnd = byExpr(cm, leftStart, 1);
       var rightEnd = byExpr(cm, leftEnd, 1), rightStart = byExpr(cm, rightEnd, -1);
       cm.replaceRange(cm.getRange(rightStart, rightEnd) + cm.getRange(leftEnd, rightStart) +
-                      cm.getRange(leftStart, leftEnd), leftStart, rightEnd);
+        cm.getRange(leftStart, leftEnd), leftStart, rightEnd);
     },
     "Ctrl-Alt-U": repeated(toEnclosingExpr),
 
@@ -315,7 +357,9 @@
       while (to < text.length && /\s/.test(text.charAt(to))) ++to;
       cm.replaceRange(" ", Pos(pos.line, from), Pos(pos.line, to));
     },
-    "Ctrl-O": repeated(function(cm) { cm.replaceSelection("\n", "start"); }),
+    "Ctrl-O": repeated(function(cm) {
+      cm.replaceSelection("\n", "start");
+    }),
     "Ctrl-T": repeated(function(cm) {
       var pos = cm.getCursor();
       if (pos.ch < cm.getLine(pos.line).length) pos = Pos(pos.line, pos.ch + 1);
@@ -334,10 +378,14 @@
       });
     }),
     "Alt-U": repeated(function(cm) {
-      operateOnWord(cm, function(w) { return w.toUpperCase(); });
+      operateOnWord(cm, function(w) {
+        return w.toUpperCase();
+      });
     }),
     "Alt-L": repeated(function(cm) {
-      operateOnWord(cm, function(w) { return w.toLowerCase(); });
+      operateOnWord(cm, function(w) {
+        return w.toLowerCase();
+      });
     }),
 
     "Alt-;": "toggleComment",
@@ -349,9 +397,15 @@
     "Alt-/": "autocomplete",
     "Ctrl-J": "newlineAndIndent", "Enter": false, "Tab": "indentAuto",
 
-    "Alt-G": function(cm) {cm.setOption("keyMap", "emacs-Alt-G");},
-    "Ctrl-X": function(cm) {cm.setOption("keyMap", "emacs-Ctrl-X");},
-    "Ctrl-Q": function(cm) {cm.setOption("keyMap", "emacs-Ctrl-Q");},
+    "Alt-G": function(cm) {
+      cm.setOption("keyMap", "emacs-Alt-G");
+    },
+    "Ctrl-X": function(cm) {
+      cm.setOption("keyMap", "emacs-Ctrl-X");
+    },
+    "Ctrl-Q": function(cm) {
+      cm.setOption("keyMap", "emacs-Ctrl-Q");
+    },
     "Ctrl-U": addPrefixMap
   };
 
@@ -364,7 +418,9 @@
     },
 
     "Ctrl-S": "save", "Ctrl-W": "save", "S": "saveAll", "F": "open", "U": repeated("undo"), "K": "close",
-    "Delete": function(cm) { kill(cm, cm.getCursor(), bySentence(cm, cm.getCursor(), 1), true); },
+    "Delete": function(cm) {
+      kill(cm, cm.getCursor(), bySentence(cm, cm.getCursor(), 1), true);
+    },
     auto: "emacs", nofallthrough: true, disableInput: true
   };
 
@@ -375,7 +431,7 @@
 
       getInput(cm, "Goto line", function(str) {
         var num;
-        if (str && !isNaN(num = Number(str)) && num == num|0 && num > 0)
+        if (str && !isNaN(num = Number(str)) && num == num | 0 && num > 0)
           cm.setCursor(num - 1);
       });
     },
@@ -388,11 +444,17 @@
   };
 
   var prefixMap = {"Ctrl-G": clearPrefix};
+
   function regPrefix(d) {
-    prefixMap[d] = function(cm) { addPrefix(cm, d); };
-    keyMap["Ctrl-" + d] = function(cm) { addPrefix(cm, d); };
+    prefixMap[d] = function(cm) {
+      addPrefix(cm, d);
+    };
+    keyMap["Ctrl-" + d] = function(cm) {
+      addPrefix(cm, d);
+    };
     prefixPreservingKeys["Ctrl-" + d] = true;
   }
+
   for (var i = 0; i < 10; ++i) regPrefix(String(i));
   regPrefix("-");
 })();

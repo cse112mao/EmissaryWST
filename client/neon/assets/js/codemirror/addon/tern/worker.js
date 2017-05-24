@@ -5,17 +5,22 @@ var server;
 this.onmessage = function(e) {
   var data = e.data;
   switch (data.type) {
-  case "init": return startServer(data.defs, data.plugins, data.scripts);
-  case "add": return server.addFile(data.name, data.text);
-  case "del": return server.delFile(data.name);
-  case "req": return server.request(data.body, function(err, reqData) {
-    postMessage({id: data.id, body: reqData, err: err && String(err)});
-  });
-  case "getFile":
-    var c = pending[data.id];
-    delete pending[data.id];
-    return c(data.err, data.text);
-  default: throw new Error("Unknown message type: " + data.type);
+    case "init":
+      return startServer(data.defs, data.plugins, data.scripts);
+    case "add":
+      return server.addFile(data.name, data.text);
+    case "del":
+      return server.delFile(data.name);
+    case "req":
+      return server.request(data.body, function(err, reqData) {
+        postMessage({id: data.id, body: reqData, err: err && String(err)});
+      });
+    case "getFile":
+      var c = pending[data.id];
+      delete pending[data.id];
+      return c(data.err, data.text);
+    default:
+      throw new Error("Unknown message type: " + data.type);
   }
 };
 
@@ -37,5 +42,7 @@ function startServer(defs, plugins, scripts) {
 }
 
 var console = {
-  log: function(v) { postMessage({type: "debug", message: v}); }
+  log: function(v) {
+    postMessage({type: "debug", message: v});
+  }
 };

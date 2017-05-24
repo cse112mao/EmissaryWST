@@ -33,7 +33,7 @@
 
       // handle haml declarations. All declarations that cant be handled here
       // will be passed to html mode
-      if (state.previousToken.style == "comment" ) {
+      if (state.previousToken.style == "comment") {
         if (state.indented > state.previousToken.indented) {
           stream.skipToEnd();
           return "commentLine";
@@ -49,14 +49,14 @@
           return "hamlTag";
         } else if (stream.match(/^%[\w:]+/)) {
           return "hamlTag";
-        } else if (ch == "/" ) {
+        } else if (ch == "/") {
           stream.skipToEnd();
           return "comment";
         }
       }
 
       if (state.startOfLine || state.previousToken.style == "hamlTag") {
-        if ( ch == "#" || ch == ".") {
+        if (ch == "#" || ch == ".") {
           stream.match(/[\w-#\.]*/);
           return "hamlAttribute";
         }
@@ -69,8 +69,8 @@
       }
 
       if (state.previousToken.style == "hamlTag" ||
-          state.previousToken.style == "closeAttributeTag" ||
-          state.previousToken.style == "hamlAttribute") {
+        state.previousToken.style == "closeAttributeTag" ||
+        state.previousToken.style == "hamlAttribute") {
         if (ch == "(") {
           state.tokenize = rubyInQuote(")");
           return null;
@@ -92,14 +92,14 @@
           htmlState: htmlState,
           rubyState: rubyState,
           indented: 0,
-          previousToken: { style: null, indented: 0},
+          previousToken: {style: null, indented: 0},
           tokenize: html
         };
       },
 
       copyState: function(state) {
         return {
-          htmlState : CodeMirror.copyState(htmlMode, state.htmlState),
+          htmlState: CodeMirror.copyState(htmlMode, state.htmlState),
           rubyState: CodeMirror.copyState(rubyMode, state.rubyState),
           indented: state.indented,
           previousToken: state.previousToken,
@@ -118,7 +118,7 @@
         // dont record comment line as we only want to measure comment line with
         // the opening comment block
         if (style && style != "commentLine") {
-          state.previousToken = { style: style, indented: state.indented };
+          state.previousToken = {style: style, indented: state.indented};
         }
         // if current state is ruby and the previous token is not `,` reset the
         // tokenize to html

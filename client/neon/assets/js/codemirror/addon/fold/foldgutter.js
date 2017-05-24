@@ -78,7 +78,8 @@
     cm.operation(function() {
       updateFoldInfo(cm, vp.from, vp.to);
     });
-    state.from = vp.from; state.to = vp.to;
+    state.from = vp.from;
+    state.to = vp.to;
   }
 
   function onGutterClick(cm, line, gutter) {
@@ -91,7 +92,9 @@
     var state = cm.state.foldGutter, opts = cm.state.foldGutter.options;
     state.from = state.to = 0;
     clearTimeout(state.changeUpdate);
-    state.changeUpdate = setTimeout(function() { updateInViewport(cm); }, opts.foldOnChangeTimeSpan || 600);
+    state.changeUpdate = setTimeout(function() {
+      updateInViewport(cm);
+    }, opts.foldOnChangeTimeSpan || 600);
   }
 
   function onViewportChange(cm) {

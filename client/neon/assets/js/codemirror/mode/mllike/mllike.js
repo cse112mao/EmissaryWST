@@ -68,7 +68,7 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       }
       return 'number';
     }
-    if ( /[+\-*&%=<>!?|]/.test(ch)) {
+    if (/[+\-*&%=<>!?|]/.test(ch)) {
       return 'operator';
     }
     stream.eatWhile(/\w/);
@@ -89,11 +89,11 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       state.tokenize = tokenBase;
     }
     return 'string';
-  };
+  }
 
   function tokenComment(stream, state) {
     var prev, next;
-    while(state.commentLevel > 0 && (next = stream.next()) != null) {
+    while (state.commentLevel > 0 && (next = stream.next()) != null) {
       if (prev === '(' && next === '*') state.commentLevel++;
       if (prev === '*' && next === ')') state.commentLevel--;
       prev = next;
@@ -105,7 +105,9 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
   }
 
   return {
-    startState: function() {return {tokenize: tokenBase, commentLevel: 0};},
+    startState: function() {
+      return {tokenize: tokenBase, commentLevel: 0};
+    },
     token: function(stream, state) {
       if (stream.eatSpace()) return null;
       return state.tokenize(stream, state);
@@ -154,7 +156,7 @@ CodeMirror.defineMIME('text/x-fsharp', {
     'internal': 'keyword',
     'lazy': 'keyword',
     'let!': 'keyword',
-    'member' : 'keyword',
+    'member': 'keyword',
     'module': 'keyword',
     'namespace': 'keyword',
     'new': 'keyword',

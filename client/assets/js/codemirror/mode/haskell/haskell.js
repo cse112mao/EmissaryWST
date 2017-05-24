@@ -168,8 +168,9 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
 
   var wellKnownWords = (function() {
     var wkw = {};
+
     function setType(t) {
-      return function () {
+      return function() {
         for (var i = 0; i < arguments.length; i++)
           wkw[arguments[i]] = t;
       };
@@ -231,13 +232,18 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
   })();
 
 
-
   return {
-    startState: function ()  { return { f: normal }; },
-    copyState:  function (s) { return { f: s.f }; },
+    startState: function() {
+      return {f: normal};
+    },
+    copyState: function(s) {
+      return {f: s.f};
+    },
 
     token: function(stream, state) {
-      var t = state.f(stream, function(s) { state.f = s; });
+      var t = state.f(stream, function(s) {
+        state.f = s;
+      });
       var w = stream.current();
       return wellKnownWords.hasOwnProperty(w) ? wellKnownWords[w] : t;
     },

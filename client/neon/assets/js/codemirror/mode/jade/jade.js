@@ -1,4 +1,4 @@
-CodeMirror.defineMode("jade", function () {
+CodeMirror.defineMode("jade", function() {
   var symbol_regex1 = /^(?:~|!|%|\^|\*|\+|=|\\|:|;|,|\/|\?|&|<|>|\|)/;
   var open_paren_regex = /^(\(|\[)/;
   var close_paren_regex = /^(\)|\])/;
@@ -8,7 +8,7 @@ CodeMirror.defineMode("jade", function () {
   var html_regex1 = /^(html|head|title|meta|link|script|body|br|div|input|span|a|img)/;
   var html_regex2 = /^(h1|h2|h3|h4|h5|p|strong|em)/;
   return {
-    startState: function () {
+    startState: function() {
       return {
         inString: false,
         stringType: "",
@@ -17,7 +17,7 @@ CodeMirror.defineMode("jade", function () {
         afterParen: false
       };
     },
-    token: function (stream, state) {
+    token: function(stream, state) {
       //check for state changes
       if (!state.inString && ((stream.peek() == '"') || (stream.peek() == "'"))) {
         state.stringType = stream.peek();

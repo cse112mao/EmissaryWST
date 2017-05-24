@@ -1,7 +1,7 @@
 describe('AuthService', function() {
 
   var AuthService,
-      TokenInjector;
+    TokenInjector;
 
   beforeEach(module('auth'));
 
@@ -25,7 +25,7 @@ describe('AuthService', function() {
       credentials,
       token;
 
-    beforeEach(inject(function(_$http_, _$httpBackend_){
+    beforeEach(inject(function(_$http_, _$httpBackend_) {
       $http = _$http_;
       httpBackend = _$httpBackend_;
     }));
@@ -36,7 +36,7 @@ describe('AuthService', function() {
       apiRoute = 'api/test';
       token = 'mocktoken';
       credentials = {
-        email:'test@email.com',
+        email: 'test@email.com',
         password: 'test'
       };
 
@@ -45,7 +45,7 @@ describe('AuthService', function() {
         .respond(200, {token: token});
     });
 
-    afterEach(function(){
+    afterEach(function() {
       httpBackend.verifyNoOutstandingExpectation();
       httpBackend.verifyNoOutstandingRequest();
     });

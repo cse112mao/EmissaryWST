@@ -7,12 +7,12 @@ var Schema = mongoose.Schema;
  **/
 var formTemplate = new mongoose.Schema({
   _admin_id: {
-      type: Schema.Types.ObjectId,
-      ref: 'Company',
-      required: true
+    type: Schema.Types.ObjectId,
+    ref: 'Company',
+    required: true
   },
   template: {
-      type: Object
+    type: Object
   }
 });
 

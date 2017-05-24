@@ -1,137 +1,130 @@
+// Disable Module
+// ==============
 
-    // Disable Module
-    // ==============
+// Disable
+// -------
+//      Disables the new dropdown list
 
-    // Disable
-    // -------
-    //      Disables the new dropdown list
+selectBoxIt.disable = function(callback) {
 
-    selectBoxIt.disable = function(callback) {
+  var self = this;
 
-        var self = this;
+  if (!self.options["disabled"]) {
 
-        if(!self.options["disabled"]) {
+    // Makes sure the dropdown list is closed
+    self.close();
 
-            // Makes sure the dropdown list is closed
-            self.close();
+    // Sets the `disabled` attribute on the original select box
+    self.selectBox.attr("disabled", "disabled");
 
-            // Sets the `disabled` attribute on the original select box
-            self.selectBox.attr("disabled", "disabled");
+    // Makes the dropdown list not focusable by removing the `tabindex` attribute
+    self.dropdown.removeAttr("tabindex").// Disables styling for enabled state
+    removeClass(self.theme["enabled"]).// Enabled styling for disabled state
+    addClass(self.theme["disabled"]);
 
-            // Makes the dropdown list not focusable by removing the `tabindex` attribute
-            self.dropdown.removeAttr("tabindex").
+    self.setOption("disabled", true);
 
-            // Disables styling for enabled state
-            removeClass(self.theme["enabled"]).
+    // Triggers a `disable` custom event on the original select box
+    self.triggerEvent("disable");
 
-            // Enabled styling for disabled state
-            addClass(self.theme["disabled"]);
+  }
 
-            self.setOption("disabled", true);
+  // Provides callback function support
+  self._callbackSupport(callback);
 
-            // Triggers a `disable` custom event on the original select box
-            self.triggerEvent("disable");
+  // Maintains chainability
+  return self;
 
-        }
+};
 
-        // Provides callback function support
-        self._callbackSupport(callback);
+// Disable Option
+// --------------
+//      Disables a single drop down option
 
-        // Maintains chainability
-        return self;
+selectBoxIt.disableOption = function(index, callback) {
 
-    };
+  var self = this, currentSelectBoxOption, hasNextEnabled, hasPreviousEnabled, type = $.type(index);
 
-    // Disable Option
-    // --------------
-    //      Disables a single drop down option
+  // If an index is passed to target an indropdownidual drop down option
+  if (type === "number") {
 
-    selectBoxIt.disableOption = function(index, callback) {
+    // Makes sure the dropdown list is closed
+    self.close();
 
-        var self = this, currentSelectBoxOption, hasNextEnabled, hasPreviousEnabled, type = $.type(index);
+    // The select box option being targeted
+    currentSelectBoxOption = self.selectBox.find("option").eq(index);
 
-        // If an index is passed to target an indropdownidual drop down option
-        if(type === "number") {
+    // Triggers a `disable-option` custom event on the original select box and passes the disabled option
+    self.triggerEvent("disable-option");
 
-            // Makes sure the dropdown list is closed
-            self.close();
+    // Disables the targeted select box option
+    currentSelectBoxOption.attr("disabled", "disabled");
 
-            // The select box option being targeted
-            currentSelectBoxOption = self.selectBox.find("option").eq(index);
+    // Disables the drop down option
+    self.listItems.eq(index).attr("data-disabled", "true").// Applies disabled styling for the drop down option
+    addClass(self.theme["disabled"]);
 
-            // Triggers a `disable-option` custom event on the original select box and passes the disabled option
-            self.triggerEvent("disable-option");
+    // If the currently selected drop down option is the item being disabled
+    if (self.currentFocus === index) {
 
-            // Disables the targeted select box option
-            currentSelectBoxOption.attr("disabled", "disabled");
+      hasNextEnabled = self.listItems.eq(self.currentFocus).nextAll("li").not("[data-disabled='true']").first().length;
 
-            // Disables the drop down option
-            self.listItems.eq(index).attr("data-disabled", "true").
+      hasPreviousEnabled = self.listItems.eq(self.currentFocus).prevAll("li").not("[data-disabled='true']").first().length;
 
-            // Applies disabled styling for the drop down option
-            addClass(self.theme["disabled"]);
+      // If there is a currently enabled option beneath the currently selected option
+      if (hasNextEnabled) {
 
-            // If the currently selected drop down option is the item being disabled
-            if(self.currentFocus === index) {
+        // Selects the option beneath the currently selected option
+        self.moveDown();
 
-                hasNextEnabled = self.listItems.eq(self.currentFocus).nextAll("li").not("[data-disabled='true']").first().length;
+      }
 
-                hasPreviousEnabled = self.listItems.eq(self.currentFocus).prevAll("li").not("[data-disabled='true']").first().length;
+      // If there is a currently enabled option above the currently selected option
+      else if (hasPreviousEnabled) {
 
-                // If there is a currently enabled option beneath the currently selected option
-                if(hasNextEnabled) {
+        // Selects the option above the currently selected option
+        self.moveUp();
 
-                    // Selects the option beneath the currently selected option
-                    self.moveDown();
+      }
 
-                }
+      // If there is not a currently enabled option
+      else {
 
-                // If there is a currently enabled option above the currently selected option
-                else if(hasPreviousEnabled) {
+        // Disables the entire drop down list
+        self.disable();
 
-                    // Selects the option above the currently selected option
-                    self.moveUp();
+      }
 
-                }
+    }
 
-                // If there is not a currently enabled option
-                else {
+  }
 
-                    // Disables the entire drop down list
-                    self.disable();
+  // Provides callback function support
+  self._callbackSupport(callback);
 
-                }
+  // Maintains chainability
+  return self;
 
-            }
+};
 
-        }
+// _Is Disabled
+// -----------
+//      Checks the original select box for the
+//    disabled attribute
 
-        // Provides callback function support
-        self._callbackSupport(callback);
+selectBoxIt._isDisabled = function(callback) {
 
-        // Maintains chainability
-        return self;
+  var self = this;
 
-    };
+  // If the original select box is disabled
+  if (self.originalElem.disabled) {
 
-    // _Is Disabled
-    // -----------
-    //      Checks the original select box for the
-    //    disabled attribute
+    // Disables the dropdown list
+    self.disable();
 
-    selectBoxIt._isDisabled = function(callback) {
+  }
 
-        var self = this;
+  // Maintains chainability
+  return self;
 
-        // If the original select box is disabled
-        if (self.originalElem.disabled) {
-
-            // Disables the dropdown list
-            self.disable();
-
-        }
-
-        // Maintains chainability
-        return self;
-
-    };
+};

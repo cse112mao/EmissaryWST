@@ -21,8 +21,8 @@
           for (var i = 0; i < token.start; ++i) insert += " ";
         }
       } else if ((found = full.indexOf(mode.blockCommentContinue)) != -1 &&
-                 found + mode.blockCommentContinue.length > token.start &&
-                 /^\s*$/.test(full.slice(0, found))) {
+        found + mode.blockCommentContinue.length > token.start &&
+        /^\s*$/.test(full.slice(0, found))) {
         insert = full.slice(0, found);
       }
       if (insert != null) insert += mode.blockCommentContinue;

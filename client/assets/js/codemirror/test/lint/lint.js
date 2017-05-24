@@ -5,29 +5,33 @@
  dependencies (Closure). So here's a very simple, non-invasive one
  that only spots
 
-  - missing semicolons and trailing commas
-  - variables or properties that are reserved words
-  - assigning to a variable you didn't declare
-  - access to non-whitelisted globals
-    (use a '// declare global: foo, bar' comment to declare extra
-    globals in a file)
+ - missing semicolons and trailing commas
+ - variables or properties that are reserved words
+ - assigning to a variable you didn't declare
+ - access to non-whitelisted globals
+ (use a '// declare global: foo, bar' comment to declare extra
+ globals in a file)
 
  [1]: https://github.com/marijnh/acorn/
-*/
+ */
 
 var topAllowedGlobals = Object.create(null);
 ("Error RegExp Number String Array Function Object Math Date undefined " +
- "parseInt parseFloat Infinity NaN isNaN " +
- "window document navigator prompt alert confirm console " +
- "FileReader Worker postMessage importScripts " +
- "setInterval clearInterval setTimeout clearTimeout " +
- "CodeMirror test")
-  .split(" ").forEach(function(n) { topAllowedGlobals[n] = true; });
+"parseInt parseFloat Infinity NaN isNaN " +
+"window document navigator prompt alert confirm console " +
+"FileReader Worker postMessage importScripts " +
+"setInterval clearInterval setTimeout clearTimeout " +
+"CodeMirror test")
+  .split(" ").forEach(function(n) {
+  topAllowedGlobals[n] = true;
+});
 
 var fs = require("fs"), acorn = require("./acorn.js"), walk = require("./walk.js");
 
 var scopePasser = walk.make({
-  ScopeBody: function(node, prev, c) { c(node, node.scope); }
+  ScopeBody: function(node, prev, c) {
+    c(node, node.scope);
+  }
 });
 
 function checkFile(fileName) {
@@ -40,7 +44,7 @@ function checkFile(fileName) {
     var info = acorn.getLineInfo(file, notAllowed.index);
     fail(msg + " at line " + info.line + ", column " + info.column, {source: fileName});
   }
-  
+
   var globalsSeen = Object.create(null);
 
   try {
@@ -72,17 +76,22 @@ function checkFile(fileName) {
     for (var cur = scope; cur; cur = cur.prev)
       if (name in cur.vars) return true;
   }
+
   function checkLHS(node, scope) {
     if (node.type == "Identifier" && !(node.name in ignoredGlobals) &&
-        !inScope(node.name, scope)) {
+      !inScope(node.name, scope)) {
       ignoredGlobals[node.name] = true;
       fail("Assignment to global variable", node.loc);
     }
   }
 
   walk.simple(parsed, {
-    UpdateExpression: function(node, scope) {checkLHS(node.argument, scope);},
-    AssignmentExpression: function(node, scope) {checkLHS(node.left, scope);},
+    UpdateExpression: function(node, scope) {
+      checkLHS(node.argument, scope);
+    },
+    AssignmentExpression: function(node, scope) {
+      checkLHS(node.left, scope);
+    },
     Identifier: function(node, scope) {
       if (node.name == "arguments") return;
       // Mark used identifiers
@@ -101,11 +110,13 @@ function checkFile(fileName) {
   if (!globalsSeen.exports) {
     var allowedGlobals = Object.create(topAllowedGlobals), m;
     if (m = file.match(/\/\/ declare global:\s+(.*)/))
-      m[1].split(/,\s*/g).forEach(function(n) { allowedGlobals[n] = true; });
+      m[1].split(/,\s*/g).forEach(function(n) {
+        allowedGlobals[n] = true;
+      });
     for (var glob in globalsSeen)
       if (!(glob in allowedGlobals))
         fail("Access to global variable " + glob + ". Add a '// declare global: " + glob +
-             "' comment or add this variable in test/lint/lint.js.", globalsSeen[glob]);
+          "' comment or add this variable in test/lint/lint.js.", globalsSeen[glob]);
   }
 
 
@@ -136,4 +147,6 @@ function checkDir(dir) {
 
 exports.checkDir = checkDir;
 exports.checkFile = checkFile;
-exports.success = function() { return !failed; };
+exports.success = function() {
+  return !failed;
+};

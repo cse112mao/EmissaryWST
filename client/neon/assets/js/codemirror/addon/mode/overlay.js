@@ -49,7 +49,9 @@ CodeMirror.overlayMode = CodeMirror.overlayParser = function(base, overlay, comb
     },
     electricChars: base.electricChars,
 
-    innerMode: function(state) { return {state: state.base, mode: base}; },
+    innerMode: function(state) {
+      return {state: state.base, mode: base};
+    },
 
     blankLine: function(state) {
       if (base.blankLine) base.blankLine(state.base);

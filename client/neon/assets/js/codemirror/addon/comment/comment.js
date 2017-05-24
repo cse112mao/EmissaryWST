@@ -126,13 +126,13 @@
       close = endLine.lastIndexOf(endString);
     }
     if (open == -1 || close == -1 ||
-        !/comment/.test(self.getTokenTypeAt(Pos(start, open + 1))) ||
-        !/comment/.test(self.getTokenTypeAt(Pos(end, close + 1))))
+      !/comment/.test(self.getTokenTypeAt(Pos(start, open + 1))) ||
+      !/comment/.test(self.getTokenTypeAt(Pos(end, close + 1))))
       return false;
 
     self.operation(function() {
       self.replaceRange("", Pos(end, close - (pad && endLine.slice(close - pad.length, close) == pad ? pad.length : 0)),
-                        Pos(end, close + endString.length));
+        Pos(end, close + endString.length));
       var openEnd = open + startString.length;
       if (pad && startLine.slice(openEnd, openEnd + pad.length) == pad) openEnd += pad.length;
       self.replaceRange("", Pos(start, open), Pos(start, openEnd));

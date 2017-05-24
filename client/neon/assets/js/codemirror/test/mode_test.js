@@ -20,7 +20,7 @@
  */
 (function() {
   function findSingle(str, pos, ch) {
-    for (;;) {
+    for (; ;) {
       var found = str.indexOf(ch, pos);
       if (found == -1) return null;
       if (str.charAt(found + 1) != ch) return found;
@@ -29,6 +29,7 @@
   }
 
   var styleName = /[\w&-_]+/g;
+
   function parseTokens(strs) {
     var tokens = [], plain = "";
     for (var i = 0; i < strs.length; ++i) {
@@ -36,7 +37,7 @@
       var str = strs[i], pos = 0;
       while (pos < str.length) {
         var style = null, text;
-        if (str.charAt(pos) == "[" && str.charAt(pos+1) != "[") {
+        if (str.charAt(pos) == "[" && str.charAt(pos + 1) != "[") {
           styleName.lastIndex = pos + 1;
           var m = styleName.exec(str);
           style = m[0].replace(/&/g, " ");
@@ -51,7 +52,9 @@
           text = str.slice(pos, end);
           pos = end;
         }
-        text = text.replace(/\[\[|\]\]/g, function(s) {return s.charAt(0);});
+        text = text.replace(/\[\[|\]\]/g, function(s) {
+          return s.charAt(0);
+        });
         tokens.push(style, text);
         plain += text;
       }
@@ -85,13 +88,13 @@
     var diff = highlightOutputsDifferent(expectedOutput, observedOutput);
     if (diff != null) {
       s += '<div class="mt-test mt-fail">';
-      s +=   '<pre>' + esc(text) + '</pre>';
-      s +=   '<div class="cm-s-default">';
+      s += '<pre>' + esc(text) + '</pre>';
+      s += '<div class="cm-s-default">';
       s += 'expected:';
-      s +=   prettyPrintOutputTable(expectedOutput, diff);
+      s += prettyPrintOutputTable(expectedOutput, diff);
       s += 'observed:';
-      s +=   prettyPrintOutputTable(observedOutput, diff);
-      s +=   '</div>';
+      s += prettyPrintOutputTable(observedOutput, diff);
+      s += '</div>';
       s += '</div>';
     }
     if (observedOutput.indentFailures) {
@@ -102,9 +105,9 @@
   }
 
   function highlight(string, mode) {
-    var state = mode.startState()
+    var state = mode.startState();
 
-    var lines = string.replace(/\r\n/g,'\n').split('\n');
+    var lines = string.replace(/\r\n/g, '\n').split('\n');
     var st = [], pos = 0;
     for (var i = 0; i < lines.length; ++i) {
       var line = lines[i], newLine = true;
@@ -122,14 +125,16 @@
         var compare = mode.token(stream, state), substr = stream.current();
         if (compare && compare.indexOf(" ") > -1) compare = compare.split(' ').sort().join(' ');
         stream.start = stream.pos;
-        if (pos && st[pos-2] == compare && !newLine) {
-          st[pos-1] += substr;
+        if (pos && st[pos - 2] == compare && !newLine) {
+          st[pos - 1] += substr;
         } else if (substr) {
-          st[pos++] = compare; st[pos++] = substr;
+          st[pos++] = compare;
+          st[pos++] = substr;
         }
         // Give up when line is ridiculously long
         if (stream.pos > 5000) {
-          st[pos++] = null; st[pos++] = this.text.slice(stream.pos);
+          st[pos++] = null;
+          st[pos++] = this.text.slice(stream.pos);
           break;
         }
         newLine = false;
@@ -150,11 +155,11 @@
     var s = '<table class="mt-output">';
     s += '<tr>';
     for (var i = 0; i < output.length; i += 2) {
-      var style = output[i], val = output[i+1];
+      var style = output[i], val = output[i + 1];
       s +=
-      '<td class="mt-token"' + (i == diffAt * 2 ? " style='background: pink'" : "") + '>' +
+        '<td class="mt-token"' + (i == diffAt * 2 ? " style='background: pink'" : "") + '>' +
         '<span class="cm-' + esc(String(style)) + '">' +
-        esc(val.replace(/ /g,'\xb7')) +
+        esc(val.replace(/ /g, '\xb7')) +
         '</span>' +
         '</td>';
     }

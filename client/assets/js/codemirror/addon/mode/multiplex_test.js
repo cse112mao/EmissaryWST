@@ -1,5 +1,5 @@
 (function() {
-  CodeMirror.defineMode("markdown_with_stex", function(){
+  CodeMirror.defineMode("markdown_with_stex", function() {
     var inner = CodeMirror.getMode({}, "stex");
     var outer = CodeMirror.getMode({}, "markdown");
 

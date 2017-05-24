@@ -4,6 +4,7 @@ CodeMirror.defineMode("eiffel", function() {
     for (var i = 0, e = words.length; i < e; ++i) o[words[i]] = true;
     return o;
   }
+
   var keywords = wordObj([
     'note',
     'across',
@@ -70,7 +71,7 @@ CodeMirror.defineMode("eiffel", function() {
     'not',
     'or'
   ]);
-  var operators = wordObj([":=", "and then","and", "or","<<",">>"]);
+  var operators = wordObj([":=", "and then", "and", "or", "<<", ">>"]);
   var curPunc;
 
   function chain(newtok, stream, state) {
@@ -82,12 +83,12 @@ CodeMirror.defineMode("eiffel", function() {
     curPunc = null;
     if (stream.eatSpace()) return null;
     var ch = stream.next();
-    if (ch == '"'||ch == "'") {
+    if (ch == '"' || ch == "'") {
       return chain(readQuoted(ch, "string"), stream, state);
-    } else if (ch == "-"&&stream.eat("-")) {
+    } else if (ch == "-" && stream.eat("-")) {
       stream.skipToEnd();
       return "comment";
-    } else if (ch == ":"&&stream.eat("=")) {
+    } else if (ch == ":" && stream.eat("=")) {
       return "operator";
     } else if (/[0-9]/.test(ch)) {
       stream.eatWhile(/[xXbBCc0-9\.]/);
@@ -105,7 +106,7 @@ CodeMirror.defineMode("eiffel", function() {
     }
   }
 
-  function readQuoted(quote, style,  unescaped) {
+  function readQuoted(quote, style, unescaped) {
     return function(stream, state) {
       var escaped = false, ch;
       while ((ch = stream.next()) != null) {
@@ -125,18 +126,18 @@ CodeMirror.defineMode("eiffel", function() {
     },
 
     token: function(stream, state) {
-      var style = state.tokenize[state.tokenize.length-1](stream, state);
+      var style = state.tokenize[state.tokenize.length - 1](stream, state);
       if (style == "ident") {
         var word = stream.current();
         style = keywords.propertyIsEnumerable(stream.current()) ? "keyword"
           : operators.propertyIsEnumerable(stream.current()) ? "operator"
-          : /^[A-Z][A-Z_0-9]*$/g.test(word) ? "tag"
-          : /^0[bB][0-1]+$/g.test(word) ? "number"
-          : /^0[cC][0-7]+$/g.test(word) ? "number"
-          : /^0[xX][a-fA-F0-9]+$/g.test(word) ? "number"
-          : /^([0-9]+\.[0-9]*)|([0-9]*\.[0-9]+)$/g.test(word) ? "number"
-          : /^[0-9]+$/g.test(word) ? "number"
-          : "variable";
+            : /^[A-Z][A-Z_0-9]*$/g.test(word) ? "tag"
+              : /^0[bB][0-1]+$/g.test(word) ? "number"
+                : /^0[cC][0-7]+$/g.test(word) ? "number"
+                  : /^0[xX][a-fA-F0-9]+$/g.test(word) ? "number"
+                    : /^([0-9]+\.[0-9]*)|([0-9]*\.[0-9]+)$/g.test(word) ? "number"
+                      : /^[0-9]+$/g.test(word) ? "number"
+                        : "variable";
       }
       return style;
     },

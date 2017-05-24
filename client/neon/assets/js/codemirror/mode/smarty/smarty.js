@@ -124,7 +124,8 @@ CodeMirror.defineMode("smarty", function(config) {
         } else if (state.last == "whitespace") {
           stream.eatWhile(regs.validIdentifier);
           return helpers.cont("attribute", "modifier");
-        } if (state.last == "property") {
+        }
+        if (state.last == "property") {
           stream.eatWhile(regs.validIdentifier);
           return helpers.cont("property", null);
         } else if (/\s/.test(ch)) {
@@ -140,7 +141,7 @@ CodeMirror.defineMode("smarty", function(config) {
         while (c = stream.eat(regs.validIdentifier)) {
           str += c;
         }
-        for (var i=0, j=keyFunctions.length; i<j; i++) {
+        for (var i = 0, j = keyFunctions.length; i < j; i++) {
           if (keyFunctions[i] == str) {
             return helpers.cont("keyword", "keyword");
           }

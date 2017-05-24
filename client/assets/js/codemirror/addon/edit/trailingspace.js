@@ -5,8 +5,12 @@ CodeMirror.defineOption("showTrailingSpace", false, function(cm, val, prev) {
   else if (!prev && val)
     cm.addOverlay({
       token: function(stream) {
-        for (var l = stream.string.length, i = l; i && /\s/.test(stream.string.charAt(i - 1)); --i) {}
-        if (i > stream.pos) { stream.pos = i; return null; }
+        for (var l = stream.string.length, i = l; i && /\s/.test(stream.string.charAt(i - 1)); --i) {
+        }
+        if (i > stream.pos) {
+          stream.pos = i;
+          return null;
+        }
         stream.pos = l;
         return "trailingspace";
       },

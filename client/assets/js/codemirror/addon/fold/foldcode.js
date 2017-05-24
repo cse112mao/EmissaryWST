@@ -29,7 +29,9 @@
     if (!range || range.cleared || force === "unfold") return;
 
     var myWidget = makeWidget(options);
-    CodeMirror.on(myWidget, "mousedown", function() { myRange.clear(); });
+    CodeMirror.on(myWidget, "mousedown", function() {
+      myRange.clear();
+    });
     var myRange = cm.markText(range.from, range.to, {
       replacedWith: myWidget,
       clearOnEnter: true,
@@ -54,7 +56,9 @@
 
   // Clumsy backwards-compatible interface
   CodeMirror.newFoldFunction = function(rangeFinder, widget) {
-    return function(cm, pos) { doFold(cm, pos, {rangeFinder: rangeFinder, widget: widget}); };
+    return function(cm, pos) {
+      doFold(cm, pos, {rangeFinder: rangeFinder, widget: widget});
+    };
   };
 
   // New-style interface

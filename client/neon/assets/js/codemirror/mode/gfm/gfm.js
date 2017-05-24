@@ -1,9 +1,11 @@
 CodeMirror.defineMode("gfm", function(config, modeConfig) {
   var codeDepth = 0;
+
   function blankLine(state) {
     state.code = false;
     return null;
   }
+
   var gfmOverlay = {
     startState: function() {
       return {
@@ -63,7 +65,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
       }
       if (stream.sol() || state.ateSpace) {
         state.ateSpace = false;
-        if(stream.match(/^(?:[a-zA-Z0-9\-_]+\/)?(?:[a-zA-Z0-9\-_]+@)?(?:[a-f0-9]{7,40}\b)/)) {
+        if (stream.match(/^(?:[a-zA-Z0-9\-_]+\/)?(?:[a-zA-Z0-9\-_]+@)?(?:[a-f0-9]{7,40}\b)/)) {
           // User/Project@SHA
           // User@SHA
           // SHA
@@ -76,7 +78,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
         }
       }
       if (stream.match(/^((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]|\([^\s()<>]*\))+(?:\([^\s()<>]*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i) &&
-         stream.string.slice(stream.start - 2, stream.start) != "](") {
+        stream.string.slice(stream.start - 2, stream.start) != "](") {
         // URLs
         // Taken from http://daringfireball.net/2010/07/improved_regex_for_matching_urls
         // And then (issue #1160) simplified to make it not crash the Chrome Regexp engine

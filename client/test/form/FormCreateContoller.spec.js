@@ -4,21 +4,21 @@ describe('Form Create Controller', function() {
 
   var controller, scope, FormService, editOnAPI, httpBackend;
 
-  beforeEach(inject(function($controller,$rootScope,$modal,_FormService_,$http,$filter,$location,_$httpBackend_){
+  beforeEach(inject(function($controller, $rootScope, $modal, _FormService_, $http, $filter, $location, _$httpBackend_) {
     scope = $rootScope.$new();
     httpBackend = _$httpBackend_;
     controller = $controller('FormCreateController', {
       $scope: scope,
       $modal: $modal,
       FormService: _FormService_,
-      $http: $http, 
-      $filter: $filter, 
+      $http: $http,
+      $filter: $filter,
       $location: $location
     });
   }));
 
-  beforeEach(function(){
-    editOnAPI= '/api/form/template/company/54f8f23546b787e8335980e7';
+  beforeEach(function() {
+    editOnAPI = '/api/form/template/company/54f8f23546b787e8335980e7';
     httpBackend.whenGET(editOnAPI).respond(200);
   });
 
@@ -27,10 +27,10 @@ describe('Form Create Controller', function() {
     expect(FormService).to.be.defined;
   });
 
-  describe('editOn()',function() {
+  describe('editOn()', function() {
     it('Should get api route', function() {
       httpBackend.expectGET(editOnAPI);
-      });
+    });
 
     it('Should define variables', function() {
       expect(controller.templateID).to.be.defined;
@@ -39,7 +39,7 @@ describe('Form Create Controller', function() {
 
   describe('Field tests', function() {
 
-    it('addNewField()', function(){
+    it('addNewField()', function() {
       scope.addNewField();
       expect(scope.addField.lastAddedID).to.equal(2);
       expect(scope.form.form_fields.length).to.equal(1);
@@ -50,7 +50,7 @@ describe('Form Create Controller', function() {
 
 
     });
-    it('deleteField()',function(){
+    it('deleteField()', function() {
       scope.addNewField();
       expect(scope.addField.lastAddedID).to.equal(2);
       expect(scope.form.form_fields.length).to.equal(1);

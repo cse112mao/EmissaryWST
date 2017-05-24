@@ -1,14 +1,14 @@
 CodeMirror.defineMode("sql", function(config, parserConfig) {
   "use strict";
 
-  var client         = parserConfig.client || {},
-      atoms          = parserConfig.atoms || {"false": true, "true": true, "null": true},
-      builtin        = parserConfig.builtin || {},
-      keywords       = parserConfig.keywords || {},
-      operatorChars  = parserConfig.operatorChars || /^[*+\-%<>!=&|~^]/,
-      support        = parserConfig.support || {},
-      hooks          = parserConfig.hooks || {},
-      dateSQL        = parserConfig.dateSQL || {"date" : true, "time" : true, "timestamp" : true};
+  var client = parserConfig.client || {},
+    atoms = parserConfig.atoms || {"false": true, "true": true, "null": true},
+    builtin = parserConfig.builtin || {},
+    keywords = parserConfig.keywords || {},
+    operatorChars = parserConfig.operatorChars || /^[*+\-%<>!=&|~^]/,
+    support = parserConfig.support || {},
+    hooks = parserConfig.hooks || {},
+    dateSQL = parserConfig.dateSQL || {"date": true, "time": true, "timestamp": true};
 
   function tokenBase(stream, state) {
     var ch = stream.next();
@@ -34,7 +34,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     } else if (ch.charCodeAt(0) > 47 && ch.charCodeAt(0) < 58) {
       // numbers
       // ref: http://dev.mysql.com/doc/refman/5.5/en/number-literals.html
-          stream.match(/^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/);
+      stream.match(/^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/);
       support.decimallessFloat == true && stream.eat('.');
       return "number";
     } else if (ch == "?" && (stream.eatSpace() || stream.eol() || stream.eat(";"))) {
@@ -46,8 +46,8 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       state.tokenize = tokenLiteral(ch);
       return state.tokenize(stream, state);
     } else if ((((support.nCharCast == true && (ch == "n" || ch == "N"))
-        || (support.charsetCast == true && ch == "_" && stream.match(/[a-z][a-z0-9]*/i)))
-        && (stream.peek() == "'" || stream.peek() == '"'))) {
+      || (support.charsetCast == true && ch == "_" && stream.match(/[a-z][a-z0-9]*/i)))
+      && (stream.peek() == "'" || stream.peek() == '"'))) {
       // charset casting: _utf8'str', N'str', n'str'
       // ref: http://dev.mysql.com/doc/refman/5.5/en/string-literals.html
       return "keyword";
@@ -59,7 +59,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       stream.skipToEnd();
       return "comment";
     } else if ((support.commentHash && ch == "#")
-        || (ch == "-" && stream.eat("-") && (!support.commentSpaceRequired || stream.eat(" ")))) {
+      || (ch == "-" && stream.eat("-") && (!support.commentSpaceRequired || stream.eat(" ")))) {
       // 1-line comments
       // ref: https://kb.askmonty.org/en/comment-syntax/
       stream.skipToEnd();
@@ -84,7 +84,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       stream.eatWhile(operatorChars);
       return null;
     } else if (ch == '{' &&
-        (stream.match(/^( )*(d|D|t|T|ts|TS)( )*'[^']*'( )*}/) || stream.match(/^( )*(d|D|t|T|ts|TS)( )*"[^"]*"( )*}/))) {
+      (stream.match(/^( )*(d|D|t|T|ts|TS)( )*'[^']*'( )*}/) || stream.match(/^( )*(d|D|t|T|ts|TS)( )*"[^"]*"( )*}/))) {
       // dates (weird ODBC syntax)
       // ref: http://dev.mysql.com/doc/refman/5.5/en/date-and-time-literals.html
       return "number";
@@ -117,6 +117,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       return "string";
     };
   }
+
   function tokenComment(stream, state) {
     while (true) {
       if (stream.skipTo("*")) {
@@ -235,7 +236,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     // \N means NULL
     // ref: http://dev.mysql.com/doc/refman/5.5/en/null-values.html
     if (stream.eat("N")) {
-        return "atom";
+      return "atom";
     }
     // \g, etc
     // ref: http://dev.mysql.com/doc/refman/5.5/en/mysql-commands.html
@@ -272,7 +273,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     operatorChars: /^[*+\-%<>!=]/,
     dateSQL: set("date datetimeoffset datetime2 smalldatetime datetime time"),
     hooks: {
-      "@":   hookVar
+      "@": hookVar
     }
   });
 
@@ -286,9 +287,9 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     dateSQL: set("date time timestamp"),
     support: set("ODBCdotTable decimallessFloat zerolessFloat binaryNumber hexNumber doubleQuote nCharCast charsetCast commentHash commentSpaceRequired"),
     hooks: {
-      "@":   hookVar,
-      "`":   hookIdentifier,
-      "\\":  hookClient
+      "@": hookVar,
+      "`": hookIdentifier,
+      "\\": hookClient
     }
   });
 
@@ -302,9 +303,9 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     dateSQL: set("date time timestamp"),
     support: set("ODBCdotTable decimallessFloat zerolessFloat binaryNumber hexNumber doubleQuote nCharCast charsetCast commentHash commentSpaceRequired"),
     hooks: {
-      "@":   hookVar,
-      "`":   hookIdentifier,
-      "\\":  hookClient
+      "@": hookVar,
+      "`": hookIdentifier,
+      "\\": hookClient
     }
   });
 
@@ -312,55 +313,55 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
   // is called Cassandra to avoid confusion with Contextual Query Language
   CodeMirror.defineMIME("text/x-cassandra", {
     name: "sql",
-    client: { },
+    client: {},
     keywords: set("use select from using consistency where limit first reversed first and in insert into values using consistency ttl update set delete truncate begin batch apply create keyspace with columnfamily primary key index on drop alter type add any one quorum all local_quorum each_quorum"),
     builtin: set("ascii bigint blob boolean counter decimal double float int text timestamp uuid varchar varint"),
     atoms: set("false true"),
     operatorChars: /^[<>=]/,
-    dateSQL: { },
+    dateSQL: {},
     support: set("commentSlashSlash decimallessFloat"),
-    hooks: { }
+    hooks: {}
   });
 
   // this is based on Peter Raganitsch's 'plsql' mode
   CodeMirror.defineMIME("text/x-plsql", {
-    name:       "sql",
-    client:     set("appinfo arraysize autocommit autoprint autorecovery autotrace blockterminator break btitle cmdsep colsep compatibility compute concat copycommit copytypecheck define describe echo editfile embedded escape exec execute feedback flagger flush heading headsep instance linesize lno loboffset logsource long longchunksize markup native newpage numformat numwidth pagesize pause pno recsep recsepchar release repfooter repheader serveroutput shiftinout show showmode size spool sqlblanklines sqlcase sqlcode sqlcontinue sqlnumber sqlpluscompatibility sqlprefix sqlprompt sqlterminator suffix tab term termout time timing trimout trimspool ttitle underline verify version wrap"),
-    keywords:   set("abort accept access add all alter and any array arraylen as asc assert assign at attributes audit authorization avg base_table begin between binary_integer body boolean by case cast char char_base check close cluster clusters colauth column comment commit compress connect connected constant constraint crash create current currval cursor data_base database date dba deallocate debugoff debugon decimal declare default definition delay delete desc digits dispose distinct do drop else elsif enable end entry escape exception exception_init exchange exclusive exists exit external fast fetch file for force form from function generic goto grant group having identified if immediate in increment index indexes indicator initial initrans insert interface intersect into is key level library like limited local lock log logging long loop master maxextents maxtrans member minextents minus mislabel mode modify multiset new next no noaudit nocompress nologging noparallel not nowait number_base object of off offline on online only open option or order out package parallel partition pctfree pctincrease pctused pls_integer positive positiven pragma primary prior private privileges procedure public raise range raw read rebuild record ref references refresh release rename replace resource restrict return returning reverse revoke rollback row rowid rowlabel rownum rows run savepoint schema segment select separate session set share snapshot some space split sql start statement storage subtype successful synonym tabauth table tables tablespace task terminate then to trigger truncate type union unique unlimited unrecoverable unusable update use using validate value values variable view views when whenever where while with work"),
-    builtin:    set("abs acos add_months ascii asin atan atan2 average bfile bfilename bit blob ceil character chartorowid chr clob concat convert cos cosh count dec decode deref dual dump dup_val_on_index empty error exp false float floor found glb greatest hextoraw initcap instr instrb int integer isopen last_day least lenght lenghtb ln lower lpad ltrim lub make_ref max min mlslabel mod months_between natural naturaln nchar nclob new_time next_day nextval nls_charset_decl_len nls_charset_id nls_charset_name nls_initcap nls_lower nls_sort nls_upper nlssort no_data_found notfound null number numeric nvarchar2 nvl others power rawtohex real reftohex round rowcount rowidtochar rowtype rpad rtrim sign signtype sin sinh smallint soundex sqlcode sqlerrm sqrt stddev string substr substrb sum sysdate tan tanh to_char text to_date to_label to_multi_byte to_number to_single_byte translate true trunc uid upper user userenv varchar varchar2 variance varying vsize xml"),
+    name: "sql",
+    client: set("appinfo arraysize autocommit autoprint autorecovery autotrace blockterminator break btitle cmdsep colsep compatibility compute concat copycommit copytypecheck define describe echo editfile embedded escape exec execute feedback flagger flush heading headsep instance linesize lno loboffset logsource long longchunksize markup native newpage numformat numwidth pagesize pause pno recsep recsepchar release repfooter repheader serveroutput shiftinout show showmode size spool sqlblanklines sqlcase sqlcode sqlcontinue sqlnumber sqlpluscompatibility sqlprefix sqlprompt sqlterminator suffix tab term termout time timing trimout trimspool ttitle underline verify version wrap"),
+    keywords: set("abort accept access add all alter and any array arraylen as asc assert assign at attributes audit authorization avg base_table begin between binary_integer body boolean by case cast char char_base check close cluster clusters colauth column comment commit compress connect connected constant constraint crash create current currval cursor data_base database date dba deallocate debugoff debugon decimal declare default definition delay delete desc digits dispose distinct do drop else elsif enable end entry escape exception exception_init exchange exclusive exists exit external fast fetch file for force form from function generic goto grant group having identified if immediate in increment index indexes indicator initial initrans insert interface intersect into is key level library like limited local lock log logging long loop master maxextents maxtrans member minextents minus mislabel mode modify multiset new next no noaudit nocompress nologging noparallel not nowait number_base object of off offline on online only open option or order out package parallel partition pctfree pctincrease pctused pls_integer positive positiven pragma primary prior private privileges procedure public raise range raw read rebuild record ref references refresh release rename replace resource restrict return returning reverse revoke rollback row rowid rowlabel rownum rows run savepoint schema segment select separate session set share snapshot some space split sql start statement storage subtype successful synonym tabauth table tables tablespace task terminate then to trigger truncate type union unique unlimited unrecoverable unusable update use using validate value values variable view views when whenever where while with work"),
+    builtin: set("abs acos add_months ascii asin atan atan2 average bfile bfilename bit blob ceil character chartorowid chr clob concat convert cos cosh count dec decode deref dual dump dup_val_on_index empty error exp false float floor found glb greatest hextoraw initcap instr instrb int integer isopen last_day least lenght lenghtb ln lower lpad ltrim lub make_ref max min mlslabel mod months_between natural naturaln nchar nclob new_time next_day nextval nls_charset_decl_len nls_charset_id nls_charset_name nls_initcap nls_lower nls_sort nls_upper nlssort no_data_found notfound null number numeric nvarchar2 nvl others power rawtohex real reftohex round rowcount rowidtochar rowtype rpad rtrim sign signtype sin sinh smallint soundex sqlcode sqlerrm sqrt stddev string substr substrb sum sysdate tan tanh to_char text to_date to_label to_multi_byte to_number to_single_byte translate true trunc uid upper user userenv varchar varchar2 variance varying vsize xml"),
     operatorChars: /^[*+\-%<>!=~]/,
-    dateSQL:    set("date time timestamp"),
-    support:    set("doubleQuote nCharCast zerolessFloat binaryNumber hexNumber")
+    dateSQL: set("date time timestamp"),
+    support: set("doubleQuote nCharCast zerolessFloat binaryNumber hexNumber")
   });
 }());
 
 /*
-  How Properties of Mime Types are used by SQL Mode
-  =================================================
+ How Properties of Mime Types are used by SQL Mode
+ =================================================
 
-  keywords:
-    A list of keywords you want to be highlighted.
-  functions:
-    A list of function names you want to be highlighted.
-  builtin:
-    A list of builtin types you want to be highlighted (if you want types to be of class "builtin" instead of "keyword").
-  operatorChars:
-    All characters that must be handled as operators.
-  client:
-    Commands parsed and executed by the client (not the server).
-  support:
-    A list of supported syntaxes which are not common, but are supported by more than 1 DBMS.
-    * ODBCdotTable: .tableName
-    * zerolessFloat: .1
-    * doubleQuote
-    * nCharCast: N'string'
-    * charsetCast: _utf8'string'
-    * commentHash: use # char for comments
-    * commentSlashSlash: use // for comments
-    * commentSpaceRequired: require a space after -- for comments
-  atoms:
-    Keywords that must be highlighted as atoms,. Some DBMS's support more atoms than others:
-    UNKNOWN, INFINITY, UNDERFLOW, NaN...
-  dateSQL:
-    Used for date/time SQL standard syntax, because not all DBMS's support same temporal types.
-*/
+ keywords:
+ A list of keywords you want to be highlighted.
+ functions:
+ A list of function names you want to be highlighted.
+ builtin:
+ A list of builtin types you want to be highlighted (if you want types to be of class "builtin" instead of "keyword").
+ operatorChars:
+ All characters that must be handled as operators.
+ client:
+ Commands parsed and executed by the client (not the server).
+ support:
+ A list of supported syntaxes which are not common, but are supported by more than 1 DBMS.
+ * ODBCdotTable: .tableName
+ * zerolessFloat: .1
+ * doubleQuote
+ * nCharCast: N'string'
+ * charsetCast: _utf8'string'
+ * commentHash: use # char for comments
+ * commentSlashSlash: use // for comments
+ * commentSpaceRequired: require a space after -- for comments
+ atoms:
+ Keywords that must be highlighted as atoms,. Some DBMS's support more atoms than others:
+ UNKNOWN, INFINITY, UNDERFLOW, NaN...
+ dateSQL:
+ Used for date/time SQL standard syntax, because not all DBMS's support same temporal types.
+ */

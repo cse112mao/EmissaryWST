@@ -6,12 +6,12 @@ describe('TokenInjector', function() {
 
   beforeEach(function() {
     /* Mock auth module and make sure to grab httpProvider */
-    module('auth', function ($httpProvider) {
+    module('auth', function($httpProvider) {
       httpProvider = $httpProvider;
     });
 
     /* Mock our token injector */
-    inject(function (_TokenInjector_) {
+    inject(function(_TokenInjector_) {
       TokenInjector = _TokenInjector_;
     });
 

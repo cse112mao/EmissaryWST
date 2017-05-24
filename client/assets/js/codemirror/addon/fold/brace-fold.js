@@ -3,7 +3,7 @@ CodeMirror.registerHelper("fold", "brace", function(cm, start) {
   var startCh, tokenType;
 
   function findOpening(openCh) {
-    for (var at = start.ch, pass = 0;;) {
+    for (var at = start.ch, pass = 0; ;) {
       var found = at <= 0 ? -1 : lineText.lastIndexOf(openCh, at - 1);
       if (found == -1) {
         if (pass == 1) break;
@@ -28,7 +28,7 @@ CodeMirror.registerHelper("fold", "brace", function(cm, start) {
   var count = 1, lastLine = cm.lastLine(), end, endCh;
   outer: for (var i = line; i <= lastLine; ++i) {
     var text = cm.getLine(i), pos = i == line ? startCh : 0;
-    for (;;) {
+    for (; ;) {
       var nextOpen = text.indexOf(startToken, pos), nextClose = text.indexOf(endToken, pos);
       if (nextOpen < 0) nextOpen = text.length;
       if (nextClose < 0) nextClose = text.length;
@@ -36,14 +36,20 @@ CodeMirror.registerHelper("fold", "brace", function(cm, start) {
       if (pos == text.length) break;
       if (cm.getTokenTypeAt(CodeMirror.Pos(i, pos + 1)) == tokenType) {
         if (pos == nextOpen) ++count;
-        else if (!--count) { end = i; endCh = pos; break outer; }
+        else if (!--count) {
+          end = i;
+          endCh = pos;
+          break outer;
+        }
       }
       ++pos;
     }
   }
   if (end == null || line == end && endCh == startCh) return;
-  return {from: CodeMirror.Pos(line, startCh),
-          to: CodeMirror.Pos(end, endCh)};
+  return {
+    from: CodeMirror.Pos(line, startCh),
+    to: CodeMirror.Pos(end, endCh)
+  };
 });
 CodeMirror.braceRangeFinder = CodeMirror.fold.brace; // deprecated
 
@@ -63,7 +69,7 @@ CodeMirror.registerHelper("fold", "import", function(cm, start) {
   var start = start.line, has = hasImport(start), prev;
   if (!has || hasImport(start - 1) || ((prev = hasImport(start - 2)) && prev.end.line == start - 1))
     return null;
-  for (var end = has.end;;) {
+  for (var end = has.end; ;) {
     var next = hasImport(end.line + 1);
     if (next == null) break;
     end = next.end;
@@ -82,12 +88,14 @@ CodeMirror.registerHelper("fold", "include", function(cm, start) {
 
   var start = start.line, has = hasInclude(start);
   if (has == null || hasInclude(start - 1) != null) return null;
-  for (var end = start;;) {
+  for (var end = start; ;) {
     var next = hasInclude(end + 1);
     if (next == null) break;
     ++end;
   }
-  return {from: CodeMirror.Pos(start, has + 1),
-          to: cm.clipPos(CodeMirror.Pos(end))};
+  return {
+    from: CodeMirror.Pos(start, has + 1),
+    to: cm.clipPos(CodeMirror.Pos(end))
+  };
 });
 CodeMirror.includeRangeFinder = CodeMirror.fold.include; // deprecated

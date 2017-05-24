@@ -2,14 +2,14 @@
   "use strict";
   // declare global: JSHINT
 
-  var bogus = [ "Dangerous comment" ];
+  var bogus = ["Dangerous comment"];
 
-  var warnings = [ [ "Expected '{'",
-                     "Statement body should be inside '{ }' braces." ] ];
+  var warnings = [["Expected '{'",
+    "Statement body should be inside '{ }' braces."]];
 
-  var errors = [ "Missing semicolon", "Extra comma", "Missing property name",
-                 "Unmatched ", " and instead saw", " is not defined",
-                 "Unclosed string", "Stopping, unable to continue" ];
+  var errors = ["Missing semicolon", "Extra comma", "Missing property name",
+    "Unmatched ", " and instead saw", " is not defined",
+    "Unclosed string", "Stopping, unable to continue"];
 
   function validator(text, options) {
     JSHINT(text, options);
@@ -34,7 +34,7 @@
 
     description = error.description;
 
-    for ( var i = 0; i < fixes.length; i++) {
+    for (var i = 0; i < fixes.length; i++) {
       fix = fixes[i];
       find = (typeof fix === "string" ? fix : fix[0]);
       replace = (typeof fix === "string" ? null : fix[1]);
@@ -51,7 +51,7 @@
 
   function isBogus(error) {
     var description = error.description;
-    for ( var i = 0; i < bogus.length; i++) {
+    for (var i = 0; i < bogus.length; i++) {
       if (description.indexOf(bogus[i]) !== -1) {
         return true;
       }
@@ -60,7 +60,7 @@
   }
 
   function parseErrors(errors, output) {
-    for ( var i = 0; i < errors.length; i++) {
+    for (var i = 0; i < errors.length; i++) {
       var error = errors[i];
       if (error) {
         var linetabpositions, index;
@@ -116,10 +116,12 @@
         error = cleanup(error);
 
         if (error)
-          output.push({message: error.description,
-                       severity: error.severity,
-                       from: CodeMirror.Pos(error.line - 1, start),
-                       to: CodeMirror.Pos(error.line - 1, end)});
+          output.push({
+            message: error.description,
+            severity: error.severity,
+            from: CodeMirror.Pos(error.line - 1, start),
+            to: CodeMirror.Pos(error.line - 1, end)
+          });
       }
     }
   }
