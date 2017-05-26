@@ -15,6 +15,7 @@
   box-sizing: border-box;
   width: 350px;
 }
+
 /* Position modifiers
 ========================================================================== */
 .uk-notify-top-right,
@@ -22,17 +23,20 @@
   left: auto;
   right: 10px;
 }
+
 .uk-notify-top-center,
 .uk-notify-bottom-center {
   left: 50%;
   margin-left: -175px;
 }
+
 .uk-notify-bottom-left,
 .uk-notify-bottom-right,
 .uk-notify-bottom-center {
   top: auto;
   bottom: 10px;
 }
+
 /* Responsiveness
 ========================================================================== */
 /* Only phones portrait */
@@ -47,6 +51,7 @@
     margin: 0;
   }
 }
+
 /* Sub-object: `uk-notify-message`
 ========================================================================== */
 .uk-notify-message {
@@ -59,33 +64,39 @@
   line-height: 22px;
   cursor: pointer;
 }
+
 /* Close in notify
  ========================================================================== */
 .uk-notify-message > .uk-close {
   visibility: hidden;
   float: right;
 }
+
 .uk-notify-message:hover > .uk-close {
   visibility: visible;
 }
+
 /* Modifier: `uk-alert-info`
  ========================================================================== */
 .uk-notify-message-info {
   background: #ebf7fd;
   color: #2d7091;
 }
+
 /* Modifier: `uk-alert-success`
  ========================================================================== */
 .uk-notify-message-success {
   background: #f2fae3;
   color: #659f13;
 }
+
 /* Modifier: `uk-notify-message-warning`
  ========================================================================== */
 .uk-notify-message-warning {
   background: #fffceb;
   color: #e28327;
 }
+
 /* Modifier: `uk-notify-message-danger`
  ========================================================================== */
 .uk-notify-message-danger {
