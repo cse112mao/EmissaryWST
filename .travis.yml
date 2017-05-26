@@ -26,5 +26,7 @@ deploy:
   app: emissaryws
   on:
     repo: cse112mao/EmissaryWST
+after_deploy:
+  - gulp test:nightwatch
 notifications:
   slack: cse112maospring2017:XksgdUr6VwPdJQ38LUBViS19
