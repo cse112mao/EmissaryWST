@@ -81,7 +81,7 @@
 .selectboxit-container .selectboxit-options {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  min-width: 100%;  /* Minimum Width of the dropdown list box options */
+  min-width: 100%; /* Minimum Width of the dropdown list box options */
   *width: 100%;
   margin: 0;
   padding: 0;
@@ -100,7 +100,7 @@
 }
 
 /* Individual options */
- .selectboxit-option .selectboxit-option-anchor{
+.selectboxit-option .selectboxit-option-anchor {
   padding: 0 2px;
 }
 
