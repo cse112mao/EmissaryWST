@@ -13,8 +13,11 @@
 <script src="../mode/css/css.js"></script>
 <script src="../mode/htmlmixed/htmlmixed.js"></script>
 <style type="text/css">
-      .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
-    </style>
+  .CodeMirror {
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #888;
+  }
+</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../doc/logo.png"></a>
 
@@ -29,13 +32,13 @@
 </div>
 
 <article>
-<h2>Close-Tag Demo</h2>
-<form><textarea id="code" name="code"><html</textarea></form>
+  <h2>Close-Tag Demo</h2>
+  <form><textarea id="code" name="code"><html</textarea></form>
 
-    <script type="text/javascript">
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: 'text/html',
-        autoCloseTags: true
-      });
-    </script>
-  </article>
+  <script type="text/javascript">
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      mode: 'text/html',
+      autoCloseTags: true
+    });
+  </script>
+</article>

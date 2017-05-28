@@ -9,7 +9,9 @@
 <script src="../../addon/edit/matchbrackets.js"></script>
 <script src="../../lib/codemirror.js"></script>
 <script src="lua.js"></script>
-<style>.CodeMirror {border: 1px solid black;}</style>
+<style>.CodeMirror {
+  border: 1px solid black;
+}</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../../doc/logo.png"></a>
 
@@ -25,8 +27,8 @@
 </div>
 
 <article>
-<h2>Lua mode</h2>
-<form><textarea id="code" name="code">
+  <h2>Lua mode</h2>
+  <form><textarea id="code" name="code">
 --[[
 example useless code to show lua syntax highlighting
 this is multiline comment
@@ -67,20 +69,20 @@ function blablabla3()
 
 end
 </textarea></form>
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        tabMode: "indent",
-        matchBrackets: true,
-        theme: "neat"
-      });
-    </script>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      tabMode: "indent",
+      matchBrackets: true,
+      theme: "neat"
+    });
+  </script>
 
-    <p>Loosely based on Franciszek
+  <p>Loosely based on Franciszek
     Wawrzak's <a href="http://codemirror.net/1/contrib/lua">CodeMirror
-    1 mode</a>. One configuration parameter is
+      1 mode</a>. One configuration parameter is
     supported, <code>specials</code>, to which you can provide an
     array of strings to have those identifiers highlighted with
     the <code>lua-special</code> style.</p>
-    <p><strong>MIME types defined:</strong> <code>text/x-lua</code>.</p>
+  <p><strong>MIME types defined:</strong> <code>text/x-lua</code>.</p>
 
-  </article>
+</article>
