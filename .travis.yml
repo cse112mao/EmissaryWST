@@ -11,7 +11,7 @@ before_script:
 - mongo mydb_test --eval 'db.addUser("travis", "cse112mao");'
 script: 
 - gulp
-- interpreter-config.json
+- se-interpreter interpreter-config.json
 services:
 - mongodb
 addons:
