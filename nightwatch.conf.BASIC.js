@@ -40,12 +40,20 @@ module.exports = {
         "tunnel-identifier": TRAVIS_JOB_NUMBER
       }
     },
+    "browserOptions": {
+      "browserName:" : "firefox",
+      "username" : "MAO",
+      "access_key" : "dc201543-557e-41e2-97b3-9a7cdd6bb305"
+    },
     "chrome": {
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true // turn off to test progressive enhancement
       }
-    }
+    },
+    "scripts": [
+      "client/test/selenium/*"
+    ]
   }
 }
 /**
