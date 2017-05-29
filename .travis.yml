@@ -9,7 +9,9 @@ before_script:
 - python -m SimpleHTTPServer &
 - sleep 15
 - mongo mydb_test --eval 'db.addUser("travis", "cse112mao");'
-script: gulp
+script: 
+- gulp
+- interpreter-config.json
 services:
 - mongodb
 addons:
