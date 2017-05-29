@@ -129,8 +129,7 @@ module.exports.template.getAll = function(req, res) {
     {
       credit_card_number: false,
       expiration_date: false
-    }
-    , function(err, result) {
+    }, function(err, result) {
       if (err) {
         return res.status(400).json(err);
       }
@@ -336,5 +335,6 @@ function showCompanyPublicInfo(c) {
     email: c.email,
     phone_number: c.phone_number,
     paid_time: c.paid_time
-  }
+ 
+  };
 }

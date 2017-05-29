@@ -80,7 +80,7 @@ module.exports.template.create = function(req, res) {
       date: param.date
     }, function(err, appointments) {
       if (err) return res.status(400).json({error: "Could Not Find"});
-      if (appointments.length == 0) {
+      if (appointments.length === 0) {
         appointment.save(function(err, a) {
           if (err)
             return res.status(400).json({error: "Could Not Save"});

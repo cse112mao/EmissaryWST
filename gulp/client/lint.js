@@ -6,7 +6,7 @@ gulp.task('lint:client', function() {
   return gulp.src(['./client/app/**/*.js'])
     .pipe(jshint('./client/.jshintrc'))
     .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'));
+    //.pipe(jshint.reporter('fail'));
 });
 
 

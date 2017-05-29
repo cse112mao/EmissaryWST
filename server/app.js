@@ -92,52 +92,52 @@ if (app.get('env') !== 'development') {
 }
 
 app.get('/settings', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/settings.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/settings.html'));
 });
 app.get('/admin-companies', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/admin-companies.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/admin-companies.html'));
 });
 app.get('/admin-dashboard', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/admin-dashboard.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/admin-dashboard.html'));
 });
 app.get('/analytics_raw', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/analytics_raw.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/analytics_raw.html'));
 });
 app.get('/appointments', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/appointments.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/appointments.html'));
 });
 app.get('/checkin', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/checkin.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/checkin.html'));
 });
 app.get('/employees', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/employees.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/employees.html'));
 });
 app.get('/forgot-password', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/forgot-password.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/forgot-password.html'));
 });
 app.get('/form-builder', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/form-builder.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/form-builder.html'));
 });
 app.get('/login', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/login.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/login.html'));
 });
 app.get('/signup', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/signup.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/signup.html'));
 });
 app.get('/visitors', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/visitors.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/visitors.html'));
 });
 app.get('/404', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/404.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/404.html'));
 });
 app.get('/admin-settings', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/admin-settings.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/admin-settings.html'));
 });
 app.get('/index', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/assets/views/index.html'))
+  res.sendFile(path.join(__dirname, '../dist/assets/views/index.html'));
 });
 app.get('/doc', function(req, res) {
-  res.sendFile(path.join(__dirname, '../doc/index.html'))
+  res.sendFile(path.join(__dirname, '../doc/index.html'));
 });
 
 /*
@@ -147,7 +147,7 @@ app.use(errorHandler());
 
 var server = require('http').createServer(app);
 
-var io = require('socket.io')(server)
+var io = require('socket.io')(server);
 server.listen(app.get('port'), function() {
   console.log('Express server listening on port %d in %s mode',
     app.get('port'),
