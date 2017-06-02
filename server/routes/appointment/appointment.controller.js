@@ -82,7 +82,17 @@ module.exports.template.create = function(req, res) {
       from: config.twilio_sendingNumber, 
       body: message
     }, function(err, message) { 
-      console.log("Sending SMS Failed"); 
+    });
+  };
+  
+  var voiceCall = function(to) {
+    var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
+    client.calls.create({
+      url: "http://demo.twilio.com/docs/voice.xml",
+      to: to,
+      from: config.twilio_sendingNumber
+    }, function(err, call) {
+      process.stdout.write(call.sid);
     });
   };
 
@@ -102,7 +112,13 @@ module.exports.template.create = function(req, res) {
         return res.status(400).json({error: "Already Created"});
       }
     });
+
   sendSms(appointment.phone_number, "This is a confirmation message to inform you that you have made an appointment with " + appointment.provider_name + " on " + appointment.date.toString() + ".");
+  voiceCall(appointment.phone_number);
+  
+  
+
+
 };
 
 /**
