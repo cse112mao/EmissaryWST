@@ -92,7 +92,6 @@ module.exports.template.create = function(req, res) {
       to: to,
       from: config.twilio_sendingNumber
     }, function(err, call) {
-      process.stdout.write(call.sid);
     });
   };
 
