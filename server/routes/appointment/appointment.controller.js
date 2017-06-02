@@ -17,6 +17,7 @@
  * when front end is served from a something other than our app server.
  */
 var Appointment = require('../../models/Appointment');
+var config = require('../../config/config.js');
 
 /****** Company TEMPLATE ROUTES ******/
 module.exports.template = {};
@@ -74,6 +75,17 @@ module.exports.template.create = function(req, res) {
   appointment.company_id = param.company_id;
   appointment.provider_name = param.provider_name;
 
+  var sendSms = function(to, message) {
+    var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
+    client.messages.create({ 
+      to: to, 
+      from: config.twilio_sendingNumber, 
+      body: message
+    }, function(err, message) { 
+      console.log(message.sid); 
+    });
+  };
+
   Appointment.find(
     {
       company_id: param.company_id,
@@ -90,6 +102,7 @@ module.exports.template.create = function(req, res) {
         return res.status(400).json({error: "Already Created"});
       }
     });
+  sendSms(appointment.phone_number, "This is a confirmation message to inform you that you have made an appointment with " + appointment.provider_name + " on " + appointment.date.toString() + ".");
 };
 
 /**
