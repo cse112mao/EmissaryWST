@@ -82,7 +82,7 @@ module.exports.template.create = function(req, res) {
       from: config.twilio_sendingNumber, 
       body: message
     }, function(err, message) { 
-      console.log(message.sid); 
+      console.log("Sending SMS Failed"); 
     });
   };
 
