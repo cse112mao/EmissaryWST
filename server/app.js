@@ -127,6 +127,9 @@ app.get('/signup', function(req, res) {
 app.get('/visitors', function(req, res) {
   res.sendFile(path.join(__dirname, '../dist/assets/views/visitors.html'))
 });
+app.get('/nonadmin-dashboard', function(req, res) {
+  res.sendFile(path.join(__dirname, '../dist/assets/views/nonadmin-dashboard.html'))
+});
 app.get('/404', function(req, res) {
   res.sendFile(path.join(__dirname, '../dist/assets/views/404.html'))
 });

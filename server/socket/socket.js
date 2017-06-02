@@ -9,12 +9,20 @@ var exports = module.exports;
 var CONNECTION = "connection";
 var VALIDATE_COMPANY_ID = "validate_company_id";
 var VISITOR_LIST_UPDATE = "visitor_list_update";
+
+var RECENT_VISITORS_LIST = "recent_visitors_list";
+var NOTIFY_RECENT_VISITORS_LIST = "notify_recent_visitors_list";
+var RECENT_APPOINTMENTS_LIST = "recent_appointments_list";
+var NOTIFY_RECENT_APPOINTMENTS_LIST = "notify_recent_appointments_list";
+
 var DISCONNECT = "disconnect";
 var REMOVE_VISITOR = "remove_visitor";
 var ADD_VISITOR = "add_visitor";
 var NOTIFY_ERROR = "notify_error";
 
 var VisitorListCtr = require('../routes/visitorList/visitorList.controller');
+var AppointmentListCtr = require('../routes/appointment/appointment.controller');
+
 var Company = require('../models/Company');
 /********** Socket IO Module **********/
 exports.createServer = function(io_in) {
@@ -32,7 +40,7 @@ exports.createServer = function(io_in) {
     console.log("SOCKET CONNECTED");
     /* company_id is required to connect to join right socket to listen to*/
     socket.on(VALIDATE_COMPANY_ID, function(data) {
-      console.log(data);
+      console.log("VLAID COMPANY ID");
       var company_id = data.company_id;
       Company.findOne({_id: company_id}, function(err, c) {
         if (err || !c)
@@ -40,6 +48,7 @@ exports.createServer = function(io_in) {
         else {
           socket.join(company_id);
           VisitorListCtr.getCompanyVisitorList(company_id, function(err_msg, result) {
+            console.log(result);
             if (err_msg)
               exports.notifyError(company_id, {error: err_msg});
             else {
@@ -102,6 +111,80 @@ exports.createServer = function(io_in) {
       });
     });
 
+
+
+     //get list of user within 24 hours
+    socket.on(RECENT_VISITORS_LIST, function(data) {
+      console.log("get number of visitors checked in");
+      var company_id = data.company_id;
+      var tempDate = new Date();
+      var currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), 0,0,0,0);
+      var visitorsWithin24Hours = {
+        "_id" : data._id, 
+        "company_id" : data.company_id,
+        "visitors" : [],
+      };
+
+      VisitorListCtr.getCompanyVisitorList(company_id, function(err_msg, result) {
+
+        for (var visitorObj in result.visitors){
+          var tempDate = new Date(visitorObj.checkin_time);
+          if((tempDate - currentDate)/1000 < 86400 && (tempDate - currentDate)/1000 >= 0){
+            visitorsWithin24Hours.visitors.push(visitorObj);
+          }
+        }
+        
+        if(err_msg){
+          console.log("error in recent_visitors_list");
+          exports.notifyError(company_id, {error: err_msg});
+        }
+        else{
+          exports.notifyRecentVisitors(company_id, result);
+        }
+
+      });
+
+    });
+
+
+    //get list of oppointment within 24 hours
+     //get list of user within 24 hours
+    socket.on(RECENT_APPOINTMENTS_LIST, function(data) {
+      console.log("get number appointments");
+      var company_id = data.company_id;
+      var tempDate = new Date();
+      var currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), 0,0,0,0);
+      var appointmentsWithin24Hours = {
+        "company_id" : company_id,
+        "appointments" : [] 
+      };
+
+      console.log("before getAll");
+      AppointmentListCtr.getAll(company_id, function(err_msg, result) {
+
+        for (var i = 0; i < result.length; i++){
+          var appointmentObj = result[i];
+      console.log(appointmentObj);
+          var tempDate = new Date(appointmentObj.date);
+          if((tempDate - currentDate)/1000 < 86400 && (tempDate - currentDate)/1000 >= 0){
+      console.log("pushing apt");
+            appointmentsWithin24Hours.appointments.push(appointmentObj);
+          }
+        }
+        
+      console.log("after for loop");
+        if(err_msg){
+          console.log("error in getting appointments");
+          exports.notifyError(company_id, {error: err_msg});
+        }
+        else{
+          exports.notifyRecentAppointments(company_id, appointmentsWithin24Hours);
+        }
+
+      });
+
+    });
+
   });
   return server;
 };
@@ -120,7 +203,12 @@ exports.notifyNewList = function(company_id, data) {
 exports.notifyError = function(company_id, data) {
   io.to(company_id).emit(NOTIFY_ERROR, data);
 };
-
+exports.notifyRecentVisitors = function(company_id, data) {
+  io.emit(NOTIFY_RECENT_VISITORS_LIST, data);
+};
+exports.notifyRecentAppointments = function(company_id, data) {
+  io.emit(NOTIFY_RECENT_APPOINTMENTS_LIST, data);
+};
 /*
  * Set up a custom namespace.
  *

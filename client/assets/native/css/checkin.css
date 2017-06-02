@@ -1,5 +1,6 @@
 body {
     font-family: "Helvetica Neue";
+    text-align: center;
 }
 
 #clock{
@@ -21,7 +22,78 @@ body#check-in-page{
     -o-background-size: cover;
     background-size: cover;
 }
-#tap-to-check{
+
+.big-head {
+    margin-top: 0;
+    padding-top:150px;
+    color: #f1f1f1;
+    font-size: 52px;
+    margin-bottom: 75px;
+    text-align: center;
+}
+.has-apt h1{
+    margin-top: 0;
+    padding-top:300px;
+    color: #f1f1f1;
+    font-size: 52px;
+    margin-bottom: 75px;
+    text-align: center;
+}
+#no-apt {
+    position: absolute;
+    left: 60%;
+    margin-left: -137.5px;
+   /* background-color: #f1f1f1; */
+   /* background-color: #0cb4a4;*/
+    width: 275px;
+    height: 100px;
+    bottom: 15%;
+    border-radius: 3px;
+    display: block;
+    background-color:#f1f1f1;
+    /*background-color: #0abcb3;*/
+
+}
+#no-apt > p{
+    font-family: "Helvetica Neue";
+    text-align: center;
+    color: #333;
+    /*color: #fff;*/
+    font-size: 32px;
+}
+#no-apt:hover{
+    cursor: pointer;
+}
+#yes-apt {
+    position: absolute;
+    left: 40%;
+    margin-left: -137.5px;
+   /* background-color: #f1f1f1; */
+   /* background-color: #0cb4a4;*/
+    width: 275px;
+    height: 100px;
+    bottom: 15%;
+    border-radius: 3px;
+    display: block;
+    background-color:#f1f1f1;
+    /*background-color: #0abcb3;*/
+
+}
+#yes-apt > p{
+    font-family: "Helvetica Neue";
+    text-align: center;
+    color: #333;
+    /*color: #fff;*/
+    font-size: 32px;
+}
+#yes-apt:hover{
+    cursor: pointer;
+}
+#tap-to-check:hover{
+    cursor: pointer;
+}
+
+#tap-to-check {
     position: absolute;
     left: 50%;
     margin-left: -137.5px;
@@ -36,11 +108,6 @@ body#check-in-page{
     /*background-color: #0abcb3;*/
 
 }
-
-#tap-to-check:hover{
-    cursor: pointer;
-}
-
 #tap-to-check > p{
     font-family: "Helvetica Neue";
     text-align: center;
@@ -107,7 +174,119 @@ body#check-in-page{
     background-color: #f1f1f1;
     color: #333;
 }
-
 .hide{
     display: none !important;
+}
+
+
+/*Table selection CSS*/
+
+.page-title{
+   margin: 35px auto;
+}
+
+.patient-table-header > .form-control{
+   width: auto;
+   margin-bottom: 10px;
+
+}
+
+.patient-table-header > h3{
+   display: inline-block;
+   font-size: 1.8em;
+}
+
+.patient-check-out > td{
+   font-size: 1.2em;
+}
+
+
+.table {
+    display:table;
+    border-collapse: collapse;
+    border: 1 px solid black;
+    width: 40%;
+    margin-left: 30%;
+    margin-right:30%;
+}
+
+.select-apt table tbody tr:hover {
+   background-color: #18615c;
+   cursor: pointer;
+}
+/*
+.select-apt {
+   max-width: 980px;
+}
+*/
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #68b9a9}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+.modal-body{
+   font-size: 1em;
+   overflow: auto;
+   padding: 15px 15px;
+   color: #585858;
+}
+
+.modal-title{
+   font-size: 1.2em;
+}
+
+
+.modal-body p > span{
+   color: black;
+   font-weight: bold;
+   margin-right: 10px;
+}
+
+.modal-left{
+   float:left;
+   width: 50%;
+
+}
+
+.modal-right{
+   float:left;
+   width:50%;
+
+}
+
+/*
+.checkout-btn{
+   background-color:#5cb85c;
+   height: 25px;
+   width: 60px;
+   margin-left: auto;
+   margin-right: auto;
+   border-radius: 3px;
+}
+
+.checkout-btn:hover{
+   background-color: #52a552;
+   cursor: pointer;
+}
+
+.checkout-btn > p{
+   line-height:25px;
+   font-size: 12px;
+   width: 100%;
+   text-align: center;
+   color: white;
+}
+*/
+hr{
+   border-top: 3px solid #01b2bd !important;
+}
+
+.modal-dialog{
+   top: 150px !important;
 }
