@@ -327,7 +327,14 @@
 		
 				<div class="tile-stats tile-deep-orange">
 					<div class="icon"><i class="entypo-users"></i></div>
-					<div id = "companyCount" class="num" data-start="83" data-end="83" data-postfix="" data-duration="1500" data-delay="0">0</div>
+					<div id = "numOutstandingUsers" class="num" data-start="135" data-end="135" data-postfix="" data-duration="1500" data-delay="600">
+						<div class="mask-loading">
+  							<div class="spinner">
+    						<div class="double-bounce1"></div>
+    						<div class="double-bounce2"></div>
+  							</div>
+						</div>
+					</div>
 		
 					<h3># Outstanding Users</h3>
 					<p>Today</p>
@@ -360,7 +367,7 @@
 		
 				<div class="tile-stats tile-red">
 					<div class="icon"><i class="entypo-flag"></i></div>
-					<div id = "eventCount" class="num" data-start="23" data-end="23" data-postfix="" data-duration="1500" data-delay="1200">
+					<div id = "numLateUsers" class="num" data-start="23" data-end="23" data-postfix="" data-duration="1500" data-delay="1200">
 						 <div class="mask-loading">
  							 <div class="spinner">
     							<div class="double-bounce1"></div>
@@ -507,7 +514,7 @@
 
 	<!-- Demo Settings -->
 	<script src="./../assets/js/neon-demo.js"></script>
-	<script src="./../assets/js/nonadmin-analytics.js"></script>
+	<!--<script src="./../assets/js/nonadmin-analytics.js"></script> -->
 	<script src="https://apis.google.com/js/client.js?onload=authorize"></script>
 </body>
 </html>

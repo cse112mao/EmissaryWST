@@ -49,7 +49,7 @@ body#check-in-page{
     height: 100px;
     bottom: 15%;
     border-radius: 3px;
-    display: block;
+    display: table;
     background-color:#f1f1f1;
     /*background-color: #0abcb3;*/
 
@@ -57,6 +57,8 @@ body#check-in-page{
 #no-apt > p{
     font-family: "Helvetica Neue";
     text-align: center;
+    display: table-cell;
+    vertical-align: middle;
     color: #333;
     /*color: #fff;*/
     font-size: 32px;
@@ -74,7 +76,7 @@ body#check-in-page{
     height: 100px;
     bottom: 15%;
     border-radius: 3px;
-    display: block;
+    display: table;
     background-color:#f1f1f1;
     /*background-color: #0abcb3;*/
 
@@ -82,6 +84,8 @@ body#check-in-page{
 #yes-apt > p{
     font-family: "Helvetica Neue";
     text-align: center;
+    display: table-cell;
+    vertical-align: middle;
     color: #333;
     /*color: #fff;*/
     font-size: 32px;
@@ -103,7 +107,7 @@ body#check-in-page{
     height: 100px;
     bottom: 15%;
     border-radius: 3px;
-    display: block;
+    display: table;
     background-color:#f1f1f1;
     /*background-color: #0abcb3;*/
 
@@ -111,6 +115,8 @@ body#check-in-page{
 #tap-to-check > p{
     font-family: "Helvetica Neue";
     text-align: center;
+    display: table-cell;
+    vertical-align: middle;
     color: #333;
     /*color: #fff;*/
     font-size: 32px;
@@ -193,11 +199,13 @@ body#check-in-page{
 
 .patient-table-header > h3{
    display: inline-block;
-   font-size: 1.8em;
+   /*font-size: 1.8em;*/
+   font-size: 2.5em;
 }
 
 .patient-check-out > td{
-   font-size: 1.2em;
+   /*font-size: 1.2em;*/
+   font-size: 2.0em;
 }
 
 
@@ -205,9 +213,9 @@ body#check-in-page{
     display:table;
     border-collapse: collapse;
     border: 1 px solid black;
-    width: 40%;
-    margin-left: 30%;
-    margin-right:30%;
+    width: 60%;
+    margin-left: 20%;
+    margin-right:20%;
 }
 
 .select-apt table tbody tr:hover {
@@ -222,6 +230,7 @@ body#check-in-page{
 th, td {
     text-align: left;
     padding: 8px;
+    font-size: 2.3em;
 }
 
 tr:nth-child(even){background-color: #68b9a9}
@@ -238,25 +247,31 @@ th {
 }
 
 .modal-title{
-   font-size: 1.2em;
+   font-size: 1.7em;
 }
 
 
 .modal-body p > span{
+  float:left;
    color: black;
    font-weight: bold;
    margin-right: 10px;
+   font-size: 1.1em;
 }
 
 .modal-left{
    float:left;
+   text-align: left;
    width: 50%;
-
+   font-size: 1.5em;
 }
+
 
 .modal-right{
    float:left;
+   text-align: left;
    width:50%;
+   font-size: 1.5em;
 
 }
 

@@ -106,14 +106,7 @@ $(document).ready(function() {
 
     socket.emit(REMOVE_VISITOR, removeVisitor);
   });
-  /*
-   * Timer variable for interval updates to non-admin dashboard
-  */
-    setTimeout();
-    function updateNonAdminDashboard(){
-      socket.emit(RECENT_VISITOR_LIST, companyData);
-      var num_checkedin = data.visitors.length;
-    }
+
   /*
    $(document).on('click','.checkout-btn',function(){
    var id = $(this).closest('.patient-check-out').attr('value');

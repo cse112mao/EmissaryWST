@@ -14,6 +14,8 @@ var RECENT_VISITORS_LIST = "recent_visitors_list";
 var NOTIFY_RECENT_VISITORS_LIST = "notify_recent_visitors_list";
 var RECENT_APPOINTMENTS_LIST = "recent_appointments_list";
 var NOTIFY_RECENT_APPOINTMENTS_LIST = "notify_recent_appointments_list";
+var GET_LATE_APPOINTMENTS= "get_late_appointments";
+var NOTIFY_LATE_APPOINTMENTS= "notify_late_appointments";
 
 var DISCONNECT = "disconnect";
 var REMOVE_VISITOR = "remove_visitor";
@@ -36,7 +38,7 @@ exports.createServer = function(io_in) {
    * the '_admin_id' needs to be set so that the client can be added to the
    * room and notified when changes are being made.
    */
-  io.on(CONNECTION, function(socket) {
+   io.on(CONNECTION, function(socket) {
     console.log("SOCKET CONNECTED");
     /* company_id is required to connect to join right socket to listen to*/
     socket.on(VALIDATE_COMPANY_ID, function(data) {
@@ -113,12 +115,11 @@ exports.createServer = function(io_in) {
 
 
 
-     //get list of user within 24 hours
+    //get list of user within 24 hours
     socket.on(RECENT_VISITORS_LIST, function(data) {
       console.log("get number of visitors checked in");
       var company_id = data.company_id;
-      var tempDate = new Date();
-      var currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), 0,0,0,0);
+      var currentDate = new Date();
       var visitorsWithin24Hours = {
         "_id" : data._id, 
         "company_id" : data.company_id,
@@ -127,9 +128,10 @@ exports.createServer = function(io_in) {
 
       VisitorListCtr.getCompanyVisitorList(company_id, function(err_msg, result) {
 
-        for (var visitorObj in result.visitors){
+        for (var i = 0; i < result.visitors.length; i++){
+          var visitorObj = result.visitors[i];
           var tempDate = new Date(visitorObj.checkin_time);
-          if((tempDate - currentDate)/1000 < 86400 && (tempDate - currentDate)/1000 >= 0){
+          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDay() == tempDate.getDay()){
             visitorsWithin24Hours.visitors.push(visitorObj);
           }
         }
@@ -139,7 +141,7 @@ exports.createServer = function(io_in) {
           exports.notifyError(company_id, {error: err_msg});
         }
         else{
-          exports.notifyRecentVisitors(company_id, result);
+          exports.notifyRecentVisitors(company_id, visitorsWithin24Hours);
         }
 
       });
@@ -147,32 +149,27 @@ exports.createServer = function(io_in) {
     });
 
 
-    //get list of oppointment within 24 hours
-     //get list of user within 24 hours
+//get list of oppointment within 24 hours
+    //get list of user within 24 hours
     socket.on(RECENT_APPOINTMENTS_LIST, function(data) {
-      console.log("get number appointments");
+      console.log("get number of visitors checked in");
       var company_id = data.company_id;
-      var tempDate = new Date();
-      var currentDate = new Date(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), 0,0,0,0);
+      var currentDate = new Date();
       var appointmentsWithin24Hours = {
         "company_id" : company_id,
         "appointments" : [] 
       };
 
-      console.log("before getAll");
       AppointmentListCtr.getAll(company_id, function(err_msg, result) {
 
         for (var i = 0; i < result.length; i++){
           var appointmentObj = result[i];
-      console.log(appointmentObj);
           var tempDate = new Date(appointmentObj.date);
-          if((tempDate - currentDate)/1000 < 86400 && (tempDate - currentDate)/1000 >= 0){
-      console.log("pushing apt");
+          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDay() == tempDate.getDay()){
             appointmentsWithin24Hours.appointments.push(appointmentObj);
           }
         }
         
-      console.log("after for loop");
         if(err_msg){
           console.log("error in getting appointments");
           exports.notifyError(company_id, {error: err_msg});
@@ -184,10 +181,41 @@ exports.createServer = function(io_in) {
       });
 
     });
+    socket.on(GET_LATE_APPOINTMENTS, function(data){
+      console.log("get number of visitors checked in");
+      var company_id = data.company_id;
+      var currentDate = new Date();
+      var lateAppointments = {
+        "company_id" : company_id,
+        "appointments" : [] 
+      };
 
-  });
-  return server;
-};
+      AppointmentListCtr.getAll(company_id, function(err_msg, result) {
+        console.log(result);
+        for (var i = 0;i < result.length; i++){
+          var appointmentObj = result[i]; 
+          var tempDate = new Date(appointmentObj.date);
+          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDay() == tempDate.getDay()){
+            if(currentDate - tempDate > 0) {
+              lateAppointments.appointments.push(appointmentObj);
+            }
+          }
+        }
+
+        if(err_msg){
+          console.log("error in getting appointments");
+          exports.notifyError(company_id, {error: err_msg});
+        }
+        else{
+          exports.notifyLateAppointment(company_id, lateAppointments);
+        }
+
+      });
+
+    });
+    });
+    return server;
+  };
 /*
  * A function that allows you to notify all clients that
  * the queue has been updated.
@@ -196,7 +224,7 @@ exports.createServer = function(io_in) {
  * this event is triggered, the client side can retrieve the whole queue of
  * patients to reflect the changes.
  */
-exports.notifyNewList = function(company_id, data) {
+ exports.notifyNewList = function(company_id, data) {
   io.to(company_id).emit(VISITOR_LIST_UPDATE, data);
 };
 
@@ -209,13 +237,17 @@ exports.notifyRecentVisitors = function(company_id, data) {
 exports.notifyRecentAppointments = function(company_id, data) {
   io.emit(NOTIFY_RECENT_APPOINTMENTS_LIST, data);
 };
+exports.notifyLateAppointment= function(company_id, data) {
+  io.emit(NOTIFY_LATE_APPOINTMENTS, data);
+};
+
 /*
  * Set up a custom namespace.
  *
  * On the client side get the socket as follows to robobetty:
  *   var socket = io('/visitorList');
  */
-var nsp = io.of('/visitorList');
+ var nsp = io.of('/visitorList');
 
 // To be used with authorization.
 // io.set('authorization', socketioJwt.authorize({
