@@ -16,6 +16,10 @@ var RECENT_APPOINTMENTS_LIST = "recent_appointments_list";
 var NOTIFY_RECENT_APPOINTMENTS_LIST = "notify_recent_appointments_list";
 var GET_LATE_APPOINTMENTS= "get_late_appointments";
 var NOTIFY_LATE_APPOINTMENTS= "notify_late_appointments";
+var GET_PERCENT_LATE_VISITORS= "get_percent_late_visitors";
+var NOTIFY_GET_PERCENT_LATE_VISITORS= "notify_get_percent_late_visitors";
+var GET_EXPECTED_APPOINTMENTS= "get_expected_appointments";
+var NOTIFY_GET_EXPECTED_APPOINTMENTS= "notify_get_expected_appointments";
 
 var DISCONNECT = "disconnect";
 var REMOVE_VISITOR = "remove_visitor";
@@ -213,6 +217,88 @@ exports.createServer = function(io_in) {
       });
 
     });
+    socket.on(GET_PERCENT_LATE_VISITORS, function(data){
+      var company_id = data.company_id;
+      var currentDate = new Date();
+      var currentDateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay(), 23, 59,59, 999);
+      var precentLateWeek = {
+        "company_id" : company_id,
+        "percentLate" : 0 
+      };
+
+      VisitorListCtr.getCompanyVisitorList(company_id, function(err_msg, result) {
+        var lateUsers = 0;
+        var totalUsers = 0;
+
+        result.visitors.sort(function(a,b){
+          return parseInt(a._id) > parseInt(b._id);
+        });
+
+        for (var i = 0;i < result.visitors.length; i++){
+          if(i == 0 || result.visitors[i]._id != result.visitors[i-1]._id){
+            var visitorObj = result.visitors[i]; 
+            for(int j = 0; j < visitorObj.appointments.length; j++){
+              var appointmentObj = visitorObj.appointments[j];
+              var checkin_time = new Date(appointmentObj.checkin_time);
+              var tempDate = new Date(appointmentObj.date);
+              if(currentDateEnd.valueOf() - tempDate.valueOf() >= 0 && (currentDateEnd.valueOf() - tempDate.valueOf())/1000 < 604800){
+                if(checkin_time == undefined || checkin_time.valueOf() - tempDate.valueOf() > 0) {
+                  lateUsers++;
+                }
+                totalUsers++;
+              }
+
+            }
+          }
+
+
+        }
+        percentLateWeek.percentLate = lateUsers.totalUsers;
+
+        if(err_msg){
+          console.log("error in getting appointments");
+          exports.notifyError(company_id, {error: err_msg});
+        }
+        else{
+          exports.notifyPercentLate(company_id, percentLateWeek);
+        }
+
+      });
+    });
+
+
+        //get list of oppointment within 24 hours
+    //get list of user within 24 hours
+    socket.on(GET_EXPECTED_APPOINTMENTS, function(data) {
+      console.log("get number of visitors checked in");
+      var company_id = data.company_id;
+      var currentDate = new Date();
+      var expectedAppointments = {
+        "company_id" : company_id,
+        "appointments" : [] 
+      };
+
+      AppointmentListCtr.getAll(company_id, function(err_msg, result) {
+
+        for (var i = 0; i < result.length; i++){
+          var appointmentObj = result[i];
+          var tempDate = new Date(appointmentObj.date);
+          if(tempDate.valueOf() < (currentDate.valueOf() + 60*60*1000) && (currentDate.valueOf()- 60*60*1000) < tempDate.valueOf()){ 
+            expectedAppointments.appointments.push(appointmentObj);
+          }
+        }
+        
+        if(err_msg){
+          console.log("error in getting appointments");
+          exports.notifyError(company_id, {error: err_msg});
+        }
+        else{
+          exports.notifyGetExpectedAppointments(company_id, expectedAppointments);
+        }
+
+      });
+
+    });
     });
     return server;
   };
@@ -240,7 +326,13 @@ exports.notifyRecentAppointments = function(company_id, data) {
 exports.notifyLateAppointment= function(company_id, data) {
   io.emit(NOTIFY_LATE_APPOINTMENTS, data);
 };
+exports.notifyPercentLate = function(company_id, data) {
+  io.emit(NOTIFY_GET_PERCENT_LATE_VISITORS, data);
+};
 
+exports.notifyGetExpectedAppointments= function(company_id, data) {
+  io.emit(NOTIFY_GET_EXPECTED_APPOINTMENTS, data);
+};
 /*
  * Set up a custom namespace.
  *

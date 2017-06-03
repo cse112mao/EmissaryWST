@@ -23,14 +23,7 @@ $(document).ready(function() {
   $('#no-apt').on('click', startCheckIn);
   $('#yes-apt').on('click', selectApt);
   /*$('.check-in').on('submit', submitForm);*/
-  $('.check-in').on('submit', { 
-    first_name : ($('#visitor-first').val()),
-    last_name : ($('#visitor-last').val()),
-    phone_number : ($('#visitor-number').val()),
-    checkin_time : (new Date()),
-    appointments : []
-  },
-  submitForm);
+  $('.check-in').on('submit', submitFormOG);
 
 
 
@@ -94,6 +87,28 @@ $(document).ready(function() {
     }, 0);
     */
 
+  }
+
+  function submitFormOG() {
+   var data = {};
+   data.company_id = companyData._id;
+   data.first_name = $('#visitor-first').val();
+   data.last_name = $('#visitor-last').val();
+   data.phone_number = $('#visitor-number').val();
+   data.checkin_time = new Date();
+  console.log ("this is the data for submit no appt: ");
+  console.log (data);
+    if (localStorage.getItem("slackToken") && localStorage.getItem("slackChannel")) {
+      $.post("https://slack.com/api/chat.postMessage",
+      {
+        'token': localStorage.getItem("slackToken"),
+        'channel': localStorage.getItem("slackChannel"),
+        'text': "Name: " + data['first_name'] + " " + data['last_name'] + " Phone Number: " + data['phone_number']
+      },
+      function(data, status) {
+      });
+    }
+    socket.emit(ADD_VISITOR, data);
   }
 
   //Grabs elements from the check in and puts it into an object
