@@ -43,206 +43,109 @@
 </head>
 <body class="page-body gray" data-url="http://neon.dev">
 
-<div class="page-container">
-  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 
-  <div class="sidebar-menu">
-    <div class="sidebar-menu-inner">
-      <header class="logo-env">
+	<div class="sidebar-menu">
+		<div class="sidebar-menu-inner">
+			<header class="logo-env">
 
-        <!-- logo -->
-        <div class="logo">
-          <a href="index.html">
-            <img src="images/emissary.png" width="150" alt=""/>
-          </a>
-        </div>
+				<!-- logo -->
+				<div class="logo">
+					<a href="index.html">
+						<img src="images/emissary.png" width="150" alt="" />
+					</a>
+				</div>
 
-        <!-- logo collapse icon -->
-        <div class="sidebar-collapse">
-          <a href="#" class="sidebar-collapse-icon">
-            <!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
-            <i class="entypo-menu"></i>
-          </a>
-        </div>
+				<!-- logo collapse icon -->
+				<div class="sidebar-collapse">
+					<a href="#" class="sidebar-collapse-icon"><!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+						<i class="entypo-menu"></i>
+					</a>
+				</div>
 
-        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-        <div class="sidebar-mobile-menu visible-xs">
-          <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-            <i class="entypo-menu"></i>
-          </a>
-        </div>
+				<!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+				<div class="sidebar-mobile-menu visible-xs">
+					<a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+						<i class="entypo-menu"></i>
+					</a>
+				</div>
 
-      </header>
+			</header>
 
 
-      <ul id="main-menu" class="main-menu">
-        <!-- add class "multiple-expanded" to allow multiple submenus to open -->
-        <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-        <li>
-          <a href="/visitors.html">
-            <i class="entypo-users"></i>
-            <span class="title">Visitors</span>
-          </a>
-        </li>
-        <li>
-          <a href="/employees.html">
-            <i class="entypo-user"></i>
-            <span class="title">Employees</span>
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <i class="entypo-calendar"></i>
-            <span class="title">Appointments</span>
-          </a>
-        </li>
-        <li>
-          <a href="/form-builder.html">
-            <i class="entypo-clipboard"></i>
-            <span class="title">Forms</span>
-          </a>
-        </li>
-        <li>
-          <a href="/settings.html">
-            <i class="entypo-tools"></i>
-            <span class="title">Settings</span>
-          </a>
-        </li>
-      </ul>
+			<ul id="main-menu" class="main-menu">
+				<!-- add class "multiple-expanded" to allow multiple submenus to open -->
+				<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+				<li>
+                    <a href="/nonadmin-dashboard.html">
+                        <i class="entypo-info"></i>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+				<li>
+					<a href="/visitors.html">
+						<i class="entypo-users"></i>
+						<span class="title">Visitors</span>
+					</a>
+				</li>
+				<li>
+					<a href="/employees.html">
+						<i class="entypo-user"></i>
+						<span class="title">Employees</span>
+					</a>
+				</li>
+				<li>
+					<a href="#">
+						<i class="entypo-calendar"></i>
+						<span class="title">Appointments</span>
+					</a>
+				</li>
+				<li>
+					<a href="/form-builder.html">
+						<i class="entypo-clipboard"></i>
+						<span class="title">Forms</span>
+					</a>
+				</li>
+				<li>
+					<a href="/settings.html">
+						<i class="entypo-tools"></i>
+						<span class="title">Settings</span>
+					</a>
+				</li>
+			</ul>
 
-    </div>
+		</div>
 
-  </div>
+	</div>
 
-  <div class="main-content">
-    <div class="row">
+	<div class="main-content">
+		<div class="row">
 
-      <!-- Profile Info and Notifications -->
-      <div class="col-md-6 col-sm-8 clearfix">
+			<!-- Profile Info and Notifications -->
+			<div class="col-md-6 col-sm-8 clearfix">
 
-        <ul class="user-info pull-left pull-none-xsm">
-          <!-- Profile Info -->
-          <li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
-            <div id="company-name">
-              <h1>Hello, <span id="user-name"> </span></h1>
-            </div>
-          </li>
-        </ul>
+				<ul class="user-info pull-left pull-none-xsm">
+					<!-- Profile Info -->
+					<li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
+						<div id="company-name">
+							<h1>Hello, <span id="user-name"> </span></h1>
+						</div>
+					</li>
+				</ul>
 
-      </div>
+			</div>
 
-      <!-- Raw Links -->
-      <div class="col-md-6 col-sm-4 clearfix hidden-xs">
-        <ul class="list-inline links-list pull-right">
-          <div class="dropdown">
-            <i class="fa fa-3x fa-cog dropdown-toggle" data-toggle="dropdown"></i>
-            <ul class="dropdown-menu">
-              <li><a href="/checkin.html">Check-In</a></li>
-              <li><a id="logoutButton" href="/index.html">
-                Log Out <i class="entypo-logout right"></i></a>
-              </li>
-            </ul>
-          </div>
-        </ul>
-
-      </div>
-    </div>
-
-    <hr/>
-    <div class="appt-container">
-      <div>
-        <h1 class="page-title">Appointments</h1>
-
-
-        <table class="table">
-          <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Provider Name</th>
-            <th>Phone Number</th>
-            <th>Date</th>
-            <th>Time</th>
-          </tr>
-          </thead>
-
-          <tbody id="appt-list">
-          <!-- HANDLE BAR TEMPLATES -->
-
-          </tbody>
-        </table>
-      </div>
-
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-           aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <button type="button" class="close"
-                      data-dismiss="modal">
-                <span aria-hidden="true">&times;</span>
-                <span class="sr-only">Close</span>
-              </button>
-              <h4 class="modal-title" id="myModalLabel">
-                Add an Appointment
-              </h4>
-            </div>
-
-            <!-- Modal Body -->
-            <div class="modal-body">
-
-              <form class="form-horizontal" role="form" id="appt-form">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                         for="first-name">First Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"
-                           id="appt-first" placeholder="First Name"/>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                         for="last-name">Last Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"
-                           id="appt-last" placeholder="Last Name"/>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                         for="phone-number">Phone</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"
-                           id="appt-number" placeholder="Phone Number"/>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                         for="inputPassword3">Provider Name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"
-                           id="appt-provider" placeholder="Provider Name"/>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                         for="inputPassword3">Date</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"
-                           id="appt-date" placeholder="Appointment Date"/>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                         for="inputPassword3">Time</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"
-                           id="appt-time" placeholder="Appointment Time"/>
+			<!-- Raw Links -->
+			<div class="col-md-6 col-sm-4 clearfix hidden-xs">
+				<ul class="list-inline links-list pull-right">
+					<div class="dropdown">
+                        <i class="fa fa-3x fa-cog dropdown-toggle" data-toggle="dropdown"></i>
+                        <ul class="dropdown-menu">
+                            <li><a href="/checkin.html">Check-In</a></li>
+                            <li><a id="logoutButton" href="/index.html">
+                                Log Out <i class="entypo-logout right"></i></a>
+                            </li>
+                        </ul>
                   </div>
                 </div>
 

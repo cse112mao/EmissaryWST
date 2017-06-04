@@ -13,6 +13,7 @@ $(document).ready(function() {
   var VALIDATE_COMPANY_ID = "validate_company_id";
   var VISITOR_LIST_UPDATE = "visitor_list_update";
   var REMOVE_VISITOR = "remove_visitor";
+  var RECENT_VISITOR_LIST = "recent_visitor_list";
 
   var companyData = JSON.parse(localStorage.getItem("currentCompany"));
   var visitorList;
@@ -105,6 +106,7 @@ $(document).ready(function() {
 
     socket.emit(REMOVE_VISITOR, removeVisitor);
   });
+
   /*
    $(document).on('click','.checkout-btn',function(){
    var id = $(this).closest('.patient-check-out').attr('value');

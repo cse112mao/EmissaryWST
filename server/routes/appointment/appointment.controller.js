@@ -19,8 +19,8 @@
 var Appointment = require('../../models/Appointment');
 var config = require('../../config/config.js');
 
-/****** Company TEMPLATE ROUTES ******/
-module.exports.template = {};
+ /****** Company TEMPLATE ROUTES ******/
+ module.exports.template = {};
 
 /**
  *  @api {post} /api/appointments
@@ -63,7 +63,7 @@ module.exports.template = {};
  *      }
  */
 
-module.exports.template.create = function(req, res) {
+ module.exports.template.create = function(req, res) {
   var appointment = new Appointment();
   var param = req.body;
 
@@ -114,10 +114,6 @@ module.exports.template.create = function(req, res) {
 
   sendSms(appointment.phone_number, "This is a confirmation message to inform you that you have made an appointment with " + appointment.provider_name + " on " + appointment.date.toString() + ".");
   voiceCall(appointment.phone_number);
-  
-  
-
-
 };
 
 /**
@@ -167,7 +163,7 @@ module.exports.template.create = function(req, res) {
  *      }
  */
 
-module.exports.template.getAll = function(req, res) {
+ module.exports.template.getAll = function(req, res) {
   Appointment.find({company_id: req.params.id}, function(err, result) {
     if (err) {
       return res.status(400).json(err);
@@ -175,6 +171,16 @@ module.exports.template.getAll = function(req, res) {
     return res.status(200).json(result);
   });
 };
+
+//regular exports version for socket.io
+exports.getAll = function(company_id, callback){
+  Appointment.find({company_id : company_id}, function(err, list){
+    if(err || !list){
+      return callback({error: err}, null);
+    }
+    return callback(null, list);
+  });
+}
 
 /**
  *  @api {get} /api/appointments/:id
@@ -212,13 +218,16 @@ module.exports.template.getAll = function(req, res) {
  *      }
  */
 
-module.exports.template.get = function(req, res) {
+ module.exports.template.get = function(req, res) {
   Appointment.findOne({_id: req.params.id}, function(err, a) {
     if (err || !a)
       return res.status(400).send({error: "Could Not Find"});
     return res.status(200).json(a);
   });
 };
+
+
+
 
 /**
  *  @api {put} /api/appointments/:id
@@ -259,7 +268,7 @@ module.exports.template.get = function(req, res) {
  *      }
  */
 
-module.exports.template.update = function(req, res) {
+ module.exports.template.update = function(req, res) {
   Appointment.findOne({_id: req.params.id}, function(err, a) {
     if (err || !a)
       return res.status(401).json({error: "Could Not Find"});
@@ -325,7 +334,7 @@ module.exports.template.update = function(req, res) {
  *      }
  */
 
-module.exports.template.delete = function(req, res) {
+ module.exports.template.delete = function(req, res) {
   Appointment.findById(req.params.id, function(err, a) {
     if (err)
       res.status(400).json({error: "Could Not Find"});
@@ -338,3 +347,4 @@ module.exports.template.delete = function(req, res) {
     });
   });
 };
+

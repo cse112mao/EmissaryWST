@@ -335,6 +335,5 @@ function showCompanyPublicInfo(c) {
     email: c.email,
     phone_number: c.phone_number,
     paid_time: c.paid_time
- 
-  };
+  }
 }

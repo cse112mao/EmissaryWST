@@ -13,6 +13,7 @@ $(document).ready(function() {
       function(data, status) {
       });
   }
+  /*
   $('#tap-to-check').on('click', function() {
     console.log("click");
     //$('.check-in').addClass('show');
@@ -22,6 +23,7 @@ $(document).ready(function() {
     }, 700);
     $(this).addClass('hide');
   });
+  */
 
   /* $('.check-in').on('submit', function() {
    event.preventDefault;
