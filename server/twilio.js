@@ -3,7 +3,7 @@ var config = require('./config/config.js');
 module.exports.sendSms = function(to, message) {
 	var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
 	if (to === 'COMPANY_PHONE') {
-		to = '3106348612';
+		to = '6264768756';
 	}
 	client.messages.create({ 
 		to: to, 
