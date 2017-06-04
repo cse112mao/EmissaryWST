@@ -28,6 +28,7 @@ var NOTIFY_ERROR = "notify_error";
 
 var VisitorListCtr = require('../routes/visitorList/visitorList.controller');
 var AppointmentListCtr = require('../routes/appointment/appointment.controller');
+var twilio = require('../twilio');
 
 var Company = require('../models/Company');
 /********** Socket IO Module **********/
@@ -113,6 +114,7 @@ exports.createServer = function(io_in) {
         }
         else {
           exports.notifyNewList(company_id, result);
+          twilio.sendSms('COMPANY_PHONE', data.first_name + ' ' + data.last_name + ' has checked in at ' + data.checkin_time.toString());
         }
       });
     });
@@ -237,7 +239,7 @@ exports.createServer = function(io_in) {
         for (var i = 0;i < result.visitors.length; i++){
           if(i == 0 || result.visitors[i]._id != result.visitors[i-1]._id){
             var visitorObj = result.visitors[i]; 
-            for(int j = 0; j < visitorObj.appointments.length; j++){
+            for(var j = 0; j < visitorObj.appointments.length; j++){
               var appointmentObj = visitorObj.appointments[j];
               var checkin_time = new Date(appointmentObj.checkin_time);
               var tempDate = new Date(appointmentObj.date);

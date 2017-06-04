@@ -17,7 +17,7 @@
  * when front end is served from a something other than our app server.
  */
 var Appointment = require('../../models/Appointment');
-var config = require('../../config/config.js');
+var twilio = require('../../twilio');
 
  /****** Company TEMPLATE ROUTES ******/
  module.exports.template = {};
@@ -75,26 +75,6 @@ var config = require('../../config/config.js');
   appointment.company_id = param.company_id;
   appointment.provider_name = param.provider_name;
 
-  var sendSms = function(to, message) {
-    var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
-    client.messages.create({ 
-      to: to, 
-      from: config.twilio_sendingNumber, 
-      body: message
-    }, function(err, message) { 
-    });
-  };
-  
-  var voiceCall = function(to) {
-    var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
-    client.calls.create({
-      url: "http://demo.twilio.com/docs/voice.xml",
-      to: to,
-      from: config.twilio_sendingNumber
-    }, function(err, call) {
-    });
-  };
-
   Appointment.find(
     {
       company_id: param.company_id,
@@ -112,8 +92,8 @@ var config = require('../../config/config.js');
       }
     });
 
-  sendSms(appointment.phone_number, "This is a confirmation message to inform you that you have made an appointment with " + appointment.provider_name + " on " + appointment.date.toString() + ".");
-  voiceCall(appointment.phone_number);
+  twilio.sendSms(appointment.phone_number, "This is a confirmation message to inform you that you have made an appointment with " + appointment.provider_name + " on " + appointment.date.toString() + ".");
+  twilio.voiceCall(appointment.phone_number);
 };
 
 /**
