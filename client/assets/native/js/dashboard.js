@@ -56,9 +56,15 @@ $(document).ready(function() {
       if (appList[0]) {
         for (var j = 0, appLen = appList.length; j < appLen; j++) {
           if (compareDate(appList[j].date)) {
-            visitorList[i].appointmentTime = formatTime(appList[j].date);
+            visitorList[i].appointmentTime = formatTime(appList[j].date) + ", Today";
             visitorList[i]._apptId = appList[j]._id;
             break;
+          }
+          else{
+            visitorList[i].appointmentTime = formatDate(appList[j].date); 
+            visitorList[i]._apptId = appList[j]._id;
+            break;
+
           }
         }
       }
@@ -178,7 +184,13 @@ $(document).ready(function() {
     return currentTime;
 
   }
-
+  function formatDate(time){
+    var date = new Date(Date.parse(time));
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var day = date.getDate();
+    return month + "/" + day + "/" + year;
+  }
   $('#logoutButton').on('click', function() {
     localStorage.setItem('userState', 0);
   });

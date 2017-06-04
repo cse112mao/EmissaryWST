@@ -135,7 +135,7 @@ exports.createServer = function(io_in) {
         for (var i = 0; i < result.visitors.length; i++){
           var visitorObj = result.visitors[i];
           var tempDate = new Date(visitorObj.checkin_time);
-          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDay() == tempDate.getDay()){
+          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDate() == tempDate.getDate()){
             visitorsWithin24Hours.visitors.push(visitorObj);
           }
         }
@@ -169,7 +169,7 @@ exports.createServer = function(io_in) {
         for (var i = 0; i < result.length; i++){
           var appointmentObj = result[i];
           var tempDate = new Date(appointmentObj.date);
-          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDay() == tempDate.getDay()){
+          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDate() == tempDate.getDate()){
             appointmentsWithin24Hours.appointments.push(appointmentObj);
           }
         }
@@ -199,7 +199,7 @@ exports.createServer = function(io_in) {
         for (var i = 0;i < result.length; i++){
           var appointmentObj = result[i]; 
           var tempDate = new Date(appointmentObj.date);
-          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDay() == tempDate.getDay()){
+          if( currentDate.getFullYear() == tempDate.getFullYear() && currentDate.getMonth() == tempDate.getMonth() && currentDate.getDate() == tempDate.getDate()){
             if(currentDate - tempDate > 0) {
               lateAppointments.appointments.push(appointmentObj);
             }
@@ -220,8 +220,8 @@ exports.createServer = function(io_in) {
     socket.on(GET_PERCENT_LATE_VISITORS, function(data){
       var company_id = data.company_id;
       var currentDate = new Date();
-      var currentDateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDay(), 23, 59,59, 999);
-      var precentLateWeek = {
+      var currentDateEnd = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59,59, 999);
+      var percentLateWeek = {
         "company_id" : company_id,
         "percentLate" : 0 
       };
@@ -230,38 +230,78 @@ exports.createServer = function(io_in) {
         var lateUsers = 0;
         var totalUsers = 0;
 
-        result.visitors.sort(function(a,b){
-          return parseInt(a._id) > parseInt(b._id);
-        });
+       /* result.visitors.sort(function(a,b){
+          return (a.first_name + a.last_name) > (b.first_name + b.last_name) ? 1 : -1;
+        });*/
 
         for (var i = 0;i < result.visitors.length; i++){
-          if(i == 0 || result.visitors[i]._id != result.visitors[i-1]._id){
-            var visitorObj = result.visitors[i]; 
-            for(int j = 0; j < visitorObj.appointments.length; j++){
-              var appointmentObj = visitorObj.appointments[j];
-              var checkin_time = new Date(appointmentObj.checkin_time);
-              var tempDate = new Date(appointmentObj.date);
-              if(currentDateEnd.valueOf() - tempDate.valueOf() >= 0 && (currentDateEnd.valueOf() - tempDate.valueOf())/1000 < 604800){
-                if(checkin_time == undefined || checkin_time.valueOf() - tempDate.valueOf() > 0) {
-                  lateUsers++;
-                }
+
+          var visitorObj = result.visitors[i]; 
+          var checkin_time = new Date(visitorObj.checkin_time);
+          for(var j = 0; j < visitorObj.appointments.length; j++){
+            var appointmentObj = visitorObj.appointments[j];
+            var appointmentDate = new Date(appointmentObj.date);
+            if(currentDateEnd.valueOf() - appointmentDate.valueOf() >= 0 && (currentDateEnd.valueOf() - appointmentDate.valueOf())/1000 < 604800){
+              if(checkin_time.valueOf() - appointmentDate.valueOf() > 0) {
+                lateUsers++;
+              }
+              totalUsers++;
+            }
+
+          }
+        }
+        if(totalUsers == 0){
+            percentLateWeek.percentLate = 0;
+          }
+          else{
+            percentLateWeek.percentLate = lateUsers/totalUsers;
+          }
+          console.log(totalUsers);
+
+          if(err_msg){
+            console.log("error in getting appointments");
+            exports.notifyError(company_id, {error: err_msg});
+          }
+          else{
+            console.log("sent");
+            exports.notifyPercentLate(company_id, percentLateWeek);
+          }
+
+        /*
+        //add existing late appointments
+        AppointmentListCtr.getAll(company_id, function(err_msg, appointmentResult) {
+
+          for (var i = 0;i < appointmentResult.length; i++){
+            var innerAppointmentObj = appointmentResult[i]; 
+            var innerAppintmentDate = new Date(innerAppointmentObj.date);
+            if(currentDateEnd.valueOf() - innerAppintmentDate.valueOf() >= 0 && (currentDateEnd.valueOf() - innerAppintmentDate.valueOf())/1000 < 604800){
+              if(currentDate.valueOf() - innerAppintmentDate.valueOf() > 0){
+                lateUsers++;
                 totalUsers++;
               }
-
             }
+
+          }
+          if(totalUsers == 0){
+            percentLateWeek.percentLate = 0;
+          }
+          else{
+            percentLateWeek.percentLate = lateUsers/totalUsers;
+          }
+          console.log(totalUsers);
+
+          if(err_msg){
+            console.log("error in getting appointments");
+            exports.notifyError(company_id, {error: err_msg});
+          }
+          else{
+            console.log("sent");
+            exports.notifyPercentLate(company_id, percentLateWeek);
           }
 
 
-        }
-        percentLateWeek.percentLate = lateUsers.totalUsers;
-
-        if(err_msg){
-          console.log("error in getting appointments");
-          exports.notifyError(company_id, {error: err_msg});
-        }
-        else{
-          exports.notifyPercentLate(company_id, percentLateWeek);
-        }
+        });
+        */
 
       });
     });
