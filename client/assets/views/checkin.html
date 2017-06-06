@@ -4,13 +4,14 @@
   <script src="assets/native/js/shared.js"></script>
   <meta charset="UTF-8">
   <title>Check In</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.css">
   <link rel="icon" href="assets/images/logo-emissary.png">
   <link rel="stylesheet" href="assets/native/css/checkin.css">
 </head>
 <body id='check-in-page'>
 
 <h1 id="clock"></h1>
-<form class="check-in">
+<form class="check-in hide">
   <h1>Check in</h1>
   <input class="visitor-fields" id="visitor-first" type="text" name="first" placeholder="First"> <br>
   <input class="visitor-fields" id="visitor-last" type="text" name="last" placeholder="Last"> <br>
@@ -19,13 +20,84 @@
   <input class="submit-check-in" type="submit" value="Submit">
 </form>
 
-<div id="tap-to-check">
-  <p>Tap to check in</p>
+
+<div class="has-apt hide">
+  <h1>Do you have an appointment?</h1>
+  <div id="yes-apt">
+    <p>Yes</p>
+  </div>
+  <div id="no-apt">
+    <p>No</p>
+  </div>
 </div>
 
+<div class="select-apt hide">
+  <h1 class="big-head">Please Select Your Appointment Below</h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th st-sort="FirstName">First</th>
+      <th st-sort="LastName">Last</th>
+      <th st-sort="Appointment">Appointment Time</th>
+    </tr>
+    </thead>
+
+    <tbody id="apt-list">
+    <!-- PATIENT QUEUE TEMPLATE GOES HERE -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog"></div>
+    </div>
+    </tbody>
+  </table>
+  <!-- HANDLE BAR TEMPLATES -->
+  <script type="text/x-handlebars-template" id="apt-list-template">
+    {{#each []}}
+    <tr class="patient-check-out" data-toggle="modal" data-target="#myModal" value="{{this._id}}">
+      <td class="patient-queue-text">{{this.first_name}}</td>
+      <td class="patient-queue-text">{{this.last_name}}</td>
+      <td class="patient-queue-text appt-id">{{this.appointmentTime}}</td>
+    </tr>
+    {{/each}}
+  </script>
+  <script type="text/x-handlebars-template" id="apt-info-template">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h1 class="modal-title">Confirm Appointment</h1>
+      </div>
+      <div class="modal-body" value="{{this._id}}">
+        <div class="modal-left" value="{{this._apptId}}">
+          <p><span>First:</span> {{this.first_name}}</p>
+          <p><span>Last:</span> {{this.last_name}}</p>
+        </div>
+        <div class="modal-right">
+          <p><span>Phone Number:</span> {{this.phone_number}}</p>
+          <p><span>Appointment Time:</span> {{this.appointmentTime}}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="check-in-btn btn btn-default" data-dismiss="modal" value="{{this._id}}">Confirm
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </script>
+
+</div>
+
+<div id="tap-to-check">
+  <p>Tap To Check In</p>
+</div>
+<!--
+<div id = "return-to-visitors">
+    <p>X</p>
+</div>
+-->
 <script src="assets/js/socket.io.js"></script>
 <script src="assets/js/jquery-1.11.3.min.js"></script>
 <script src="assets/native/js/checkin.js"></script>
+<script type="text/javascript" src="assets/js/handlebars-v4.0.5.js"></script>
+<script src="assets/js/bootstrap.js"></script>
 
 </body>
 </html>

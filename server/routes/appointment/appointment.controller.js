@@ -80,7 +80,7 @@ module.exports.template.create = function(req, res) {
       date: param.date
     }, function(err, appointments) {
       if (err) return res.status(400).json({error: "Could Not Find"});
-      if (appointments.length === 0) {
+      if (appointments.length == 0) {
         appointment.save(function(err, a) {
           if (err)
             return res.status(400).json({error: "Could Not Save"});
@@ -148,6 +148,16 @@ module.exports.template.getAll = function(req, res) {
   });
 };
 
+//regular exports version for socket.io
+exports.getAll = function(company_id, callback) {
+  Appointment.find({company_id: company_id}, function(err, list) {
+    if (err || !list) {
+      return callback({error: err}, null);
+    }
+    return callback(null, list);
+  });
+}
+
 /**
  *  @api {get} /api/appointments/:id
  *  @apiName GetAppointment
@@ -191,6 +201,7 @@ module.exports.template.get = function(req, res) {
     return res.status(200).json(a);
   });
 };
+
 
 /**
  *  @api {put} /api/appointments/:id
@@ -310,3 +321,4 @@ module.exports.template.delete = function(req, res) {
     });
   });
 };
+

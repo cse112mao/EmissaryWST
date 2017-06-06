@@ -1,21 +1,21 @@
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
 if (!Object.keys) {
-  Object.keys = (function () {
+  Object.keys = (function() {
     'use strict';
     var hasOwnProperty = Object.prototype.hasOwnProperty,
-        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-        dontEnums = [
-          'toString',
-          'toLocaleString',
-          'valueOf',
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'constructor'
-        ],
-        dontEnumsLength = dontEnums.length;
+      hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+      dontEnums = [
+        'toString',
+        'toLocaleString',
+        'valueOf',
+        'hasOwnProperty',
+        'isPrototypeOf',
+        'propertyIsEnumerable',
+        'constructor'
+      ],
+      dontEnumsLength = dontEnums.length;
 
-    return function (obj) {
+    return function(obj) {
       if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
         throw new TypeError('Object.keys called on non-object');
       }
@@ -43,7 +43,7 @@ if (!Object.keys) {
 //Production steps of ECMA-262, Edition 5, 15.4.4.18
 //Reference: http://es5.github.com/#x15.4.4.18
 if (!Array.prototype.forEach) {
-  Array.prototype.forEach = function (callback, thisArg) {
+  Array.prototype.forEach = function(callback, thisArg) {
     var T, k;
 
     if (this == null) {
