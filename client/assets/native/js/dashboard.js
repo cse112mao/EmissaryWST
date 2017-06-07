@@ -188,7 +188,7 @@ $(document).ready(function() {
   function formatDate(time) {
     var date = new Date(Date.parse(time));
     var year = date.getFullYear();
-    var month = date.getMonth();
+    var month = date.getMonth() + 1;
     var day = date.getDate();
     return month + "/" + day + "/" + year;
   }

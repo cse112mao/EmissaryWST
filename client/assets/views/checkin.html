@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="assets/native/js/shared.js"></script>
-  <meta charset="UTF-8">
-  <title>Check In</title>
-  <link rel="stylesheet" href="assets/css/bootstrap.css">
-  <link rel="icon" href="assets/images/logo-emissary.png">
-  <link rel="stylesheet" href="assets/native/css/checkin.css">
+    <script src = "assets/native/js/shared.js"></script>
+   <meta charset="UTF-8">
+   <title>Check In</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="icon" href="assets/images/logo-emissary.png">
+    <link rel="stylesheet" href = "assets/native/css/checkin.css">
 </head>
 <body id='check-in-page'>
+<script type="text/javascript">
+  window._mfq = window._mfq || [];
+  (function() {
+    var mf = document.createElement("script");
+    mf.type = "text/javascript"; mf.async = true;
+    mf.src = "//cdn.mouseflow.com/projects/2059175d-3363-4ec7-8c2c-d180daa76bb3.js";
+    document.getElementsByTagName("head")[0].appendChild(mf);
+  })();
+</script>
 
-<h1 id="clock"></h1>
-<form class="check-in hide">
-  <h1>Check in</h1>
-  <input class="visitor-fields" id="visitor-first" type="text" name="first" placeholder="First"> <br>
-  <input class="visitor-fields" id="visitor-last" type="text" name="last" placeholder="Last"> <br>
-  <input class="visitor-fields" id="visitor-number" type="text" name="phoneNumber" placeholder="Phone Number">
-  <br>
-  <input class="submit-check-in" type="submit" value="Submit">
+<h1 id = "clock"></h1>
+<form class = "check-in hide">
+    <h1>Check in</h1>
+    <input class = "visitor-fields" id="visitor-first" type = "text" name = "first" placeholder = "First"> <br>
+    <input class = "visitor-fields" id="visitor-last" type = "text" name = "last" placeholder = "Last"> <br>
+    <input class = "visitor-fields" id="visitor-number" type = "text" name = "phoneNumber" placeholder = "Phone Number">
+    <br>
+    <input class = "submit-check-in" type="submit" value="Submit">
 </form>
 
 
-<div class="has-apt hide">
-  <h1>Do you have an appointment?</h1>
-  <div id="yes-apt">
-    <p>Yes</p>
-  </div>
-  <div id="no-apt">
-    <p>No</p>
-  </div>
+<div class = "has-apt hide">
+    <h1>Do you have an appointment?</h1>
+    <div id = "yes-apt">
+        <p>Yes</p>
+    </div>
+    <div id = "no-apt">
+        <p>No</p>
+    </div>
 </div>
 
 <div class="select-apt hide">

@@ -96,36 +96,42 @@ $(document).ready(function() {
       series: [{
         name: '12:00AM - 3:59AM',
         id: '12AM',
+        type: 'column',
         data: [['12AM', 0], ['1AM', 0], ['2AM', 0], ['3AM', 0]
         ]
       },
         {
           name: '4:00AM - 7:59AM',
           id: '4AM',
+          type: 'column',
           data: [['4AM', 0], ['5AM', 0], ['6AM', 0], ['7AM', 0]
           ]
         },
         {
           name: '8:00AM - 11:59AM',
           id: '8AM',
+          type: 'column',
           data: [['8AM', 0], ['9AM', 0], ['10AM', 0], ['11AM', 0]
           ]
         },
         {
           name: '12:00PM-3:59PM',
           id: '12PM',
+          type: 'column',
           data: [['12PM', 0], ['1PM', 0], ['2PM', 0], ['3PM', 0]
           ]
         },
         {
           name: '4:00PM-7:59PM',
           id: '4PM',
+          type: 'column',
           data: [['4PM', 0], ['5PM', 0], ['6PM', 0], ['7PM', 0]
           ]
         },
         {
           name: '8:00PM-11:59PM',
           id: '8PM',
+          type: 'column',
           data: [['8PM', 0], ['9PM', 0], ['10PM', 0], ['11PM', 0]
           ]
         },

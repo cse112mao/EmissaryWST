@@ -28,6 +28,7 @@ var NOTIFY_ERROR = "notify_error";
 
 var VisitorListCtr = require('../routes/visitorList/visitorList.controller');
 var AppointmentListCtr = require('../routes/appointment/appointment.controller');
+var twilio = require('../twilio');
 
 var Company = require('../models/Company');
 /********** Socket IO Module **********/
@@ -113,6 +114,7 @@ exports.createServer = function(io_in) {
         }
         else {
           exports.notifyNewList(company_id, result);
+          twilio.sendSms('COMPANY_PHONE', data.first_name + ' ' + data.last_name + ' has checked in at ' + data.checkin_time.toString());
         }
       });
     });
@@ -229,24 +231,24 @@ exports.createServer = function(io_in) {
         var lateUsers = 0;
         var totalUsers = 0;
 
-        /* result.visitors.sort(function(a,b){
-         return (a.first_name + a.last_name) > (b.first_name + b.last_name) ? 1 : -1;
-         });*/
+        result.visitors.sort(function(a,b){
+          return parseInt(a._id) > parseInt(b._id);
+        });
 
-        for (var i = 0; i < result.visitors.length; i++) {
-
-          var visitorObj = result.visitors[i];
-          var checkin_time = new Date(visitorObj.checkin_time);
-          for (var j = 0; j < visitorObj.appointments.length; j++) {
-            var appointmentObj = visitorObj.appointments[j];
-            var appointmentDate = new Date(appointmentObj.date);
-            if (currentDateEnd.valueOf() - appointmentDate.valueOf() >= 0 && (currentDateEnd.valueOf() - appointmentDate.valueOf()) / 1000 < 604800) {
-              if (checkin_time.valueOf() - appointmentDate.valueOf() > 0) {
-                lateUsers++;
+        for (var i = 0;i < result.visitors.length; i++){
+          if(i == 0 || result.visitors[i]._id != result.visitors[i-1]._id){
+            var visitorObj = result.visitors[i]; 
+            for(var j = 0; j < visitorObj.appointments.length; j++){
+              var appointmentObj = visitorObj.appointments[j];
+              var checkin_time = new Date(appointmentObj.checkin_time);
+              var tempDate = new Date(appointmentObj.date);
+              if(currentDateEnd.valueOf() - tempDate.valueOf() >= 0 && (currentDateEnd.valueOf() - tempDate.valueOf())/1000 < 604800){
+                if(checkin_time == undefined || checkin_time.valueOf() - tempDate.valueOf() > 0) {
+                  lateUsers++;
+                }
+                totalUsers++;
               }
-              totalUsers++;
             }
-
           }
         }
         if (totalUsers == 0) {
