@@ -32,4 +32,3 @@ $('.my-form').on('click', '.remove-box', function() {
   });
   return false;
 });
-

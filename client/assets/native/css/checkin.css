@@ -1,5 +1,6 @@
 body {
   font-family: "Helvetica Neue";
+  text-align: center;
 }
 
 #clock {
@@ -22,32 +23,104 @@ body#check-in-page {
   background-size: cover;
 }
 
-#tap-to-check {
-  position: absolute;
-  left: 50%;
-  margin-left: -137.5px;
-  /* background-color: #f1f1f1; */
-  /* background-color: #0cb4a4;*/
-  width: 275px;
-  height: 100px;
-  bottom: 15%;
-  border-radius: 3px;
-  display: block;
-  background-color: #f1f1f1;
-  /*background-color: #0abcb3;*/
+.big-head {
+    margin-top: 0;
+    padding-top:150px;
+    color: #f1f1f1;
+    font-size: 52px;
+    margin-bottom: 75px;
+    text-align: center;
+}
+.has-apt h1{
+    margin-top: 0;
+    padding-top:300px;
+    color: #f1f1f1;
+    font-size: 52px;
+    margin-bottom: 75px;
+    text-align: center;
+}
+#no-apt {
+    position: absolute;
+    left: 60%;
+    margin-left: -137.5px;
+   /* background-color: #f1f1f1; */
+   /* background-color: #0cb4a4;*/
+    width: 275px;
+    height: 100px;
+    bottom: 15%;
+    border-radius: 3px;
+    display: table;
+    background-color:#f1f1f1;
+    /*background-color: #0abcb3;*/
 
+}
+#no-apt > p{
+    font-family: "Helvetica Neue";
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    color: #333;
+    /*color: #fff;*/
+    font-size: 32px;
+}
+#no-apt:hover{
+    cursor: pointer;
+}
+#yes-apt {
+    position: absolute;
+    left: 40%;
+    margin-left: -137.5px;
+   /* background-color: #f1f1f1; */
+   /* background-color: #0cb4a4;*/
+    width: 275px;
+    height: 100px;
+    bottom: 15%;
+    border-radius: 3px;
+    display: table;
+    background-color:#f1f1f1;
+    /*background-color: #0abcb3;*/
+}
+
+#yes-apt > p{
+    font-family: "Helvetica Neue";
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    color: #333;
+    /*color: #fff;*/
+    font-size: 32px;
+}
+#yes-apt:hover {
+  cursor: pointer;
 }
 
 #tap-to-check:hover {
   cursor: pointer;
 }
 
-#tap-to-check > p {
-  font-family: "Helvetica Neue";
-  text-align: center;
-  color: #333;
-  /*color: #fff;*/
-  font-size: 32px;
+#tap-to-check {
+    position: absolute;
+    left: 50%;
+    margin-left: -137.5px;
+   /* background-color: #f1f1f1; */
+   /* background-color: #0cb4a4;*/
+    width: 275px;
+    height: 100px;
+    bottom: 15%;
+    border-radius: 3px;
+    display: table;
+    background-color:#f1f1f1;
+    /*background-color: #0abcb3;*/
+
+}
+#tap-to-check > p{
+    font-family: "Helvetica Neue";
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    color: #333;
+    /*color: #fff;*/
+    font-size: 32px;
 }
 
 .check-in {
@@ -106,6 +179,129 @@ body#check-in-page {
   color: #333;
 }
 
-.hide {
-  display: none !important;
+
+.hide{
+    display: none !important;
+}
+
+/*Table selection CSS*/
+
+.page-title {
+  margin: 35px auto;
+}
+
+.patient-table-header > .form-control {
+  width: auto;
+  margin-bottom: 10px;
+
+}
+
+.patient-table-header > h3 {
+  display: inline-block;
+  /*font-size: 1.8em;*/
+  font-size: 2.5em;
+}
+
+.patient-check-out > td {
+  /*font-size: 1.2em;*/
+  font-size: 2.0em;
+}
+
+.table {
+  display: table;
+  border-collapse: collapse;
+  border: 1px solid black;
+  width: 60%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.select-apt table tbody tr:hover {
+  background-color: #18615c;
+  cursor: pointer;
+}
+
+/*
+.select-apt {
+   max-width: 980px;
+}
+*/
+th, td {
+  text-align: left;
+  padding: 8px;
+  font-size: 2.3em;
+}
+
+tr:nth-child(even) {
+  background-color: #68b9a9
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.modal-body {
+  font-size: 1em;
+  overflow: auto;
+  padding: 15px 15px;
+  color: #585858;
+}
+
+.modal-title {
+  font-size: 1.7em;
+}
+
+.modal-body p > span {
+  float: left;
+  color: black;
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1.1em;
+}
+
+.modal-left {
+  float: left;
+  text-align: left;
+  width: 50%;
+  font-size: 1.5em;
+}
+
+.modal-right {
+  float: left;
+  text-align: left;
+  width: 50%;
+  font-size: 1.5em;
+
+}
+
+/*
+.checkout-btn{
+   background-color:#5cb85c;
+   height: 25px;
+   width: 60px;
+   margin-left: auto;
+   margin-right: auto;
+   border-radius: 3px;
+}
+
+.checkout-btn:hover{
+   background-color: #52a552;
+   cursor: pointer;
+}
+
+.checkout-btn > p{
+   line-height:25px;
+   font-size: 12px;
+   width: 100%;
+   text-align: center;
+   color: white;
+}
+*/
+hr {
+  border-top: 3px solid #01b2bd !important;
+}
+
+.modal-dialog {
+  top: 150px !important;
 }

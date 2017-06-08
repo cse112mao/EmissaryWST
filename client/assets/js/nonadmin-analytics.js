@@ -149,7 +149,6 @@ function queryCoreReportingApi(profileId) {
       console.log(resultStr);
       console.log(document.getElementById('pageViews').innerHTML);
       document.getElementById('sessionCount').innerHTML = resultStr2;
-      document.getElementById('pageViews').innerHTML = resultStr;
 
     })
     .then(null, function(err) {
