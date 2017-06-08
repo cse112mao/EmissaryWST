@@ -38,132 +38,119 @@
 
 </head>
 <body class="page-body gray" data-url="http://neon.dev">
-<script type="text/javascript">
-  window._mfq = window._mfq || [];
-  (function() {
-    var mf = document.createElement("script");
-    mf.type = "text/javascript"; mf.async = true;
-    mf.src = "//cdn.mouseflow.com/projects/2059175d-3363-4ec7-8c2c-d180daa76bb3.js";
-    document.getElementsByTagName("head")[0].appendChild(mf);
-  })();
-</script>
 
-<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+<div class="page-container">
+  <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
 
-	<div class="sidebar-menu">
-		<div class="sidebar-menu-inner">
-			<header class="logo-env">
+  <div class="sidebar-menu">
+    <div class="sidebar-menu-inner">
+      <header class="logo-env">
 
-				<!-- logo -->
-				<div class="logo">
-					<a href="#">
-						<img src="images/emissary.png" width="150" alt="" />
-					</a>
-				</div>
+        <!-- logo -->
+        <div class="logo">
+          <a href="#">
+            <img src="images/emissary.png" width="150" alt=""/>
+          </a>
+        </div>
 
-				<!-- logo collapse icon -->
-				<div class="sidebar-collapse">
-					<a href="#" class="sidebar-collapse-icon"><!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
-						<i class="entypo-menu"></i>
-				</a>
-				</div>
+        <!-- logo collapse icon -->
+        <div class="sidebar-collapse">
+          <a href="#" class="sidebar-collapse-icon">
+            <!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+            <i class="entypo-menu"></i>
+          </a>
+        </div>
 
-				<!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
-				<div class="sidebar-mobile-menu visible-xs">
-					<a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
-						<i class="entypo-menu"></i>
-					</a>
-				</div>
+        <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+        <div class="sidebar-mobile-menu visible-xs">
+          <a href="#" class="with-animation"><!-- add class "with-animation" to support animation -->
+            <i class="entypo-menu"></i>
+          </a>
+        </div>
 
-			</header>
+      </header>
 
 
-			<ul id="main-menu" class="main-menu">
-				<!-- add class "multiple-expanded" to allow multiple submenus to open -->
-				<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-                 <li>
-                    <a href="/nonadmin-dashboard.html">
-                        <i class="entypo-info"></i>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
+      <ul id="main-menu" class="main-menu">
+        <!-- add class "multiple-expanded" to allow multiple submenus to open -->
+        <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+        <li>
+          <a href="#">
+            <i class="entypo-users"></i>
+            <span class="title">Visitors</span>
+          </a>
+        </li>
+        <li>
+          <a href="/employees.html">
+            <i class="entypo-user"></i>
+            <span class="title">Employees</span>
+          </a>
+        </li>
+        <li>
+          <a href="/appointments.html">
+            <i class="entypo-calendar"></i>
+            <span class="title">Appointments</span>
+          </a>
+        </li>
+        <li>
+          <a href="/form-builder.html">
+            <i class="entypo-clipboard"></i>
+            <span class="title">Form Builder</span>
+          </a>
+        </li>
+        <li>
+          <a href="/settings.html">
+            <i class="entypo-tools"></i>
+            <span class="title">Settings</span>
+          </a>
+        </li>
+      </ul>
 
-				<li>
-					<a href="#">
-						<i class="entypo-users"></i>
-						<span class="title">Visitors</span>
-					</a>
-				</li>
-				<li>
-					<a href="/employees.html">
-						<i class="entypo-user"></i>
-						<span class="title">Employees</span>
-					</a>
-				</li>
-				<li>
-					<a href="/appointments.html">
-						<i class="entypo-calendar"></i>
-						<span class="title">Appointments</span>
-					</a>
-				</li>
-				<li>
-					<a href="/form-builder.html">
-						<i class="entypo-clipboard"></i>
-						<span class="title">Forms</span>
-					</a>
-				</li>
-				<li>
-					<a href="/settings.html">
-						<i class="entypo-tools"></i>
-						<span class="title">Settings</span>
-					</a>
-				</li>
-			</ul>
+    </div>
 
-		</div>
+  </div>
 
-	</div>
+  <div class="main-content">
+    <div class="row">
 
-	<div class="main-content">
-		<div class="row">
+      <!-- Profile Info and Notifications -->
+      <div class=" col-md-6 col-sm-8 clearfix">
 
-			<!-- Profile Info and Notifications -->
-			<div class=" col-md-6 col-sm-8 clearfix">
+        <ul class="user-info pull-left pull-none-xsm">
+          <!-- Profile Info -->
+          <li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
+            <div id="company-name">
+              <h1>Hello, <span id="user-name"> </span></h1>
+            </div>
+          </li>
+        </ul>
+      </div>
 
-				<ul class="user-info pull-left pull-none-xsm">
-					<!-- Profile Info -->
-					<li class="profile-info dropdown"><!-- add class "pull-right" if you want to place this from right -->
-						<div id="company-name">
-							<h1>Hello, <span id="user-name"> </span></h1>
-						</div>
-					</li>
-				</ul>
-			</div>
+      <!-- Raw Links -->
+      <div class="col-md-6 col-sm-4 clearfix hidden-xs">
 
-			<!-- Raw Links -->
-			<div class="col-md-6 col-sm-4 clearfix hidden-xs">
+        <ul class="list-inline links-list pull-right">
+          <div class="dropdown">
+            <i class="fa fa-3x fa-cog dropdown-toggle" data-toggle="dropdown"></i>
+            <ul class="dropdown-menu">
+              <li><a href="/checkin.html">Check-In</a></li>
+              <li><a id="logoutButton" href="/index.html">
+                Log Out <i class="entypo-logout right"></i></a>
+              </li>
+            </ul>
+          </div>
+        </ul>
 
-				<ul class="list-inline links-list pull-right">
-					<div class="dropdown">
-                        <i class="fa fa-3x fa-cog dropdown-toggle" data-toggle="dropdown"></i>
-                        <ul class="dropdown-menu">
-                            <li><a href="/checkin.html">Check-In</a></li>
-                            <li><a id="logoutButton" href="/index.html">
-                                Log Out <i class="entypo-logout right"></i></a>
-                            </li>
-                        </ul>
-                  </div>
-				</ul>
+      </div>
 
-			</div>
+    </div>
 
-		</div>
+    <hr/>
+    <div class="visitor-container">
+      <div id="visitor-queue">
 
-		<hr />
-		<div class="visitor-container" >
-        <div id="visitor-queue">
+        <h1 class="page-title">Visitors</h1>
 
-           <h1 class="page-title">Visitors</h1>   
 
         <table class="table">
           <thead>
