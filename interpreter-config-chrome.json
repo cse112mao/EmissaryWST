@@ -9,7 +9,8 @@
 						"port" : 80
 					}, 
 					"browserOptions" : {
-			 			"browserName": "firefox",
+			 			"browserName": "chrome",
+			 			"platform": "ANY",
 			 			"username": "MAO",
      					"access_key": "dc201543-557e-41e2-97b3-9a7cdd6bb305"
 					}
@@ -23,5 +24,4 @@
 			]
 		}
 	]
-
 }
