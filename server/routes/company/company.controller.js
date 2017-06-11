@@ -80,6 +80,7 @@ module.exports.template.create = function(req, res) {
     if (err) {
       return res.status(400).json({error: "Could Not Save"});
     }
+    console.log(showCompanyPublicInfo(c)._id);
     return res.status(200).json(showCompanyPublicInfo(c));
   });
 };

@@ -5,6 +5,7 @@ module.exports.sendSms = function(to, message) {
 	if (to === 'COMPANY_PHONE') {
 		to = '6264768756';
 	}
+	//send a custom message through Twilio to the number to parameter
 	client.messages.create({ 
 		to: to, 
 		from: config.twilio_sendingNumber, 
@@ -15,6 +16,7 @@ module.exports.sendSms = function(to, message) {
 
 module.exports.voiceCall = function(to) {
 	var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
+	//create voicemail sent by Twilio to the number to parameter
 	client.calls.create({
 		url: "http://demo.twilio.com/docs/voice.xml",
 		to: to,
