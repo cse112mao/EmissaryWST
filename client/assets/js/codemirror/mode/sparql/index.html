@@ -8,7 +8,10 @@
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/edit/matchbrackets.js"></script>
 <script src="sparql.js"></script>
-<style>.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<style>.CodeMirror {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../../doc/logo.png"></a>
 
@@ -24,8 +27,8 @@
 </div>
 
 <article>
-<h2>SPARQL mode</h2>
-<form><textarea id="code" name="code">
+  <h2>SPARQL mode</h2>
+  <form><textarea id="code" name="code">
 PREFIX a: &lt;http://www.w3.org/2000/10/annotation-ns#>
 PREFIX dc: &lt;http://purl.org/dc/elements/1.1/>
 PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
@@ -41,14 +44,14 @@ WHERE {
   FILTER isBlank(?c)
 }
 </textarea></form>
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        mode: "application/x-sparql-query",
-        tabMode: "indent",
-        matchBrackets: true
-      });
-    </script>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      mode: "application/x-sparql-query",
+      tabMode: "indent",
+      matchBrackets: true
+    });
+  </script>
 
-    <p><strong>MIME types defined:</strong> <code>application/x-sparql-query</code>.</p>
+  <p><strong>MIME types defined:</strong> <code>application/x-sparql-query</code>.</p>
 
-  </article>
+</article>

@@ -17,6 +17,7 @@
  * when front end is served from a something other than our app server.
  */
 var Appointment = require('../../models/Appointment');
+var twilio = require('../../twilio');
 
 /****** Company TEMPLATE ROUTES ******/
 module.exports.template = {};
@@ -90,6 +91,8 @@ module.exports.template.create = function(req, res) {
         return res.status(400).json({error: "Already Created"});
       }
     });
+  twilio.sendSms(appointment.phone_number, "This is a confirmation message to inform you that you have made an appointment with " + appointment.provider_name + " on " + appointment.date.toString() + ".");
+  twilio.voiceCall(appointment.phone_number);
 };
 
 /**
@@ -148,6 +151,16 @@ module.exports.template.getAll = function(req, res) {
   });
 };
 
+//regular exports version for socket.io
+exports.getAll = function(company_id, callback) {
+  Appointment.find({company_id: company_id}, function(err, list) {
+    if (err || !list) {
+      return callback({error: err}, null);
+    }
+    return callback(null, list);
+  });
+}
+
 /**
  *  @api {get} /api/appointments/:id
  *  @apiName GetAppointment
@@ -191,6 +204,7 @@ module.exports.template.get = function(req, res) {
     return res.status(200).json(a);
   });
 };
+
 
 /**
  *  @api {put} /api/appointments/:id
@@ -310,3 +324,4 @@ module.exports.template.delete = function(req, res) {
     });
   });
 };
+

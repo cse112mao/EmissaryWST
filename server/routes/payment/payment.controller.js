@@ -41,7 +41,7 @@ exports.getSubscription = function(req, res) {
       });
   });
 
-}
+};
 
 function basicPlanIndex(arr) {
   var arrLength = arr.length;

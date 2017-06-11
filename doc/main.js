@@ -503,7 +503,7 @@ require([
     });
 
     initDynamic();
-
+    return;
   });
 
   // compare all article with their predecessor
@@ -682,11 +682,11 @@ require([
   function sortFields(fields_object) {
     $.each(fields_object, function(key, fields) {
 
-      var reversed = fields.slice().reverse();
+      var reversed = fields.slice().reverse()
 
       var max_dot_count = Math.max.apply(null, reversed.map(function(item) {
         return item.field.split(".").length - 1;
-      }));
+      }))
 
       for (var dot_count = 1; dot_count <= max_dot_count; dot_count++) {
         reversed.forEach(function(item, index) {
@@ -782,7 +782,7 @@ require([
     $('#sidenav li[data-group=\'' + group + '\'][data-name=\'' + name + '\'][data-version=\'' + version + '\']').removeClass('has-modifications');
 
     $root.remove();
-
+    return;
   }
 
   /**

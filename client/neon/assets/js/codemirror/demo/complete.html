@@ -25,8 +25,8 @@
 </div>
 
 <article>
-<h2>Autocomplete Demo</h2>
-<form><textarea id="code" name="code">
+  <h2>Autocomplete Demo</h2>
+  <form><textarea id="code" name="code">
 function getCompletions(token, context) {
   var found = [], start = token.string;
   function maybeAdd(str) {
@@ -64,15 +64,15 @@ function getCompletions(token, context) {
 }
 </textarea></form>
 
-<p>Press <strong>ctrl-space</strong> to activate autocompletion. Built
-on top of the <a href="../doc/manual.html#addon_show-hint"><code>show-hint</code></a>
-and <a href="../doc/manual.html#addon_javascript-hint"><code>javascript-hint</code></a>
-addons.</p>
+  <p>Press <strong>ctrl-space</strong> to activate autocompletion. Built
+    on top of the <a href="../doc/manual.html#addon_show-hint"><code>show-hint</code></a>
+    and <a href="../doc/manual.html#addon_javascript-hint"><code>javascript-hint</code></a>
+    addons.</p>
 
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        extraKeys: {"Ctrl-Space": "autocomplete"}
-      });
-    </script>
-  </article>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      extraKeys: {"Ctrl-Space": "autocomplete"}
+    });
+  </script>
+</article>

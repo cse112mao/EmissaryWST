@@ -13,15 +13,17 @@ $(document).ready(function() {
       function(data, status) {
       });
   }
-  $('#tap-to-check').on('click', function() {
-    console.log("click");
-    //$('.check-in').addClass('show');
-    $('.check-in').animate({
-      top: '25%',
-      opacity: '1'
-    }, 700);
-    $(this).addClass('hide');
-  });
+  /*
+   $('#tap-to-check').on('click', function() {
+   console.log("click");
+   //$('.check-in').addClass('show');
+   $('.check-in').animate({
+   top: '25%',
+   opacity: '1'
+   }, 700);
+   $(this).addClass('hide');
+   });
+   */
 
   /* $('.check-in').on('submit', function() {
    event.preventDefault;

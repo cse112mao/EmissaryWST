@@ -6,7 +6,7 @@
   display: inline;
 }
 
-#box0, #box1 {
+#box, #box1 {
   /*width: 80%;*/
   outline: none !important;
   border: none !important;
@@ -40,35 +40,33 @@ hr {
 
 }
 
-/*
+
 .form-group{
-	width: 50%;
-	max-width: 400px;
-	margin-left: auto;
-	margin-right: auto;
+  width: 50%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 
 .my-form input{
-	width: 60%;
+  width: 60%;
 }
 .add-form-text{
-	width: 50%;
-	max-width: 400px;
-	margin: 25px auto;
+  width: 50%;
+  max-width: 400px;
+  margin: 25px auto;
 
 }
 
 .add-fields{
-	width: 50%;
-	max-width: 400px;
-	margin-left: auto;
-	margin-right: auto;
+  width: 50%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.save-form{
-	margin-top: 25px;
-}*/
+
 .form-group {
   width: 100%;
 }

@@ -8,15 +8,16 @@
 <script src="../lib/codemirror.js"></script>
 <script src="../mode/css/css.js"></script>
 <style type="text/css">
-      .CodeMirror {
-        border: 1px solid #eee;
-        height: auto;
-      }
-      .CodeMirror-scroll {
-        overflow-y: hidden;
-        overflow-x: auto;
-      }
-    </style>
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+  }
+
+  .CodeMirror-scroll {
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../doc/logo.png"></a>
 
@@ -31,8 +32,8 @@
 </div>
 
 <article>
-<h2>Autoresize Demo</h2>
-<form><textarea id="code" name="code">
+  <h2>Autoresize Demo</h2>
+  <form><textarea id="code" name="code">
 .CodeMirror {
   border: 1px solid #eee;
   height: auto;
@@ -43,16 +44,16 @@
 }
 </textarea></form>
 
-<p>By setting a few CSS properties, and giving
-the <a href="../doc/manual.html#option_viewportMargin"><code>viewportMargin</code></a>
-a value of <code>Infinity</code>, CodeMirror can be made to
-automatically resize to fit its content.</p>
+  <p>By setting a few CSS properties, and giving
+    the <a href="../doc/manual.html#option_viewportMargin"><code>viewportMargin</code></a>
+    a value of <code>Infinity</code>, CodeMirror can be made to
+    automatically resize to fit its content.</p>
 
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        viewportMargin: Infinity
-      });
-    </script>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      viewportMargin: Infinity
+    });
+  </script>
 
-  </article>
+</article>

@@ -2,13 +2,16 @@ language: node_js
 node_js:
 - '6'
 before_script:
+- npm install -g se-interpreter
 - npm install -g gulp bower foreman
 - npm install
 - node nightwatch.conf.BASIC.js
 - python -m SimpleHTTPServer &
 - sleep 15
 - mongo mydb_test --eval 'db.addUser("travis", "cse112mao");'
-script: gulp
+script: 
+- gulp
+- se-interpreter interpreter-config.json
 services:
 - mongodb
 addons:

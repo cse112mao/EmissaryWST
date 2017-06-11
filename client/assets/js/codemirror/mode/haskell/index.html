@@ -9,7 +9,10 @@
 <script src="../../lib/codemirror.js"></script>
 <script src="../../addon/edit/matchbrackets.js"></script>
 <script src="haskell.js"></script>
-<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<style type="text/css">.CodeMirror {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../../doc/logo.png"></a>
 
@@ -25,8 +28,8 @@
 </div>
 
 <article>
-<h2>Haskell mode</h2>
-<form><textarea id="code" name="code">
+  <h2>Haskell mode</h2>
+  <form><textarea id="code" name="code">
 module UniquePerms (
     uniquePerms
     )
@@ -61,13 +64,13 @@ permBag bs = concatMap (\(f,cs) -> map (f:) $ permBag cs) . oneOfEach $ bs
     mapSnd = map . apSnd
 </textarea></form>
 
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        matchBrackets: true,
-        theme: "elegant"
-      });
-    </script>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      matchBrackets: true,
+      theme: "elegant"
+    });
+  </script>
 
-    <p><strong>MIME types defined:</strong> <code>text/x-haskell</code>.</p>
-  </article>
+  <p><strong>MIME types defined:</strong> <code>text/x-haskell</code>.</p>
+</article>

@@ -49,7 +49,9 @@ define([
     var paramType = {};
     $root.find(".sample-request-param:checked").each(function(i, element) {
       var group = $(element).data("sample-request-param-group-id");
-      $root.find("[data-sample-request-param-group=\"" + group + "\"]").each(function(i, element) {
+      $root.find("[data-sample-request-param-group=\"" + group + "\"]").not(function() {
+        return $(this).val() == "" && $(this).is("[data-sample-request-param-optional='true']");
+      }).each(function(i, element) {
         var key = $(element).data("sample-request-param-name");
         var value = element.value;
         if (!element.optional && element.defaultValue !== '') {
@@ -113,7 +115,7 @@ define([
       }
       $root.find(".sample-request-response-json").html(jsonResponse);
       refreshScrollSpy();
-    }
+    };
 
     function displayError(jqXHR, textStatus, error) {
       var message = "Error " + jqXHR.status + ": " + error;
@@ -135,7 +137,7 @@ define([
       $root.find(".sample-request-response").fadeTo(250, 1);
       $root.find(".sample-request-response-json").html(message);
       refreshScrollSpy();
-    }
+    };
   }
 
   function clearSampleRequest(group, name, version) {

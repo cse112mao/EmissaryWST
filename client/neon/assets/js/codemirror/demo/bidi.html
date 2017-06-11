@@ -8,8 +8,11 @@
 <script src="../lib/codemirror.js"></script>
 <script src="../mode/xml/xml.js"></script>
 <style type="text/css">
-      .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
-    </style>
+  .CodeMirror {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../doc/logo.png"></a>
 
@@ -24,8 +27,8 @@
 </div>
 
 <article>
-<h2>Bi-directional Text Demo</h2>
-<form><textarea id="code" name="code"><!-- Piece of the CodeMirror manual, 'translated' into Arabic by
+  <h2>Bi-directional Text Demo</h2>
+  <form><textarea id="code" name="code"><!-- Piece of the CodeMirror manual, 'translated' into Arabic by
      Google Translate -->
 
 <dl>
@@ -55,20 +58,20 @@
 </dl>
 </textarea></form>
 
-    <script>
-var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-  mode: "text/html",
-  lineNumbers: true
-});
-</script>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      mode: "text/html",
+      lineNumbers: true
+    });
+  </script>
 
   <p>Demonstration of bi-directional text support. See
-  the <a href="http://marijnhaverbeke.nl/blog/cursor-in-bidi-text.html">related
-  blog post</a> for more background.</p>
+    the <a href="http://marijnhaverbeke.nl/blog/cursor-in-bidi-text.html">related
+      blog post</a> for more background.</p>
 
   <p><strong>Note:</strong> There is
-  a <a href="https://github.com/marijnh/CodeMirror/issues/1757">known
-  bug</a> with cursor motion and mouse clicks in bi-directional lines
-  that are line wrapped.</p>
+    a <a href="https://github.com/marijnh/CodeMirror/issues/1757">known
+      bug</a> with cursor motion and mouse clicks in bi-directional lines
+    that are line wrapped.</p>
 
 </article>

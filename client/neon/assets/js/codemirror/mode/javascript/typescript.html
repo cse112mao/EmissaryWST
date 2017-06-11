@@ -7,7 +7,10 @@
 <link rel="stylesheet" href="../../lib/codemirror.css">
 <script src="../../lib/codemirror.js"></script>
 <script src="javascript.js"></script>
-<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<style type="text/css">.CodeMirror {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../../doc/logo.png"></a>
 
@@ -23,10 +26,10 @@
 </div>
 
 <article>
-<h2>TypeScript mode</h2>
+  <h2>TypeScript mode</h2>
 
 
-<div><textarea id="code" name="code">
+  <div><textarea id="code" name="code">
 class Greeter {
 	greeting: string;
 	constructor (message: string) {
@@ -49,13 +52,13 @@ document.body.appendChild(button)
 
 </textarea></div>
 
-    <script>
-      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-        lineNumbers: true,
-        matchBrackets: true,
-        mode: "text/typescript"
-      });
-    </script>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      matchBrackets: true,
+      mode: "text/typescript"
+    });
+  </script>
 
-    <p>This is a specialization of the <a href="index.html">JavaScript mode</a>.</p>
-  </article>
+  <p>This is a specialization of the <a href="index.html">JavaScript mode</a>.</p>
+</article>

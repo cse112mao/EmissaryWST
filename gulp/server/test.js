@@ -2,6 +2,7 @@ var gulp = require('gulp'),
   mocha = require('gulp-mocha'),
   exit = require('gulp-exit');
 
+//Test
 /* This will run our mocha tests */
 gulp.task('test:server', function() {
   return gulp.src('./server/test/*.js', {read: false})

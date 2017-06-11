@@ -13,6 +13,7 @@ $(document).ready(function() {
   var VALIDATE_COMPANY_ID = "validate_company_id";
   var VISITOR_LIST_UPDATE = "visitor_list_update";
   var REMOVE_VISITOR = "remove_visitor";
+  var RECENT_VISITOR_LIST = "recent_visitor_list";
 
   var companyData = JSON.parse(localStorage.getItem("currentCompany"));
   var visitorList;
@@ -55,9 +56,15 @@ $(document).ready(function() {
       if (appList[0]) {
         for (var j = 0, appLen = appList.length; j < appLen; j++) {
           if (compareDate(appList[j].date)) {
-            visitorList[i].appointmentTime = formatTime(appList[j].date);
+            visitorList[i].appointmentTime = formatTime(appList[j].date) + ", Today";
             visitorList[i]._apptId = appList[j]._id;
             break;
+          }
+          else {
+            visitorList[i].appointmentTime = formatDate(appList[j].date);
+            visitorList[i]._apptId = appList[j]._id;
+            break;
+
           }
         }
       }
@@ -105,6 +112,7 @@ $(document).ready(function() {
 
     socket.emit(REMOVE_VISITOR, removeVisitor);
   });
+
   /*
    $(document).on('click','.checkout-btn',function(){
    var id = $(this).closest('.patient-check-out').attr('value');
@@ -175,6 +183,14 @@ $(document).ready(function() {
 
     return currentTime;
 
+  }
+
+  function formatDate(time) {
+    var date = new Date(Date.parse(time));
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    return month + "/" + day + "/" + year;
   }
 
   $('#logoutButton').on('click', function() {

@@ -272,6 +272,21 @@ function getCompanies() {
   });
   return json;
 }
+function getCheckedin() {
+  var json;
+  $.ajax({
+    dataType: 'json',
+    type: 'GET',
+    data: $('#response').serialize(),
+    async: false,
+    url: '/api/numCheckedIn',
+    success: function(response) {
+      json = response;
+      console.log(response);
+    }
+  });
+  return json;
+}
 var companies = getCompanies();
 var num = companies.length;
 document.getElementById('companyCount').innerHTML = num;

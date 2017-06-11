@@ -38,8 +38,11 @@
 <script src="../addon/selection/active-line.js"></script>
 <script src="../addon/edit/matchbrackets.js"></script>
 <style type="text/css">
-      .CodeMirror {border: 1px solid black; font-size:13px}
-    </style>
+  .CodeMirror {
+    border: 1px solid black;
+    font-size: 13px
+  }
+</style>
 <div id=nav>
   <a href="http://codemirror.net"><img id=logo src="../doc/logo.png"></a>
 
@@ -54,8 +57,8 @@
 </div>
 
 <article>
-<h2>Theme Demo</h2>
-<form><textarea id="code" name="code">
+  <h2>Theme Demo</h2>
+  <form><textarea id="code" name="code">
 function findSequence(goal) {
   function find(start, history) {
     if (start == goal)
@@ -69,7 +72,7 @@ function findSequence(goal) {
   return find(1, "1");
 }</textarea></form>
 
-<p>Select a theme: <select onchange="selectTheme()" id=select>
+  <p>Select a theme: <select onchange="selectTheme()" id=select>
     <option selected>default</option>
     <option>3024-day</option>
     <option>3024-night</option>
@@ -99,25 +102,25 @@ function findSequence(goal) {
     <option>vibrant-ink</option>
     <option>xq-dark</option>
     <option>xq-light</option>
-</select>
-</p>
+  </select>
+  </p>
 
-<script>
-  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
-    lineNumbers: true,
-    styleActiveLine: true,
-    matchBrackets: true
-  });
-  var input = document.getElementById("select");
-  function selectTheme() {
-    var theme = input.options[input.selectedIndex].innerHTML;
-    editor.setOption("theme", theme);
-  }
-  var choice = document.location.search &&
-               decodeURIComponent(document.location.search.slice(1));
-  if (choice) {
-    input.value = choice;
-    editor.setOption("theme", choice);
-  }
-</script>
-  </article>
+  <script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      styleActiveLine: true,
+      matchBrackets: true
+    });
+    var input = document.getElementById("select");
+    function selectTheme() {
+      var theme = input.options[input.selectedIndex].innerHTML;
+      editor.setOption("theme", theme);
+    }
+    var choice = document.location.search &&
+      decodeURIComponent(document.location.search.slice(1));
+    if (choice) {
+      input.value = choice;
+      editor.setOption("theme", choice);
+    }
+  </script>
+</article>
