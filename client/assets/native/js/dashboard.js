@@ -24,6 +24,14 @@ $(document).ready(function() {
   var curUser = JSON.parse(localStorage.getItem('currentUser'));
   var companyName = companyData.name;
 
+Handlebars.registerHelper('even', function(val, options) {
+  var fnTrue = options.fn, fnFalse = options.inverse;
+  return (val % 2) == 0 ? fnTrue(this) : fnFalse(this);
+});
+Handlebars.registerHelper('odd', function(val, options) {
+  var fnTrue = options.fn, fnFalse = options.inverse;
+  return (val % 2) != 0 ? fnTrue(this) : fnFalse(this);
+});
 
   $('#user-name').text(curUser.first_name + ' ' + curUser.last_name);
 

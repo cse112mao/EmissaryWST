@@ -40,16 +40,14 @@ body#check-in-page {
     text-align: center;
 }
 #no-apt {
-    position: absolute;
-    left: 60%;
-    margin-left: -137.5px;
+    display: table;
+    margin: auto;
+    align-self: center;
    /* background-color: #f1f1f1; */
    /* background-color: #0cb4a4;*/
     width: 275px;
     height: 100px;
-    bottom: 15%;
     border-radius: 3px;
-    display: table;
     background-color:#f1f1f1;
     /*background-color: #0abcb3;*/
 
@@ -67,16 +65,14 @@ body#check-in-page {
     cursor: pointer;
 }
 #yes-apt {
-    position: absolute;
-    left: 40%;
-    margin-left: -137.5px;
+    display: table;
+    margin: auto;
+    align-self: center;
    /* background-color: #f1f1f1; */
    /* background-color: #0cb4a4;*/
     width: 275px;
     height: 100px;
-    bottom: 15%;
     border-radius: 3px;
-    display: table;
     background-color:#f1f1f1;
     /*background-color: #0abcb3;*/
 }
@@ -141,10 +137,10 @@ body#check-in-page {
   margin-bottom: 75px;
 }
 
+/*
 .check-in > input.visitor-fields {
   margin-top: 30px;
   margin-bottom: 30px;
-  /*background-color: #303641;*/
   background-color: transparent;
   border: none;
   border-bottom: 2px solid #f1f1f1;
@@ -159,6 +155,28 @@ body#check-in-page {
 }
 
 .check-in > input::-webkit-input-placeholder {
+  color: #f1f1f1;
+}
+*/
+
+.field-holder > input.visitor-fields {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  /*background-color: #303641;*/
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 5px;
+  width: 100%;
+  color: #f1f1f1;
+  font-size: 28px;
+}
+
+.field-holder > input:focus {
+  outline: none;
+}
+
+.field-holder > input::-webkit-input-placeholder {
   color: #f1f1f1;
 }
 
