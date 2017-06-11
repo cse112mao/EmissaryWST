@@ -19,6 +19,13 @@ var MY_SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/T0NUV4URX/B0NURQUSF
 var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL);
 //var oauthserver = require('oauth2-server');
 var newrelic = require('newrelic');
+var SmoochCore = require('smooch-core');
+
+var smooch = new SmoochCore({
+    keyId: 'app_593cb499ec86232d00b0901c',
+    secret: 'BVADI4RfMSvsxmmyskGbY8op',
+    scope: 'app'
+});
 
 
 /*
@@ -141,6 +148,20 @@ app.get('/index', function(req, res) {
 });
 app.get('/doc', function(req, res) {
   res.sendFile(path.join(__dirname, '../doc/index.html'));
+});
+app.post('/fromAppUser', function(req, res) {  
+   const payload = req.body;
+   const message = payload.messages[0];
+   const text = message.text;
+   const userId = payload.appUser._id;
+
+   smooch.appUsers.sendMessage(userId, {
+	    type: 'text',
+	    text: 'testing this',
+	    role: 'appMaker'
+	}).then(() => {
+	    // async code
+	});
 });
 
 /*
