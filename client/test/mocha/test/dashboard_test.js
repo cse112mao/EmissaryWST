@@ -1,6 +1,8 @@
 /**
 * Unit tests for native/dashboard.js
 */
+this.jsdom = require('jsdom-global')()
+global.$ = global.jQuery = require('jquery');
 
 var assert = require('assert');
 var dashboard_test = require("../../../assets/native/js/login.js");
@@ -16,9 +18,6 @@ describe('dashboard_test.js', function() {
       assert.equal(expected_output, boolOutput);
       assert.equal(true, true);
     });
-
-    
-
   });
 /*  describe('#isValidTime(strInputTime, boolInputSeconds)', function() {
 
