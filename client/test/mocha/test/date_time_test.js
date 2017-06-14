@@ -59,14 +59,14 @@ describe('date_time_test.js', function() {
       assert.equal(expected_output, stringOutput);
     });
 
-    it("Expects to return '2:29PM' from formatTime('2017-06-13T2:29:53.995Z')", function() {
-      var stringOutput = date_time_test.formatTime('2017-06-13T2:29:53.995Z');
+    it("Expects to return '2:29PM' from formatTime('2017-06-13T14:29:53.995Z')", function() {
+      var stringOutput = date_time_test.formatTime('2017-06-13T14:29:53.995Z');
       var expected_output = '2:29PM';
       assert.equal(expected_output, stringOutput);
     });
 
-    it("Expects to return '12:29AM' from formatTime('2017-06-13T12:29:53.995Z')", function() {
-      var stringOutput = date_time_test.formatTime('2017-06-13T12:29:53.995Z');
+    it("Expects to return '12:29AM' from formatTime('2017-06-13T00:29:53.995Z')", function() {
+      var stringOutput = date_time_test.formatTime('2017-06-13T00:29:53.995Z');
       var expected_output = '12:29AM';
       assert.equal(expected_output, stringOutput);
     });
