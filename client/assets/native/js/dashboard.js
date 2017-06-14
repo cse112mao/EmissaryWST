@@ -24,6 +24,14 @@ $(document).ready(function() {
   var curUser = JSON.parse(localStorage.getItem('currentUser'));
   var companyName = companyData.name;
 
+Handlebars.registerHelper('even', function(val, options) {
+  var fnTrue = options.fn, fnFalse = options.inverse;
+  return (val % 2) == 0 ? fnTrue(this) : fnFalse(this);
+});
+Handlebars.registerHelper('odd', function(val, options) {
+  var fnTrue = options.fn, fnFalse = options.inverse;
+  return (val % 2) != 0 ? fnTrue(this) : fnFalse(this);
+});
 
   $('#user-name').text(curUser.first_name + ' ' + curUser.last_name);
 
@@ -45,6 +53,7 @@ $(document).ready(function() {
   //SOCKET LISTEN FOR VISITOR QUEUE
   socket.on(VISITOR_LIST_UPDATE, function(data) {
     visitorList = data.visitors
+    
     //Parse Visitor List to format Date
     for (var i = 0, len = visitorList.length; i < len; i++) {
       visitorList[i].checkin_time = formatTime(visitorList[i].checkin_time);
@@ -113,29 +122,6 @@ $(document).ready(function() {
     socket.emit(REMOVE_VISITOR, removeVisitor);
   });
 
-  /*
-   $(document).on('click','.checkout-btn',function(){
-   var id = $(this).closest('.patient-check-out').attr('value');
-   var removeVisitor = findVisitor(id);
-   console.log(removeVisitor);
-   //removeVisitor.visitor_id = removeVisitor._id;
-   //socket.emit(REMOVE_VISITOR, removeVisitor);
-
-   });
-   */
-  /***
-   * Compare appointment Date to today's Date
-   */
-  function compareDate(appointment) {
-    var today = new Date();
-    appointment = new Date(Date.parse(appointment));
-
-    var appointmentDate = appointment.getFullYear() + ' ' + appointment.getDate() + ' ' + appointment.getMonth();
-    var todayDate = today.getFullYear() + ' ' + today.getDate() + ' ' + today.getMonth();
-
-    return (appointmentDate == todayDate);
-  }
-
   /***
    * Find Specific Visitor Given Visitor ID within the Visitor Array
    * @param id
@@ -151,67 +137,6 @@ $(document).ready(function() {
         }
       }
     }
-  }
-
-  /***
-   * Function to format a JSON date object into a string
-   * @param time
-   */
-  function formatTime(time) {
-    var currentTime = new Date(Date.parse(time));
-    var hour = currentTime.getHours();
-    var minute = currentTime.getMinutes();
-
-    if (minute < 10) {
-      minute = '0' + minute;
-    }
-
-    if (hour >= 13) {
-      hour = hour - 12;
-      currentTime = hour + ':' + minute + 'PM';
-    }
-
-    else if (hour === 12) {
-      currentTime = hour + ':' + minute + 'PM';
-    }
-    else if (hour === 0) {
-      currentTime = 1 + ':' + minute + 'AM';
-    }
-    else {
-      currentTime = hour + ':' + minute + 'AM';
-    }
-
-    return currentTime;
-
-  }
-
-  function formatDate(time) {
-    var date = new Date(Date.parse(time));
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    return month + "/" + day + "/" + year;
-  }
-
-  $('#logoutButton').on('click', function() {
-    localStorage.setItem('userState', 0);
-  });
-
-
-  /***
-   * TODO order the list by increasing order
-   * @param key
-   */
-  function increasingOrder(key) {
-
-  }
-
-  /***
-   * TODO order the list by decreasing order
-   * @param key
-   */
-  function decreasingOrder(key) {
-
   }
 
 });

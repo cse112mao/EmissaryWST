@@ -7,8 +7,8 @@ $(document).ready(function() {
   var RECENT_APPOINTMENTS_LIST = "recent_appointments_list";
   var NOTIFY_RECENT_APPOINTMENTS_LIST = "notify_recent_appointments_list";
 
-  var companyData = JSON.parse(localStorage.getItem("currentCompany"));
   var appList;
+  var companyData = JSON.parse(localStorage.getItem("currentCompany"));
   companyData.company_id = companyData._id;
   console.log(companyData);
   socket.emit(VALIDATE_COMPANY_ID, companyData);
@@ -18,20 +18,32 @@ $(document).ready(function() {
     e.preventDefault();
   };
 
+  $.ajax({
+      dataType: 'json',
+      type: 'GET',
+      url: '/api/form/template/company/' + companyData.company_id,
+      success: function(response) {
+        document.getElementById("check-in-page").style.backgroundColor = '#' + response.color;
+      }
+  });
   //Bind Listeners
   $('#tap-to-check').on('click', askApt);
   $('#no-apt').on('click', startCheckIn);
   $('#yes-apt').on('click', selectApt);
-  /*$('.check-in').on('submit', submitForm);*/
   $('.check-in').on('submit', submitFormOG);
 
 
-  function formatAptForSubmit() {
-
-  }
-
   //When a user starts their check in
   function startCheckIn() {
+    $.ajax({
+      dataType: 'json',
+      type: 'GET',
+      url: '/api/form/template/company/' + companyData.company_id,
+      success: function(response) {
+        var compiledHtml = formTemplate(response.template);
+        $('#custom-form').html(compiledHtml);
+    }
+  });
     $('.check-in').removeClass('hide');
     $('.check-in').addClass('show');
     $('.check-in').animate({
@@ -63,10 +75,6 @@ $(document).ready(function() {
     $('.has-apt').addClass('hide');
   }
 
-  function returnToVisitorList() {
-
-  }
-
   //When a patient submits their form
   function submitForm(event) {
     //event.preventDefault();
@@ -83,22 +91,28 @@ $(document).ready(function() {
         });
     }
     socket.emit(ADD_VISITOR, data);
-    /*
-     $(this).animate({
-     top: '35%',
-     opacity: '0'
-     }, 0);
-     */
-
   }
 
   function submitFormOG() {
     var data = {};
     data.company_id = companyData._id;
-    data.first_name = $('#visitor-first').val();
-    data.last_name = $('#visitor-last').val();
-    data.phone_number = $('#visitor-number').val();
     data.checkin_time = new Date();
+    data.additional_info = [];
+
+    $('.visitor-fields').each(function() {
+      if ($(this).attr('name') == "first") {
+        data.first_name = $(this).val();
+      }
+      else if ($(this).attr('name') == "last") {
+        data.last_name = $(this).val();
+      }
+      else if ($(this).attr('name') == "phoneNumber") {
+        data.phone_number = $(this).val();
+      }
+      else {
+        data.additional_info.push({name: $(this).attr('name'), value: $(this).val()});
+      }
+    });
     console.log("this is the data for submit no appt: ");
     console.log(data);
     if (localStorage.getItem("slackToken") && localStorage.getItem("slackChannel")) {
@@ -113,42 +127,7 @@ $(document).ready(function() {
     }
     socket.emit(ADD_VISITOR, data);
   }
-
-  //Grabs elements from the check in and puts it into an object
-  function grabFormElements(event) {
-    var newVisitor = {};
-    newVisitor.first_name = event.first_name;
-    newVisitor.last_name = event.last_name;
-    newVisitor.phone_number = event.phone_number;
-    newVisitor.checkin_time = event.checkin_time;
-    newVisitor.company_id = companyData._id;
-    newVisitor.appointments = event.appointments;
-
-    return newVisitor;
-  }
-
-  //CLOCK
-  function updateClock() {
-    var currentTime = new Date();
-    var currentHours = currentTime.getHours();
-    var currentMinutes = currentTime.getMinutes();
-    //var currentSeconds = currentTime.getSeconds ( );
-    // Pad the minutes and seconds with leading zeros, if required
-    currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
-    //currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
-
-    // Convert the hours component to 12-hour format if needed
-    currentHours = ( currentHours > 12 ) ? currentHours - 12 : currentHours;
-
-    // Convert an hours component of "0" to "12"
-    currentHours = ( currentHours == 0 ) ? 12 : currentHours;
-
-    // Compose the string for display
-    var currentTimeString = currentHours + ":" + currentMinutes;
-
-    $("#clock").html(currentTimeString);
-  }
-
+  
   updateClock();
   setInterval(updateClock, 60 * 1000);
   /***
@@ -161,6 +140,10 @@ $(document).ready(function() {
   //Modal Template
   var modal = $('#apt-info-template').html();
   var modalTemplate = Handlebars.compile(modal);
+
+  //Custom Form Template
+  var form = $('#custom-form-template').html();
+  var formTemplate = Handlebars.compile(form);
 
   console.log("emitting apt");
   socket.emit(RECENT_APPOINTMENTS_LIST, companyData);
@@ -186,51 +169,6 @@ $(document).ready(function() {
     var compiledHtml = template(appList);
     $('#apt-list').html(compiledHtml);
   });
-
-  /***
-   * Compare appointment Date to today's Date
-   */
-  function compareDate(appointment) {
-    var today = new Date();
-    appointment = new Date(Date.parse(appointment));
-
-    var appointmentDate = appointment.getFullYear() + ' ' + appointment.getDate() + ' ' + appointment.getMonth();
-    var todayDate = today.getFullYear() + ' ' + today.getDate() + ' ' + today.getMonth();
-
-    return (appointmentDate == todayDate);
-  }
-
-  /***
-   * Function to format a JSON date object into a string
-   * @param time
-   */
-  function formatTime(time) {
-    var currentTime = new Date(Date.parse(time));
-    var hour = currentTime.getHours();
-    var minute = currentTime.getMinutes();
-
-    if (minute < 10) {
-      minute = '0' + minute;
-    }
-
-    if (hour >= 13) {
-      hour = hour - 12;
-      currentTime = hour + ':' + minute + 'PM';
-    }
-
-    else if (hour === 12) {
-      currentTime = hour + ':' + minute + 'PM';
-    }
-    else if (hour === 0) {
-      currentTime = 1 + ':' + minute + 'AM';
-    }
-    else {
-      currentTime = hour + ':' + minute + 'AM';
-    }
-
-    return currentTime;
-
-  }
 
   /***
    * Listener for Opening a Modal
@@ -272,49 +210,6 @@ $(document).ready(function() {
     });
     window.location.reload();
   });
-
-  /*
-   function initializeAppts(appts) {
-   appts.sort(function(a, b) {
-   return new Date(a.date) - new Date(b.date);
-   });
-   for (var i = 0, len = appts.length; i < len; i++) {
-   appts[i].fullDate = formatDate(appts[i].date.toString());
-   appts[i].appointmentTime = formatTime(appts[i].date.toString());
-   }
-   return appts;
-   }
-   */
-  /***
-   * Makes a get request to display list of appts
-   * @param none
-   * @returns displays the appt list
-   */
-  /*
-   function getAppts() {
-   var json;
-   $.ajax({
-   dataType: 'json',
-   type: 'GET',
-   data: $('#response').serialize(),
-   async: false,
-   url: '/api/appointments/company/' + companyData.company_id,
-   success: function(response) {
-   json = response;
-   console.log(response);
-   }
-   });
-   return json;
-   }
-   */
-  /*
-   $(document).on('click', '.patient-queue-text', function() {
-   var uniqueId = $(this).attr('value');
-   var apt = findApt(uniqueId);
-   var compiledTemplate = modalTemplate(apt);
-   $('.modal-dialog').html(compiledTemplate);
-   });
-   */
 
   function findApt(id) {
 

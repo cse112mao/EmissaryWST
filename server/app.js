@@ -19,6 +19,7 @@ var MY_SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/T0NUV4URX/B0NURQUSF
 var slack = require('slack-notify')(MY_SLACK_WEBHOOK_URL);
 //var oauthserver = require('oauth2-server');
 var newrelic = require('newrelic');
+var fb = require('./fb');
 
 
 /*
@@ -141,6 +142,14 @@ app.get('/index', function(req, res) {
 });
 app.get('/doc', function(req, res) {
   res.sendFile(path.join(__dirname, '../doc/index.html'));
+});
+app.post('/fromAppUser', function(req, res) {  
+   var payload = req.body;
+   
+   fb.fbMsg(payload);
+
+   res.status(200);
+   res.send();
 });
 
 /*

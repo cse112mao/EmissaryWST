@@ -87,6 +87,12 @@
         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
         <li>
+          <a href="/nonadmin-dashboard.html">
+            <i class="entypo-info"></i>
+            <span class="title">Dashboard</span>
+          </a>
+        </li>
+        <li>
           <a href="/visitors.html">
             <i class="entypo-users"></i>
             <span class="title">Visitors</span>
@@ -171,7 +177,7 @@
     <center>
       <h1>Build your form</h1>
       <h2>Color picker:</h2>
-      <div>Color: <input class="jscolor" value="1C7F79"></div>
+      <div>Color: <input class="jscolor" id="colorPicker" value="1C7F79"></div>
 
     </center>
     <!--<center><h3>Preview</h3></center>-->
@@ -182,7 +188,7 @@
           <div class="addField">
             <p class="text-box">
               <input type="text" name="boxes[]" value="First Name" id="box" required/>
-              <button type="button" class="btn btn-danger remove-box">Remove</button>
+              <label type="text" class="default-tag">Default</label>
               <br> 
               <label id = "added_label" for="optional_1"> 
                 <span class="box-number">Short Answer Text</span>
@@ -192,7 +198,7 @@
           <div class="form-group">
             <p class="text-box">
               <input type="text" name="boxes[]" value="Last Name" id="box" required/>
-              <button type="button" class="btn btn-danger remove-box">Remove</button>
+              <label type="text" class="default-tag">Default</label>
               <br> 
               <label id = "added_label" for="optional_2"> 
                 <span class="box-number">Short Answer Text</span>
@@ -202,7 +208,7 @@
           <div class="form-group">
             <p class="text-box">
               <input type="text" name="boxes[]" value="Phone Number" id="box" required/>
-              <button type="button" class="btn btn-danger remove-box">Remove</button>
+              <label type="text" class="default-tag">Default</label>
               <br> 
               <label id = "added_label" for="optional_3"> 
                 <span class="box-number">Short Answer Text</span>
@@ -213,7 +219,7 @@
       </div>
       <div class="form-group">
         <div class="my-form">
-          <div class="addField">
+          <div class="addField" id="extra-fields">
             
           </div>
         </div>
@@ -225,7 +231,21 @@
       </div>
 
     </form>
-
+    <!-- Handlebars templates -->
+<script type="text/x-handlebars-template" id="extra-fields-template">
+    {{#each this}}
+    <div class="form-group">
+            <p class="text-box">
+              <input type="text" name="boxes[]" value="{{value}}" id="box" required/>
+              <button type="button" class="btn btn-danger remove-box">Remove</button>
+              <br> 
+              <label id = "added_label" for="optional_3"> 
+                <span class="box-number">Short Answer Text</span>
+              </label>
+            </p>
+          </div>
+    {{/each}}
+  </script>
 
     <!-- Imported styles on this page -->
     <link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
@@ -262,8 +282,10 @@
     <script src="assets/js/neon-demo.js"></script>
 
     <script src="assets/js/socket.io.js"></script>
-    <script type="text/javascript" src="js/handlebars-v4.0.5.js"></script>
+    <script type="text/javascript" src="assets/js/handlebars-v4.0.5.js"></script>
+    <!--
     <script type="text/javascript" src="assets/native/js/login.js"></script>
     <script type="text/javascript" src="assets/native/js/appointments.js"></script>
+    -->
 </body>
 </html>

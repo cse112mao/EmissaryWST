@@ -11,7 +11,6 @@ before_script:
 - mongo mydb_test --eval 'db.addUser("travis", "cse112mao");'
 script: 
 - gulp
-- se-interpreter interpreter-config.json
 services:
 - mongodb
 addons:
@@ -30,6 +29,9 @@ deploy:
   on:
     repo: cse112mao/EmissaryWST
 after_deploy:
-  - gulp test:nightwatch
+  - se-interpreter test/selenium_builder_config_files/interpreter-config-chrome.json
+  - se-interpreter test/selenium_builder_config_files/interpreter-config-firefox.json
+  - se-interpreter test/selenium_builder_config_files/interpreter-config-safari.json
+  - se-interpreter test/selenium_builder_config_files/interpreter-config-ie.json
 notifications:
   slack: cse112maospring2017:XksgdUr6VwPdJQ38LUBViS19

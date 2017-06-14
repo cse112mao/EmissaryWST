@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <script src = "assets/native/js/shared.js"></script>
-   <meta charset="UTF-8">
-   <title>Check In</title>
+  ` <meta charset="UTF-8">
+   `<title>Check In</title>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="icon" href="assets/images/logo-emissary.png">
     <link rel="stylesheet" href = "assets/native/css/checkin.css">
@@ -20,21 +20,30 @@
 </script>
 
 <h1 id = "clock"></h1>
-<form class = "check-in hide">
+<form class = "check-in hide" id="custom-form">
+</form>
+
+<!-- HANDLE BAR TEMPLATES -->
+  <script type="text/x-handlebars-template" id="custom-form-template">
     <h1>Check in</h1>
+    <div class="field-holder">
     <input class = "visitor-fields" id="visitor-first" type = "text" name = "first" placeholder = "First"> <br>
     <input class = "visitor-fields" id="visitor-last" type = "text" name = "last" placeholder = "Last"> <br>
     <input class = "visitor-fields" id="visitor-number" type = "text" name = "phoneNumber" placeholder = "Phone Number">
+    {{#each this}}
+    <input class = "visitor-fields" type = "text" name = "{{value}}" placeholder = "{{value}}"> <br>
+    {{/each}}
+    </div>
     <br>
     <input class = "submit-check-in" type="submit" value="Submit">
-</form>
-
+  </script>
 
 <div class = "has-apt hide">
     <h1>Do you have an appointment?</h1>
     <div id = "yes-apt">
         <p>Yes</p>
     </div>
+    <br>
     <div id = "no-apt">
         <p>No</p>
     </div>
@@ -104,6 +113,7 @@
 -->
 <script src="assets/js/socket.io.js"></script>
 <script src="assets/js/jquery-1.11.3.min.js"></script>
+<script src="assets/native/js/date-time.js"></script>
 <script src="assets/native/js/checkin.js"></script>
 <script type="text/javascript" src="assets/js/handlebars-v4.0.5.js"></script>
 <script src="assets/js/bootstrap.js"></script>

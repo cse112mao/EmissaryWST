@@ -213,10 +213,20 @@
             <p><span>First:</span> {{this.first_name}}</p>
             <p><span>Last:</span> {{this.last_name}}</p>
             <p><span>Appointment Time:</span> {{this.appointmentTime}}</p>
+            {{#each this.additional_info}}
+              {{#odd @index}} 
+                <p><span>{{name}}:</span> {{value}}</p>
+              {{/odd}}
+            {{/each}}
           </div>
           <div class="modal-right">
             <p><span>Check-In Time:</span> {{this.checkin_time}}</p>
             <p><span>Phone Number:</span> {{this.phone_number}}</p>
+            {{#each this.additional_info}}
+              {{#even @index}} 
+                <p><span>{{name}}:</span> {{value}}</p>
+              {{/even}}
+            {{/each}}
           </div>
         </div>
         <div class="modal-footer">
@@ -229,6 +239,7 @@
   </div>
 </div>
 
+<script type="text/javascript" src="assets/native/js/date-time.js"></script>
 <script type="text/javascript" src="assets/native/js/dashboard.js"></script>
 <!-- Imported styles on this page -->
 <!--<link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
