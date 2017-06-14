@@ -27,7 +27,9 @@ module.exports.fbMsg = function(payload) {
 				type: 'text',
 				text: 'The expected format is "make appointment ABC Clinic| Dr.Powell| Wed, 09 Aug 1995 00:00:00| 1234567890"!',
 				role: 'appMaker'
+			}).then(() => {
 			});
+			return;
 		}
 
 		var companyName = splits[0].trim();
@@ -56,6 +58,7 @@ module.exports.fbMsg = function(payload) {
 			type: 'text',
 			text: 'You are making an appointment at '+ companyName + ' with ' + userProviderName + " at " + dateString + '.',
 			role: 'appMaker'
+		}).then(() => {
 		});
 	}
 };
