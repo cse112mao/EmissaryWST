@@ -1,7 +1,7 @@
 #WebstormTroopers
 Travis- [![Build Status](https://travis-ci.org/cse112mao/EmissaryWST.svg?branch=master)](https://travis-ci.org/cse112mao/EmissaryWST) 
 
-[![Code Climate](https://codeclimate.com/repos/56eb35d946674e0085001b9d/badges/d34d37138e740796e3ef/gpa.svg)](https://codeclimate.com/repos/56eb35d946674e0085001b9d/feed)
+[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/cse112mao/EmissaryWST)
 ##1. Getting Started
 #
 ###1.1 List of Requirements
