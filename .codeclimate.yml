@@ -25,7 +25,12 @@ ratings:
   - "**.py"
   - "**.rb"
 exclude_paths:
-- client/assets/
 - client/test/
+- client/bower_components/
 - server/test/
-- client/neon
+- client/neon/
+- client/data/
+- doc/
+- client/fontAwesome/
+- dist/
+- node_modules/
