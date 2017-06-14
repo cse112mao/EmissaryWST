@@ -7,8 +7,8 @@ $(document).ready(function() {
   var RECENT_APPOINTMENTS_LIST = "recent_appointments_list";
   var NOTIFY_RECENT_APPOINTMENTS_LIST = "notify_recent_appointments_list";
 
-  var companyData = JSON.parse(localStorage.getItem("currentCompany"));
   var appList;
+  var companyData = JSON.parse(localStorage.getItem("currentCompany"));
   companyData.company_id = companyData._id;
   console.log(companyData);
   socket.emit(VALIDATE_COMPANY_ID, companyData);
@@ -18,6 +18,14 @@ $(document).ready(function() {
     e.preventDefault();
   };
 
+  $.ajax({
+      dataType: 'json',
+      type: 'GET',
+      url: '/api/form/template/company/' + companyData.company_id,
+      success: function(response) {
+        document.getElementById("check-in-page").style.backgroundColor = '#' + response.color;
+      }
+  });
   //Bind Listeners
   $('#tap-to-check').on('click', askApt);
   $('#no-apt').on('click', startCheckIn);
@@ -27,6 +35,15 @@ $(document).ready(function() {
 
   //When a user starts their check in
   function startCheckIn() {
+    $.ajax({
+      dataType: 'json',
+      type: 'GET',
+      url: '/api/form/template/company/' + companyData.company_id,
+      success: function(response) {
+        var compiledHtml = formTemplate(response.template);
+        $('#custom-form').html(compiledHtml);
+    }
+  });
     $('.check-in').removeClass('hide');
     $('.check-in').addClass('show');
     $('.check-in').animate({
@@ -79,10 +96,23 @@ $(document).ready(function() {
   function submitFormOG() {
     var data = {};
     data.company_id = companyData._id;
-    data.first_name = $('#visitor-first').val();
-    data.last_name = $('#visitor-last').val();
-    data.phone_number = $('#visitor-number').val();
     data.checkin_time = new Date();
+    data.additional_info = [];
+
+    $('.visitor-fields').each(function() {
+      if ($(this).attr('name') == "first") {
+        data.first_name = $(this).val();
+      }
+      else if ($(this).attr('name') == "last") {
+        data.last_name = $(this).val();
+      }
+      else if ($(this).attr('name') == "phoneNumber") {
+        data.phone_number = $(this).val();
+      }
+      else {
+        data.additional_info.push({name: $(this).attr('name'), value: $(this).val()});
+      }
+    });
     console.log("this is the data for submit no appt: ");
     console.log(data);
     if (localStorage.getItem("slackToken") && localStorage.getItem("slackChannel")) {
@@ -97,7 +127,7 @@ $(document).ready(function() {
     }
     socket.emit(ADD_VISITOR, data);
   }
-
+  
   updateClock();
   setInterval(updateClock, 60 * 1000);
   /***
@@ -110,6 +140,10 @@ $(document).ready(function() {
   //Modal Template
   var modal = $('#apt-info-template').html();
   var modalTemplate = Handlebars.compile(modal);
+
+  //Custom Form Template
+  var form = $('#custom-form-template').html();
+  var formTemplate = Handlebars.compile(form);
 
   console.log("emitting apt");
   socket.emit(RECENT_APPOINTMENTS_LIST, companyData);

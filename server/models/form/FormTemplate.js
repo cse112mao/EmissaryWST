@@ -13,6 +13,9 @@ var formTemplate = new mongoose.Schema({
   },
   template: {
     type: Object
+  },
+  color: {
+    type: String
   }
 });
 

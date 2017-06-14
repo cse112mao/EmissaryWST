@@ -3,17 +3,17 @@
 /* This module is meant to house all of the API
  * routes that pertain to forms
  */
-var express = require('express');
-var router = express.Router();
+ var express = require('express');
+ var router = express.Router();
 
-var SubmittedForm = require('../../models/form/SubmittedForm');
-var mongoose = require('mongoose');
-var TemplateForm = require('../../models/form/FormTemplate');
+ var SubmittedForm = require('../../models/form/SubmittedForm');
+ var mongoose = require('mongoose');
+ var TemplateForm = require('../../models/form/FormTemplate');
 
-/********** FORM TEMPLATE ROUTES **********/
-module.exports.template = {};
+ /********** FORM TEMPLATE ROUTES **********/
+ module.exports.template = {};
 
-module.exports.template.findByCompanyId = function(req, res) {
+ module.exports.template.findByCompanyId = function(req, res) {
   TemplateForm.findOne({'_admin_id': req.params.id}, function(err, template) {
     if (err)
       res.status(400).json({error: "There was an error finding the template form."});
@@ -37,11 +37,11 @@ module.exports.template.sendByAdminId = function(req, res) {
       res.status(400).json({error: "There was an error finding the template form."});
     else if (!template) {//if doesn't exist
       createWithAdminId(req, res);
-    }
-    else {
-      updateWithAdminId(req, res);
-    }
-  });
+  }
+  else {
+    updateWithAdminId(req, res);
+  }
+});
 };
 
 function createWithAdminId(req, res) {
@@ -70,15 +70,18 @@ function updateWithAdminId(req, res) {
 }
 
 module.exports.template.create = function(req, res) {
-  var newTemplate = new TemplateForm();
+  var newTemplate = {};
+  newTemplate._id = req.body._id; 
   newTemplate._admin_id = new mongoose.Types.ObjectId(req.body._admin_id);
   newTemplate.template = req.body.template;
+  newTemplate.color = req.body.color;
 
-  newTemplate.save(function(err, template) {
+  TemplateForm.findOneAndUpdate({_id: req.body._id}, newTemplate, {upsert: true}, function(err, template){
     if (err)
       res.status(400).json(err);
     else
       res.status(200).json(template);
+
   });
 };
 
@@ -147,9 +150,9 @@ module.exports.submitted_form.create = function(req, res) {
 
 module.exports.submitted_form.findByPatientInfo = function(req, res) {
   var query = {},
-    firstName = req.query.firstName,
-    lastName = req.query.lastName,
-    patientEmail = req.query.patientEmail;
+  firstName = req.query.firstName,
+  lastName = req.query.lastName,
+  patientEmail = req.query.patientEmail;
 
 
   if (!((firstName && lastName) || patientEmail)) {
