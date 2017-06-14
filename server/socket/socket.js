@@ -275,14 +275,14 @@ exports.createServer = function(io_in) {
       });
 
       for (var i = 0;i < result.visitors.length; i++){
-        if(i == 0 || result.visitors[i]._id != result.visitors[i-1]._id){
+        if(i === 0 || result.visitors[i]._id != result.visitors[i-1]._id){
           var visitorObj = result.visitors[i]; 
           for(var j = 0; j < visitorObj.appointments.length; j++){
             var appointmentObj = visitorObj.appointments[j];
             var checkin_time = new Date(appointmentObj.checkin_time);
             var tempDate = new Date(appointmentObj.date);
             if(currentDateEnd.valueOf() - tempDate.valueOf() >= 0 && (currentDateEnd.valueOf() - tempDate.valueOf())/1000 < 604800){
-              if(checkin_time == undefined || checkin_time.valueOf() - tempDate.valueOf() > 0) {
+              if(checkin_time === undefined || checkin_time.valueOf() - tempDate.valueOf() > 0) {
                 lateUsers++;
               }
               totalUsers++;
@@ -290,7 +290,7 @@ exports.createServer = function(io_in) {
           }
         }
       }
-      if (totalUsers == 0) {
+      if (totalUsers === 0) {
         percentLateWeek.percentLate = 0;
       }
       else {
