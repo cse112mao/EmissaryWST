@@ -3,6 +3,6 @@ var runSequence = require('run-sequence');
 
 /* The default task */
 gulp.task('default', function(callback) {
-  runSequence(['build:dev', 'apidoc']);
+  runSequence(['build:dev', 'apidoc'], 'test:mocha');
 });
 
