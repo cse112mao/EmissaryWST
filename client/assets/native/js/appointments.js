@@ -56,11 +56,28 @@ $(document).ready(function() {
   function submitForm() {
     var d = grabFormElements();
     console.log(d);
-    updateApptList(d);
-    appts = getAppts();
-    appts = initializeAppts(appts);
-    $("#appt-list").html(template(appts));
-    document.getElementById("appt-form").reset();
+    var date = d.date.substr(0, 3);
+    var time = d.date.substr(-3, 3);
+
+    // Execute the button if the format is correct
+    if (date !== 'NaN' && time !== 'NaN') {
+      updateApptList(d);
+      appts = getAppts();
+      appts = initializeAppts(appts);
+      $("#appt-list").html(template(appts));
+      document.getElementById("appt-form").reset();  
+    }
+    else {
+      if (date === 'NaN' && time === 'NaN') {
+        alert("Please enter date as mm/dd/yyyy and time as hh:mm AM/PM");
+      }
+      else if (date === 'NaN') {
+        alert("Please enter date as mm/dd/yyyy");
+      }
+      else {
+        alert("Please enter date as hh:mm AM/PM");
+      }
+    }
   }
 
   /***
@@ -97,6 +114,7 @@ $(document).ready(function() {
     newAppt.phone_number = $('#appt-number').val();
     newAppt.provider_name = $('#appt-provider').val();
 
+    // Get date and time that user inputted
     userDate = $('#appt-date').val();
     userTime = $('#appt-time').val();
 
@@ -124,111 +142,9 @@ $(document).ready(function() {
 
   /********************* FUNCTIONS TO FORMAT JAVASCRIPT DATES ********************/
 
-  function formatDate(date) {
-    var d = new Date(Date.parse(date));
-    var mm = d.getMonth() + 1;
-    var yyyy = d.getFullYear();
-    var dd = d.getDate();
-    //var monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug","Sep","Nov","Dec"];
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-    //console.log(monthArray[mm]);
-    return mm + '/' + dd + '/' + +yyyy;
-  }
-
+  // TODO = put in separate file for unit testing
   function formatNumber(number) {
     return '(' + number.substr(0, 3) + ')' + number.substr(3, 3) + '-' + number.substr(6, 4);
-  }
-
-  //FUNCTION TO FORMAT DATE OBJECT IN JS
-  function jsDate(date, time) {
-    var jsDate = reFormatDate(date);
-    var jsTime = reFormatTime(time);
-    jsDateObj = jsDate + ' ' + jsTime;
-    return jsDateObj;
-  }
-
-  //FUNCTION TO FORMAT DATE TO JS FOR ROBOTS
-  function reFormatDate(date) {
-    var d = new Date(Date.parse(date));
-    var mm = d.getMonth() + 1;
-    var yyyy = d.getFullYear();
-    var dd = d.getDate();
-
-    if (dd < 10) {
-      dd = '0' + dd;
-    }
-    if (mm < 10) {
-      mm = '0' + mm;
-    }
-    return yyyy + '-' + mm + '-' + dd;
-  }
-
-
-  //FUNCTION TO FORMAT TIME TO JS FOR ROBOTS
-  function reFormatTime(time) {
-    var ampm = time.substr(-2, 2);
-    var formattedTime;
-    var formattedHour;
-    var colon = time.indexOf(":");
-
-    if (ampm === "PM") {
-      formattedHour = time.substr(0, 2);
-
-      if (formattedHour == '12')
-        formattedHour = 12;
-      else
-        formattedHour = 12 + parseInt(time.substr(0, 2));
-
-      formattedTime = formattedHour + time.substr(colon, 3) + ":00";
-    }
-    else {
-
-      formattedHour = parseInt(time.substr(0, 2));
-      if (formattedHour < 10) {
-        formattedHour = '0' + formattedHour;
-      }
-      if (formattedHour == 12) {
-        formattedHour = '00';
-      }
-      formattedTime = formattedHour + time.substr(colon, 3) + ':00';
-    }
-
-    return formattedTime;
-  }
-
-
-  //FUNCTION TO FORMAT TIME TO AM AND PM FOR HUMANS
-  function formatTime(time) {
-    var currentTime = new Date(Date.parse(time));
-    var hour = currentTime.getHours();
-    var minute = currentTime.getMinutes();
-
-    if (minute < 10) {
-      minute = '0' + minute;
-    }
-
-    if (hour >= 13) {
-      hour = hour - 12;
-      currentTime = hour + ':' + minute + 'PM';
-    }
-
-    else if (hour === 12) {
-      currentTime = hour + ':' + minute + 'PM';
-    }
-    else if (hour === 0) {
-      currentTime = 1 + ':' + minute + 'AM';
-    }
-    else {
-      currentTime = hour + ':' + minute + 'AM';
-    }
-
-    return currentTime;
-
   }
 
 });

@@ -22,13 +22,8 @@ $(document).ready(function() {
   $('#tap-to-check').on('click', askApt);
   $('#no-apt').on('click', startCheckIn);
   $('#yes-apt').on('click', selectApt);
-  /*$('.check-in').on('submit', submitForm);*/
   $('.check-in').on('submit', submitFormOG);
 
-
-  function formatAptForSubmit() {
-
-  }
 
   //When a user starts their check in
   function startCheckIn() {
@@ -63,10 +58,6 @@ $(document).ready(function() {
     $('.has-apt').addClass('hide');
   }
 
-  function returnToVisitorList() {
-
-  }
-
   //When a patient submits their form
   function submitForm(event) {
     //event.preventDefault();
@@ -83,13 +74,6 @@ $(document).ready(function() {
         });
     }
     socket.emit(ADD_VISITOR, data);
-    /*
-     $(this).animate({
-     top: '35%',
-     opacity: '0'
-     }, 0);
-     */
-
   }
 
   function submitFormOG() {
@@ -112,41 +96,6 @@ $(document).ready(function() {
         });
     }
     socket.emit(ADD_VISITOR, data);
-  }
-
-  //Grabs elements from the check in and puts it into an object
-  function grabFormElements(event) {
-    var newVisitor = {};
-    newVisitor.first_name = event.first_name;
-    newVisitor.last_name = event.last_name;
-    newVisitor.phone_number = event.phone_number;
-    newVisitor.checkin_time = event.checkin_time;
-    newVisitor.company_id = companyData._id;
-    newVisitor.appointments = event.appointments;
-
-    return newVisitor;
-  }
-
-  //CLOCK
-  function updateClock() {
-    var currentTime = new Date();
-    var currentHours = currentTime.getHours();
-    var currentMinutes = currentTime.getMinutes();
-    //var currentSeconds = currentTime.getSeconds ( );
-    // Pad the minutes and seconds with leading zeros, if required
-    currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
-    //currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
-
-    // Convert the hours component to 12-hour format if needed
-    currentHours = ( currentHours > 12 ) ? currentHours - 12 : currentHours;
-
-    // Convert an hours component of "0" to "12"
-    currentHours = ( currentHours == 0 ) ? 12 : currentHours;
-
-    // Compose the string for display
-    var currentTimeString = currentHours + ":" + currentMinutes;
-
-    $("#clock").html(currentTimeString);
   }
 
   updateClock();
@@ -188,51 +137,6 @@ $(document).ready(function() {
   });
 
   /***
-   * Compare appointment Date to today's Date
-   */
-  function compareDate(appointment) {
-    var today = new Date();
-    appointment = new Date(Date.parse(appointment));
-
-    var appointmentDate = appointment.getFullYear() + ' ' + appointment.getDate() + ' ' + appointment.getMonth();
-    var todayDate = today.getFullYear() + ' ' + today.getDate() + ' ' + today.getMonth();
-
-    return (appointmentDate == todayDate);
-  }
-
-  /***
-   * Function to format a JSON date object into a string
-   * @param time
-   */
-  function formatTime(time) {
-    var currentTime = new Date(Date.parse(time));
-    var hour = currentTime.getHours();
-    var minute = currentTime.getMinutes();
-
-    if (minute < 10) {
-      minute = '0' + minute;
-    }
-
-    if (hour >= 13) {
-      hour = hour - 12;
-      currentTime = hour + ':' + minute + 'PM';
-    }
-
-    else if (hour === 12) {
-      currentTime = hour + ':' + minute + 'PM';
-    }
-    else if (hour === 0) {
-      currentTime = 1 + ':' + minute + 'AM';
-    }
-    else {
-      currentTime = hour + ':' + minute + 'AM';
-    }
-
-    return currentTime;
-
-  }
-
-  /***
    * Listener for Opening a Modal
    */
   $(document).on('click', '.patient-check-out', function() {
@@ -272,49 +176,6 @@ $(document).ready(function() {
     });
     window.location.reload();
   });
-
-  /*
-   function initializeAppts(appts) {
-   appts.sort(function(a, b) {
-   return new Date(a.date) - new Date(b.date);
-   });
-   for (var i = 0, len = appts.length; i < len; i++) {
-   appts[i].fullDate = formatDate(appts[i].date.toString());
-   appts[i].appointmentTime = formatTime(appts[i].date.toString());
-   }
-   return appts;
-   }
-   */
-  /***
-   * Makes a get request to display list of appts
-   * @param none
-   * @returns displays the appt list
-   */
-  /*
-   function getAppts() {
-   var json;
-   $.ajax({
-   dataType: 'json',
-   type: 'GET',
-   data: $('#response').serialize(),
-   async: false,
-   url: '/api/appointments/company/' + companyData.company_id,
-   success: function(response) {
-   json = response;
-   console.log(response);
-   }
-   });
-   return json;
-   }
-   */
-  /*
-   $(document).on('click', '.patient-queue-text', function() {
-   var uniqueId = $(this).attr('value');
-   var apt = findApt(uniqueId);
-   var compiledTemplate = modalTemplate(apt);
-   $('.modal-dialog').html(compiledTemplate);
-   });
-   */
 
   function findApt(id) {
 

@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 * Run Mocha Tests
 **/
 gulp.task('test:mocha', () =>
-   gulp.src('client/test/mocha/*.js', {read: false})
+   gulp.src('client/test/mocha/test/*.js', {read: false})
       .pipe(mocha({reporter: 'spec'}))
       .once('error', () => {
         process.exit(1);

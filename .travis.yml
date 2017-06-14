@@ -30,7 +30,6 @@ deploy:
   on:
     repo: cse112mao/EmissaryWST
 after_deploy:
-  - gulp test:nightwatch
   - se-interpreter test/selenium_builder_config_files/interpreter-config-chrome.json
   - se-interpreter test/selenium_builder_config_files/interpreter-config-firefox.json
   - se-interpreter test/selenium_builder_config_files/interpreter-config-safari.json
