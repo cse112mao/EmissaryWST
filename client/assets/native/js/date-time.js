@@ -138,13 +138,11 @@ function reFormatTime(time) {
 
   // Check if time is valid
   if (ampm !== "AM" && ampm !== "PM") {
-    console.log("h1");
     return 'NaN';
   }
 
   // Check if there is a colon in input
   if (colon === -1) {
-    console.log("h2");
     return 'NaN';
   }
 
@@ -153,7 +151,6 @@ function reFormatTime(time) {
 
   // Check if within 1-12
   if (formattedHour < 1 || formattedHour > 12 || formattedMin < 0 || formattedMin > 59) {
-    console.log("h3");
     return 'NaN';
   }
 
