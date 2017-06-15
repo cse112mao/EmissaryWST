@@ -5,7 +5,7 @@
   "steps": [
     {
       "type": "get",
-      "url": "http://maoproj.herokuapp.com/login.html"
+      "url": "http://emissaryws.herokuapp.com/login"
     },
     {
       "type": "verifyElementPresent",
@@ -19,13 +19,6 @@
       "text": "Dear user, log in to access the admin area"
     },
     {
-      "type": "verifyElementPresent",
-      "locator": {
-        "type": "css selector",
-        "value": "i.entypo-user"
-      }
-    },
-    {
       "type": "verifyElementValue",
       "locator": {
         "type": "id",
@@ -34,28 +27,50 @@
       "value": ""
     },
     {
-      "type": "verifyElementValue",
-      "locator": {
-        "type": "id",
-        "value": "password"
-      },
-      "value": ""
+      "type": "verifyTextPresent",
+      "text": ""
     },
     {
       "type": "verifyTextPresent",
-      "text": "Login"
+      "text": "Login In"
     },
     {
       "type": "verifyTextPresent",
       "text": "Forgot password"
     },
     {
-      "type": "verifyTextPresent",
-      "text": "ToS"
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "text": "tester@tester.com"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "password"
+      },
+      "text": "1234"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "loginButton"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Dashboard"
+      }
     },
     {
       "type": "verifyTextPresent",
-      "text": "Privacy Policy"
+      "text": "Dashboard"
     }
   ],
   "data": {

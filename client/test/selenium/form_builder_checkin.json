@@ -1,0 +1,237 @@
+{
+  "type": "script",
+  "seleniumVersion": "2",
+  "formatVersion": 2,
+  "steps": [
+    {
+      "type": "get",
+      "url": "http://emissaryws.herokuapp.com/login"
+    },
+    {
+      "type": "verifyElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": "img"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Dear user, log in to access the admin area"
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "value": ""
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": ""
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Login In"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Forgot password"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "text": "tester@tester.com"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "password"
+      },
+      "text": "1234"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "loginButton"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Forms"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//form[@class='form-builder']//button[.='Add']"
+      }
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "xpath",
+        "value": "//form[@class='form-builder']/div[2]/div/p/input"
+      },
+      "text": "Reason"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//form[@class='form-builder']//button[.='Save']"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@class='row']/div[2]/ul/div/i"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Check-In"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@id='tap-to-check']//p[.='Tap To Check In']"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@id='no-apt']//p[.='No']"
+      }
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "id",
+        "value": "visitor-first"
+      },
+      "value": ""
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "id",
+        "value": "visitor-last"
+      },
+      "value": ""
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "id",
+        "value": "visitor-number"
+      },
+      "value": ""
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "name",
+        "value": "Reason"
+      },
+      "value": ""
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "visitor-first"
+      },
+      "text": "Bo"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "visitor-last"
+      },
+      "text": "Ro"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "visitor-number"
+      },
+      "text": "6130920192"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "name",
+        "value": "Reason"
+      },
+      "text": "Health Concerns"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "css selector",
+        "value": "input.submit-check-in"
+      }
+    },
+    {
+      "type": "get",
+      "url": "http://emissaryws.herokuapp.com/visitors"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "css selector",
+        "value": "td.patient-queue-text"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "First: Bo"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Last: Ro"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Appointment Time: None"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Phone Number: 6130920192"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Reason: Health Concerns"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@class='modal-footer']//button[.='Remove']"
+      }
+    }
+  ],
+  "data": {
+    "configs": {},
+    "source": "none"
+  },
+  "inputs": [],
+  "timeoutSeconds": 60
+}

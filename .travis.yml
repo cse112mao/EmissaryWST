@@ -29,5 +29,6 @@ deploy:
   on:
     repo: cse112mao/EmissaryWST
 after_deploy:
+  - se-interpreter test/selenium_builder_config_files/interpreter-config-chrome.json
 notifications:
   slack: cse112maospring2017:XksgdUr6VwPdJQ38LUBViS19

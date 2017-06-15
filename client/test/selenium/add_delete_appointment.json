@@ -1,0 +1,195 @@
+{
+  "type": "script",
+  "seleniumVersion": "2",
+  "formatVersion": 2,
+  "steps": [
+    {
+      "type": "get",
+      "url": "http://emissaryws.herokuapp.com/login"
+    },
+    {
+      "type": "verifyElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": "img"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Dear user, log in to access the admin area"
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "value": ""
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": ""
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Login In"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Forgot password"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "text": "tester@tester.com"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "password"
+      },
+      "text": "1234"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "loginButton"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "link text",
+        "value": "Appointments"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "css selector",
+        "value": "div.add-button"
+      }
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "appt-first"
+      },
+      "text": "Bob"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "appt-last"
+      },
+      "text": "Bob"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "appt-number"
+      },
+      "text": "1231231234"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "appt-provider"
+      },
+      "text": "Bob Ross"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "appt-date"
+      },
+      "text": "12/03/2017"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "appt-time"
+      },
+      "text": "12:03PM"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//div[@class='modal-footer']//button[.='Save']"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "First Name"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Bob"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Last Name"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Bob"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Provider Name"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Bob Ross"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Phone Number"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "1231231234"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Date"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "12/3/2017"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Time"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "12:03PM"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "xpath",
+        "value": "//tr[@class='appt-row']/td[6]/i"
+      }
+    }
+  ],
+  "data": {
+    "configs": {},
+    "source": "none"
+  },
+  "inputs": [],
+  "timeoutSeconds": 60
+}
