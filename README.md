@@ -1,11 +1,11 @@
-#WebstormTroopers
+# WaitLess
 Travis- [![Build Status](https://travis-ci.org/cse112mao/EmissaryWST.svg?branch=master)](https://travis-ci.org/cse112mao/EmissaryWST) 
 
 [![Code Climate](https://codeclimate.com/github/cse112mao/EmissaryWST/badges/gpa.svg)](https://codeclimate.com/github/cse112mao/EmissaryWST)
 
-##1. Getting Started
+### Getting Started
 #
-###1.1 List of Requirements
+### 1.1 List of Requirements
 
 1. **Node.js** (http://nodejs.org/)
 2. **MongoDB** (https://www.mongodb.org/)
