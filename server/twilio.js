@@ -3,7 +3,7 @@ var config = require('./config/config.js');
 module.exports.sendSms = function(to, message) {
 	var client = require('twilio')(config.twilio_accountSid, config.twilio_authToken);
 	if (to === 'COMPANY_PHONE') {
-		to = '8584055851';
+		to = '8584057698';
 	}
 	//send a custom message through Twilio to the number to parameter
 	client.messages.create({ 
