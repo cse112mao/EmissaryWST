@@ -1,4 +1,6 @@
 # WaitLess
+![WaitLess](https://i.imgur.com/rz4vul2.png)
+
 Travis- [![Build Status](https://travis-ci.org/cse112mao/EmissaryWST.svg?branch=master)](https://travis-ci.org/cse112mao/EmissaryWST) 
 
 [![Code Climate](https://codeclimate.com/github/cse112mao/EmissaryWST/badges/gpa.svg)](https://codeclimate.com/github/cse112mao/EmissaryWST)
