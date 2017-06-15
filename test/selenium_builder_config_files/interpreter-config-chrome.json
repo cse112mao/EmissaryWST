@@ -17,10 +17,13 @@
 				}
 			],
 			"scripts": [
-				"client/test/selenium/forgot.json",
-				"client/test/selenium/landing.json",
-				"client/test/selenium/login.json",
-				"client/test/selenium/test.json"
+				"client/test/selenium/login_landing.json",
+				"client/test/selenium/create_employee.json",
+				"client/test/selenium/dashboard.json",
+				"client/test/selenium/form_builder_checkin.json",
+				"client/test/selenium/update_name.json",
+				"client/test/selenium/add_delete_appointment.json",
+				"client/test/selenium/logout.json"
 			]
 		}
 	]

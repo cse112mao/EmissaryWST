@@ -1,0 +1,112 @@
+{
+  "type": "script",
+  "seleniumVersion": "2",
+  "formatVersion": 2,
+  "steps": [
+    {
+      "type": "get",
+      "url": "http://emissaryws.herokuapp.com/login"
+    },
+    {
+      "type": "verifyElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": "img"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Dear user, log in to access the admin area"
+    },
+    {
+      "type": "verifyElementValue",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "value": ""
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": ""
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Login In"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Forgot password"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "username"
+      },
+      "text": "tester@tester.com"
+    },
+    {
+      "type": "setElementText",
+      "locator": {
+        "type": "id",
+        "value": "password"
+      },
+      "text": "1234"
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "id",
+        "value": "loginButton"
+      }
+    },
+    {
+      "type": "verifyElementPresent",
+      "locator": {
+        "type": "link text",
+        "value": "Settings"
+      }
+    },
+    {
+      "type": "verifyElementPresent",
+      "locator": {
+        "type": "link text",
+        "value": "Forms"
+      }
+    },
+    {
+      "type": "verifyElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": "img"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Appointments"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Employees"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Visitors"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Dashboard"
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Hello, test test"
+    }
+  ],
+  "data": {
+    "configs": {},
+    "source": "none"
+  },
+  "inputs": [],
+  "timeoutSeconds": 60
+}
