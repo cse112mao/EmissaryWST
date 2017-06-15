@@ -29,6 +29,7 @@ module.exports.fbMsg = function(payload) {
 				role: 'appMaker'
 			}).then(() => {
 			});
+			return;
 		}
 
 		var companyName = splits[0].trim();

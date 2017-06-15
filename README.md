@@ -1,10 +1,13 @@
-#WebstormTroopers
+# WaitLess
+![WaitLess](https://i.imgur.com/rz4vul2.png)
+
 Travis- [![Build Status](https://travis-ci.org/cse112mao/EmissaryWST.svg?branch=master)](https://travis-ci.org/cse112mao/EmissaryWST) 
 
-[![Code Climate](https://codeclimate.com/repos/56eb35d946674e0085001b9d/badges/d34d37138e740796e3ef/gpa.svg)](https://codeclimate.com/repos/56eb35d946674e0085001b9d/feed)
-##1. Getting Started
+[![Code Climate](https://codeclimate.com/github/cse112mao/EmissaryWST/badges/gpa.svg)](https://codeclimate.com/github/cse112mao/EmissaryWST)
+
+### Getting Started
 #
-###1.1 List of Requirements
+### 1.1 List of Requirements
 
 1. **Node.js** (http://nodejs.org/)
 2. **MongoDB** (https://www.mongodb.org/)
